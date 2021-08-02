@@ -1,6 +1,7 @@
 <template>
   <ion-app>
     <ion-router-outlet />
+    <h1>Hello world</h1>
   </ion-app>
 </template>
 
