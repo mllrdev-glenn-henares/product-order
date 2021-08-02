@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "product-order",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}

@@ -1,0 +1,7 @@
+{
+  "name": "product-order",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
