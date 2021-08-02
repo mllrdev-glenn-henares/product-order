@@ -4,7 +4,7 @@ interface IName {
     lastName: string;
 }
 
-interface User extends Name {
+interface IUser extends IName {
     email: string;
     password: string;
 }
