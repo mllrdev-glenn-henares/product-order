@@ -2,20 +2,26 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title>Login</ion-title>
+        <ion-title>Registration</ion-title>
       </ion-toolbar>
     </ion-header>
 
     <ion-content :fullscreen="true">
       <div id="login">
         <ion-item>
-          <ion-input placeholder="Username"></ion-input>
+          <ion-input placeholder="First Name"></ion-input>
+          <ion-input placeholder="Last Name"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input placeholder="Email" type="email"></ion-input>
         </ion-item>
         <ion-item>
           <ion-input placeholder="Password" type="password"></ion-input>
         </ion-item>
-        <ion-button>Login</ion-button>
-        <ion-button @click="$router.push('/register')">Register</ion-button>
+        <ion-item>
+          <ion-input placeholder="Confirm Password" type="password"></ion-input>
+        </ion-item>
+        <ion-button>Complete Registration</ion-button>
       </div>
     </ion-content>
   </ion-page>
@@ -58,10 +64,10 @@ export default defineComponent({
   padding: 10px;
 }
 ion-item {
-  width: 3in;
+  width: 5in;
 }
 ion-button {
-  width: 7em;
+  width: auto;
   height: 2.5em;
   margin-top: 10px;
 }
