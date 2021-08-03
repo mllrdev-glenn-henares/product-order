@@ -4,7 +4,5 @@ app {
 }
 
 ion-button {
-    height: 0.3in;
-    width: 1in;
     --background-color: --ion-color-medium-contrast;
 }
