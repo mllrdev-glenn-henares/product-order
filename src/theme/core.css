@@ -1,0 +1,9 @@
+app {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: #000000;
+}
+
+ion-button {
+    --background-color: --ion-color-medium-contrast;
+    --background-activated: --ion-color-dark;
+}
