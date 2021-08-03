@@ -31,6 +31,7 @@ import {
   IonToolbar,
 } from "@ionic/vue";
 import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Home",
@@ -41,6 +42,10 @@ export default defineComponent({
     IonTitle,
     IonToolbar,
     IonInput,
+  },
+  setup() {
+    const router = useRouter();
+    return { router };
   },
 });
 </script>
