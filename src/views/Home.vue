@@ -21,33 +21,12 @@
         </ion-row>
       </ion-grid>
       <ion-grid>
-        <ion-row>
-          <ion-col> {{ order[0].purchaseOrderNumber }} </ion-col>
-          <ion-col> {{order[0].description}} </ion-col>
-          <ion-col> {{order[0].date}} </ion-col>
-          <ion-col> {{order[0].status}} </ion-col>
-          <ion-col> {{order[0].action}} </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col> PO-0001 </ion-col>
-          <ion-col> sample Description </ion-col>
-          <ion-col> July 22, 2021 </ion-col>
-          <ion-col> Pending </ion-col>
-          <ion-col> Review </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col> PO-0001 </ion-col>
-          <ion-col> sample Description </ion-col>
-          <ion-col> July 22, 2021 </ion-col>
-          <ion-col> Pending </ion-col>
-          <ion-col> Review </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col> PO-0001 </ion-col>
-          <ion-col> sample Description </ion-col>
-          <ion-col> July 22, 2021 </ion-col>
-          <ion-col> Pending </ion-col>
-          <ion-col> Review </ion-col>
+        <ion-row v-for="order in orders" :key="order.purchaseOrderNumber">
+          <ion-col> {{ order.purchaseOrderNumber }} </ion-col>
+          <ion-col> {{ order.description }} </ion-col>
+          <ion-col> {{ order.date }} </ion-col>
+          <ion-col> {{ order.status }} </ion-col>
+          <ion-col> {{ order.action }} </ion-col>
         </ion-row>
       </ion-grid>
       <ion-button id="addButton">add Icon</ion-button>
@@ -56,15 +35,16 @@
 </template>
 
 <script lang="ts">
+import PurchaseAction from '@/core/enums/action.enum';
+import PurchaseStatus from '@/core/enums/status.enum';
 import { IonContent, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonButton } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
-import PurchaseOrder from '../types/purchaseOrder';
+import IPurchaseOrder from '../core/interfaces/purchase-order';
 
 export default defineComponent({
   name: 'Home',
   components: {
     IonContent,
- 
     IonPage,
     IonTitle,
     IonToolbar,
@@ -74,12 +54,14 @@ export default defineComponent({
   },
   setup() {
 
-    const order = ref<PurchaseOrder[]>([
-      { purchaseOrderNumber: 'PO-0001', description: 'description one', date: new Date(), status: 'pending', action: 'reviewed' }
+    const orders = ref<IPurchaseOrder[]>([
+      { purchaseOrderNumber: 'PO-0001', description: 'description one', date: new Date(), status: PurchaseStatus.PENDING, action: PurchaseAction.REVIEWED },
+
+      { purchaseOrderNumber: 'PO-0002', description: 'description two', date: new Date(), status: PurchaseStatus.APPROVED, action: PurchaseAction.REVIEWED }
 
     ])
 
-    return {order}
+    return {orders}
 
   }
 });
