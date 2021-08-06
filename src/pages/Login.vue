@@ -7,16 +7,18 @@
     </ion-header>
 
     <ion-content :fullscreen="true">
-      <div id="login">
+      <ion-form>
+        <div id="login">
         <ion-item>
-          <ion-input placeholder="Username"></ion-input>
+          <ion-input  placeholder="Username" type= "username"></ion-input>
         </ion-item>
         <ion-item>
           <ion-input placeholder="Password" type="password"></ion-input>
         </ion-item>
-        <ion-button>Login</ion-button>
+        <ion-button @click="$router.push('/home')">Login</ion-button>
         <ion-button @click="$router.push('/register')">Register</ion-button>
       </div>
+      </ion-form>
     </ion-content>
   </ion-page>
 </template>
@@ -62,9 +64,8 @@ export default defineComponent({
   align-items: center;
   padding: 10px;
 }
-ion-item {
-  width: 3in;
-}
+
+
 ion-button {
   width: 7em;
   height: 2.5em;
