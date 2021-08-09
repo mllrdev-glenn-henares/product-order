@@ -22,15 +22,6 @@
         </ion-row>
       </ion-grid>
       <order-list :orders = "orders" :status= "status"/>
-      <!-- <ion-grid>
-        <ion-row v-for="order in orders" :key="order.purchaseOrderNumber" button @click="buttonClickDetail(order.purchaseOrderNumber)">
-          <ion-col> {{ order.purchaseOrderNumber }} </ion-col>
-          <ion-col> {{ order.description }} </ion-col>
-          <ion-col> {{ order.date }} </ion-col>
-          <ion-col> {{ order.status }} </ion-col>
-          <ion-col> {{ order.action }} </ion-col>
-        </ion-row>
-      </ion-grid> -->
       <list-jerry :user = "user"/>
       <ion-button id="addButton" button @click="buttonClickAddOrder()">add Icon</ion-button>
     </ion-content>
@@ -44,7 +35,7 @@ import { IonContent, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonButton }
 import { defineComponent, ref } from 'vue';
 import IPurchaseOrder from '../core/interfaces/purchase-order';
 import IUser from '../core/interfaces/user';
-import OrderList from '../core/component/OrderList.vue'
+import OrderList from '@/core/component/OrderList.vue'
 
 
 export default defineComponent({
@@ -64,7 +55,14 @@ export default defineComponent({
     const orders = ref<IPurchaseOrder[]>([
       { purchaseOrderNumber: 'PO-0001', description: 'description one', date: new Date(), status: PurchaseStatus.PENDING, action: PurchaseAction.REVIEWED },
       { purchaseOrderNumber: 'PO-0002', description: 'description two', date: new Date(), status: PurchaseStatus.APPROVED, action: PurchaseAction.REVIEWED },
-      { purchaseOrderNumber: 'PO-0002', description: 'description two', date: new Date(), status: PurchaseStatus.DECLINED, action: PurchaseAction.REVIEWED }
+      { purchaseOrderNumber: 'PO-0003', description: 'description three', date: new Date(), status: PurchaseStatus.DECLINED, action: PurchaseAction.REVIEWED },
+      { purchaseOrderNumber: 'PO-0004', description: 'description four', date: new Date(), status: PurchaseStatus.CLOSE, action: PurchaseAction.REVIEWED },
+      { purchaseOrderNumber: 'PO-0005', description: 'description five', date: new Date(), status: PurchaseStatus.CLOSE, action: PurchaseAction.REVIEWED },
+      { purchaseOrderNumber: 'PO-0006', description: 'description six', date: new Date(), status: PurchaseStatus.DECLINED, action: PurchaseAction.REVIEWED },
+      { purchaseOrderNumber: 'PO-0007', description: 'description seven', date: new Date(), status: PurchaseStatus.APPROVED, action: PurchaseAction.REVIEWED },
+      { purchaseOrderNumber: 'PO-0008', description: 'description eight', date: new Date(), status: PurchaseStatus.PENDING, action: PurchaseAction.REVIEWED },
+      { purchaseOrderNumber: 'PO-0009', description: 'description nine', date: new Date(), status: PurchaseStatus.CLOSE, action: PurchaseAction.REVIEWED }
+      
 
     ])
 

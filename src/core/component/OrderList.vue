@@ -1,6 +1,5 @@
 <template>
   <div class="order-list">
-    <header>Filtered By: {{status}}</header>
     <ion-grid>
       <ion-row v-for="order in purchaseOrderSequences" :key="order.purchaseOrderNumber ">
         <ion-col> {{ order.purchaseOrderNumber }} </ion-col>
@@ -38,8 +37,14 @@ export default defineComponent({
   },
   setup(props) {
     const purchaseOrderSequences = computed(() => {
-      return [...props.orders].sort((a: IPurchaseOrder , b: IPurchaseOrder) => {
-        return a[props.status]< b[props.status] ? 1 : -1
+      return [...props.orders].sort((a: IPurchaseOrder ) => {
+        if(a.status === props.status){
+          return -1
+        }
+        if(a.status > props.status){
+          return 1
+        }
+        return 0
       })
     })
 
