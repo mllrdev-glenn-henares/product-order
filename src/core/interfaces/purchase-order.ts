@@ -4,7 +4,7 @@ interface IPurchaseOrder {
     purchaseOrderNumber: string,
     description: string,
     date: Date,
-    status: PurchaseStatus,
+    status: PurchaseStatus.APPROVED | PurchaseStatus.PENDING | PurchaseStatus.DECLINED | PurchaseStatus.CLOSE,
     action: PurchaseAction
 }
 
