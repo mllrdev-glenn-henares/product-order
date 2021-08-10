@@ -57,7 +57,7 @@ export default defineComponent({
     };
   },
   methods: {
-    async handleSubmit() {
+    async login() {
       const response = await axios.post("login", {
         email: this.email,
         password: this.password,
