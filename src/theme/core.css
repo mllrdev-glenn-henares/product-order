@@ -9,6 +9,6 @@ ion-item {
 }
 
 ion-button {
-    --background-color: --ion-color-medium-contrast;
-    --background-activated: --ion-color-dark;
+    --background: #3880ff;
+    color: white;
 }

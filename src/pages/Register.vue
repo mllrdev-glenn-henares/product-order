@@ -1,15 +1,12 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-title>Registration</ion-title>
-      </ion-toolbar>
-    </ion-header>
+    <Toolbar title-text = "Register"/>
 
     <ion-content :fullscreen="true">
       <div id="login">
         <ion-item>
           <ion-input placeholder="First Name"></ion-input>
+          <ion-input placeholder="Middle Name"></ion-input>
           <ion-input placeholder="Last Name"></ion-input>
         </ion-item>
         <ion-item>
@@ -21,7 +18,7 @@
         <ion-item>
           <ion-input placeholder="Confirm Password" type="password"></ion-input>
         </ion-item>
-        <ion-button>Complete Registration</ion-button>
+        <ion-button @click="$router.push('/login')">Complete Registration</ion-button>
       </div>
     </ion-content>
   </ion-page>
@@ -30,23 +27,24 @@
 <script lang="ts">
 import {
   IonContent,
-  IonHeader,
   IonInput,
   IonPage,
-  IonTitle,
-  IonToolbar,
 } from "@ionic/vue";
+import Toolbar from '@/components/Toolbar.vue'
 import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Home",
   components: {
     IonContent,
-    IonHeader,
     IonPage,
-    IonTitle,
-    IonToolbar,
     IonInput,
+    Toolbar,
+  },
+   setup() {
+    const router = useRouter();
+    return { router };
   },
 });
 </script>

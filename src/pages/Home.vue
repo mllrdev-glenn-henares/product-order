@@ -1,10 +1,6 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-title>Product Order</ion-title>
-      </ion-toolbar>
-    </ion-header>
+    <Toolbar title-text = "Home"/>
     
     <ion-content :fullscreen="true">
     </ion-content>
@@ -12,17 +8,15 @@
 </template>
 
 <script lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { IonContent, IonPage } from '@ionic/vue';
 import { defineComponent } from 'vue';
-
+import Toolbar from '@/components/Toolbar.vue'
 export default defineComponent({
   name: 'Home',
   components: {
     IonContent,
-    IonHeader,
     IonPage,
-    IonTitle,
-    IonToolbar
+    Toolbar
   }
 });
 </script>
