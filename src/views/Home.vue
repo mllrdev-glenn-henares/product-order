@@ -18,12 +18,12 @@
           <ion-col> PO Description </ion-col>
           <ion-col> Request Date </ion-col>
           <ion-col> Status </ion-col>
-          <ion-col> Action </ion-col>
+          <!-- <ion-col> Action </ion-col> -->
         </ion-row>
       </ion-grid>
       <order-list :orders = "orders" :status= "status"/>
       <list-jerry :user = "user"/>
-      <ion-button id="addButton" button @click="buttonClickAddOrder()">add Icon</ion-button>
+      <ion-button id="addButton">add Icon</ion-button>
     </ion-content>
   </ion-page>
 </template>
@@ -95,9 +95,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
-*{
+/* *{
   outline: solid yellow 1px;
-}
+} */
   h1{
     display: inline-block;
     margin-left: 2%;

@@ -1,12 +1,11 @@
 <template>
   <div class="order-list">
     <ion-grid>
-      <ion-row v-for="order in purchaseOrderSequences" :key="order.purchaseOrderNumber ">
+      <ion-row v-for="order in purchaseOrderSequences" :key="order.purchaseOrderNumber">
         <ion-col> {{ order.purchaseOrderNumber }} </ion-col>
         <ion-col> {{ order.description }} </ion-col>
         <ion-col> {{ order.date }} </ion-col>
         <ion-col> {{ order.status }} </ion-col>
-        <ion-col> {{ order.action }} </ion-col>
       </ion-row>
     </ion-grid>
   </div>
@@ -27,7 +26,7 @@ export default defineComponent({
     },
     users: {
       required: true,
-      type: Array as PropType<IUser[]>
+      type: Object as PropType<IUser>
     },
     status: {
       required: true,
@@ -38,18 +37,9 @@ export default defineComponent({
   setup(props) {
     const purchaseOrderSequences = computed(() => {
       return [...props.orders].sort((a: IPurchaseOrder ) => {
-        if(a.status === props.status){
-          return -1
-        }
-        if(a.status > props.status){
-          return 1
-        }
-        return 0
+        return a.status === props.status? -1 : 1
       })
     })
-
-    console.log({props}) 
-
     return { purchaseOrderSequences }
   }
 })
