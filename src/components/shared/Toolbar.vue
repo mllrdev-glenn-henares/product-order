@@ -1,18 +1,17 @@
 <template>
   <ion-header :translucent="true">
     <ion-toolbar>
-      <div id="title-bar" >
+      <div id="title-bar">
         <ion-title>Product Order</ion-title>
-        <ion-title id="middle-title">{{titleText}}</ion-title>
-        <ion-button color="primary">Login</ion-button>
+        <ion-label id="middle-title">{{ titleText }}</ion-label>
       </div>
     </ion-toolbar>
   </ion-header>
 </template>
 
 <script language="ts">
-import {IonTitle, IonButton, IonHeader, IonToolbar} from '@ionic/vue';
-import { defineComponent } from "vue";
+import { IonTitle, IonButton, IonHeader, IonToolbar } from "@ionic/vue"
+import { defineComponent } from "vue"
 
 export default defineComponent({
   name: "Toolbar",
@@ -20,9 +19,9 @@ export default defineComponent({
     IonTitle,
     IonButton,
     IonHeader,
-    IonToolbar
+    IonToolbar,
   },
-  props: ['titleText'],
+  props: ["titleText"],
 });
 </script>
 
@@ -39,5 +38,4 @@ export default defineComponent({
   left: 50%;
   transform: translate(-50%, 0);
 }
-
 </style>
