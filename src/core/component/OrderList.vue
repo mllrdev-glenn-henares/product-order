@@ -1,8 +1,8 @@
 <template>
   <div class="order-list">
     <ion-grid>
-      <ion-row v-for="order in purchaseOrderSequences" :key="order.purchaseOrderNumber">
-        <ion-col> {{ order.purchaseOrderNumber }} </ion-col>
+      <ion-row v-for="order in purchaseOrderSequences" :key="order.id">
+        <ion-col> {{ order.id }} </ion-col>
         <ion-col> {{ order.description }} </ion-col>
         <ion-col> {{ order.date }} </ion-col>
         <ion-col> {{ order.status }} </ion-col>
@@ -13,9 +13,9 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
-import PurchaseStatus from '../enums/status.enum';
-import IPurchaseOrder from '../interfaces/purchase-order';
-import IUser from '../interfaces/user';
+import PurchaseStatus from 'src/core/enums/status.enum';
+import IPurchaseOrder from 'src/core/interfaces/purchase-order';
+import IUser from 'src/core/interfaces/user';
 
 export default defineComponent({
   name: 'order-list',
@@ -36,8 +36,16 @@ export default defineComponent({
   },
   setup(props) {
     const purchaseOrderSequences = computed(() => {
-      return [...props.orders].sort((a: IPurchaseOrder ) => {
-        return a.status === props.status? -1 : 1
+        return [...props.orders].sort((a: IPurchaseOrder ) => {
+          if (a.status === props.status) {
+            return -1
+          }
+          
+          if (a.status > props.status) {
+            return 1
+          }
+          
+          return 0
       })
     })
     return { purchaseOrderSequences }

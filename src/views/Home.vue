@@ -2,7 +2,7 @@
   <ion-page>
   <ion-toolbar>
     <ion-button id="signInButton" button @click="buttonClickSignIn()">{{user.firstName}}</ion-button>
-    <h1>LOGO</h1>
+    <img src="" alt="LOGO">
     <ion-title>Purchase Order</ion-title>
   </ion-toolbar>
     <ion-content :fullscreen="true">
@@ -33,9 +33,9 @@ import PurchaseAction from '@/core/enums/action.enum';
 import PurchaseStatus from '@/core/enums/status.enum';
 import { IonContent, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonButton } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
-import IPurchaseOrder from '../core/interfaces/purchase-order';
-import IUser from '../core/interfaces/user';
-import OrderList from '@/core/component/OrderList.vue'
+import IPurchaseOrder from '@/core/interfaces/purchase-order';
+import IUser from '@/core/interfaces/user';
+import OrderList from '@/core/component/OrderList.vue';
 
 
 export default defineComponent({
@@ -53,15 +53,15 @@ export default defineComponent({
   setup() {
 
     const orders = ref<IPurchaseOrder[]>([
-      { purchaseOrderNumber: 'PO-0001', description: 'description one', date: new Date(), status: PurchaseStatus.PENDING, action: PurchaseAction.REVIEWED },
-      { purchaseOrderNumber: 'PO-0002', description: 'description two', date: new Date(), status: PurchaseStatus.APPROVED, action: PurchaseAction.REVIEWED },
-      { purchaseOrderNumber: 'PO-0003', description: 'description three', date: new Date(), status: PurchaseStatus.DECLINED, action: PurchaseAction.REVIEWED },
-      { purchaseOrderNumber: 'PO-0004', description: 'description four', date: new Date(), status: PurchaseStatus.CLOSE, action: PurchaseAction.REVIEWED },
-      { purchaseOrderNumber: 'PO-0005', description: 'description five', date: new Date(), status: PurchaseStatus.CLOSE, action: PurchaseAction.REVIEWED },
-      { purchaseOrderNumber: 'PO-0006', description: 'description six', date: new Date(), status: PurchaseStatus.DECLINED, action: PurchaseAction.REVIEWED },
-      { purchaseOrderNumber: 'PO-0007', description: 'description seven', date: new Date(), status: PurchaseStatus.APPROVED, action: PurchaseAction.REVIEWED },
-      { purchaseOrderNumber: 'PO-0008', description: 'description eight', date: new Date(), status: PurchaseStatus.PENDING, action: PurchaseAction.REVIEWED },
-      { purchaseOrderNumber: 'PO-0009', description: 'description nine', date: new Date(), status: PurchaseStatus.CLOSE, action: PurchaseAction.REVIEWED }
+      { id: 'PO-001', description: 'description one', date: new Date(), status: PurchaseStatus.PENDING, action: PurchaseAction.REVIEWED },
+      { id: 'PO-002', description: 'description two', date: new Date(), status: PurchaseStatus.APPROVED, action: PurchaseAction.REVIEWED },
+      { id: 'PO-003', description: 'description three', date: new Date(), status: PurchaseStatus.DECLINED, action: PurchaseAction.REVIEWED },
+      { id: 'PO-004', description: 'description four', date: new Date(), status: PurchaseStatus.CLOSE, action: PurchaseAction.REVIEWED },
+      { id: 'PO-005', description: 'description five', date: new Date(), status: PurchaseStatus.CLOSE, action: PurchaseAction.REVIEWED },
+      { id: 'PO-006', description: 'description six', date: new Date(), status: PurchaseStatus.DECLINED, action: PurchaseAction.REVIEWED },
+      { id: 'PO-007', description: 'description seven', date: new Date(), status: PurchaseStatus.APPROVED, action: PurchaseAction.REVIEWED },
+      { id: 'PO-008', description: 'description eight', date: new Date(), status: PurchaseStatus.PENDING, action: PurchaseAction.REVIEWED },
+      { id: 'PO-009', description: 'description nine', date: new Date(), status: PurchaseStatus.CLOSE, action: PurchaseAction.REVIEWED }
       
 
     ])
@@ -81,8 +81,8 @@ export default defineComponent({
 
   },
   methods: {
-    buttonClickDetail(purchaseOrderNumber: string) { //get POnumber to display detail of PO
-      alert("this will go to details page of PO number "+ purchaseOrderNumber)
+    buttonClickDetail(id: string) { //get POnumber to display detail of PO
+      alert("this will go to details page of PO number "+ id)
     },
     buttonClickSignIn() { // get user.id & password to validate user existance
       alert("this will go to Sign In Page")
@@ -95,23 +95,20 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* *{
-  outline: solid yellow 1px;
-} */
-  h1{
+  img{
     display: inline-block;
     margin-left: 2%;
  
   }
   ion-title{
     display: inline-block;
+    margin-top: 1%;
   }
   .tableTitle{
     background-color: aqua;
     color: black;
     font-weight: bold;
-    margin-left: 5%;
-    margin-right: 5%;
+    margin: 5% 0% 3%,
   }
   ion-grid{
     text-align: center;
