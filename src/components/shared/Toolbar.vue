@@ -10,14 +10,13 @@
 </template>
 
 <script language="ts">
-import { IonTitle, IonButton, IonHeader, IonToolbar } from "@ionic/vue"
+import { IonTitle, IonHeader, IonToolbar } from "@ionic/vue"
 import { defineComponent } from "vue"
 
 export default defineComponent({
   name: "Toolbar",
   components: {
     IonTitle,
-    IonButton,
     IonHeader,
     IonToolbar,
   },
