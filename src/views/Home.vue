@@ -26,28 +26,24 @@
           <ion-col> {{order[0].description}} </ion-col>
           <ion-col> {{order[0].date}} </ion-col>
           <ion-col> {{order[0].status}} </ion-col>
-          <ion-col> {{order[0].action}} </ion-col>
         </ion-row>
         <ion-row>
           <ion-col> PO-0001 </ion-col>
           <ion-col> sample Description </ion-col>
           <ion-col> July 22, 2021 </ion-col>
           <ion-col> Pending </ion-col>
-          <ion-col> Review </ion-col>
         </ion-row>
         <ion-row>
           <ion-col> PO-0001 </ion-col>
           <ion-col> sample Description </ion-col>
           <ion-col> July 22, 2021 </ion-col>
           <ion-col> Pending </ion-col>
-          <ion-col> Review </ion-col>
         </ion-row>
         <ion-row>
           <ion-col> PO-0001 </ion-col>
           <ion-col> sample Description </ion-col>
           <ion-col> July 22, 2021 </ion-col>
           <ion-col> Pending </ion-col>
-          <ion-col> Review </ion-col>
         </ion-row>
       </ion-grid>
       <ion-button id="addButton">add Icon</ion-button>
