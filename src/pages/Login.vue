@@ -4,7 +4,7 @@
 
     <ion-content :fullscreen="true">
       <form v-on:submit.prevent="login">
-        <div id="login">
+        <div id="container">
           <ion-item>
             <ion-input
               placeholder="Email"
@@ -56,12 +56,8 @@ export default defineComponent({
 </script>
 
 <style scoped>
-#login-title {
-  text-align: center;
-  margin: 15px;
-}
 
-#login {
+#container {
   justify-content: center;
   display: flex;
   flex-direction: column;
