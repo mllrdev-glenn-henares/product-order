@@ -1,68 +1,57 @@
 <template>
   <ion-page>
-     <Toolbar title-text="Login"/>
+    <Toolbar title-text="Login" />
 
     <ion-content :fullscreen="true">
-      <ion-form @submit.prevent="handleSubmit">
+      <form v-on:submit.prevent="login">
         <div id="login">
           <ion-item>
             <ion-input
               placeholder="Email"
               type="email"
-              ion-model="email"
+              v-model="data.email"
             ></ion-input>
           </ion-item>
           <ion-item>
             <ion-input
               placeholder="Password"
               type="password"
-              ion-model="password"
+              v-model="data.password"
             ></ion-input>
           </ion-item>
           <ion-button type="submit">Login</ion-button>
           <ion-button @click="$router.push('/register')">Register</ion-button>
         </div>
-      </ion-form>
+      </form>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import {
-  IonContent,
-  IonInput,
-  IonPage
-} from "@ionic/vue";
+import { IonContent, IonInput, IonPage } from "@ionic/vue";
 import { defineComponent } from "vue";
-import { useRouter } from "vue-router";
+import Toolbar from "@/components/Toolbar.vue";
+import { reactive } from "vue";
 import axios from "axios";
-import Toolbar from '@/components/Toolbar.vue'
-
+import {loginUser} from "@/core/services/api.service"
 export default defineComponent({
   name: "Home",
   components: {
     IonContent,
     IonPage,
     IonInput,
-    Toolbar
+    Toolbar,
   },
   setup() {
-    const router = useRouter();
-    return { router };
-  },
-  data() {
-    return {
+    const data = reactive({
       email: "",
       password: "",
+    });
+
+    const login = async () => {
+      loginUser(data.email, data.password)
     };
-  },
-  methods: {
-    async handleSubmit() {
-      const response = await axios.post("login", {
-        email: this.email,
-        password: this.password,
-      });
-    },
+    return { data, login };
   },
 });
 </script>
@@ -72,6 +61,7 @@ export default defineComponent({
   text-align: center;
   margin: 15px;
 }
+
 #login {
   justify-content: center;
   display: flex;

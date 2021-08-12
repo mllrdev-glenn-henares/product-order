@@ -4,7 +4,6 @@
       <div id="title-bar" >
         <ion-title>Product Order</ion-title>
         <ion-title id="middle-title">{{titleText}}</ion-title>
-        <ion-button color="primary">Login</ion-button>
       </div>
     </ion-toolbar>
   </ion-header>
@@ -18,7 +17,6 @@ export default defineComponent({
   name: "Toolbar",
   components: {
     IonTitle,
-    IonButton,
     IonHeader,
     IonToolbar
   },
