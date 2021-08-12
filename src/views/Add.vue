@@ -25,6 +25,35 @@
         </ion-item>
       </div>
       <hr>
+      <div class="mainDetail">
+        <!-- <ion-grid class="tableTitle">
+          <ion-row>
+            <ion-col>#</ion-col>
+            <ion-col>Quantity</ion-col>
+            <ion-col>Description</ion-col>
+            <ion-col>Unit Price</ion-col>
+            <ion-col>subtotal</ion-col>
+          </ion-row>
+        </ion-grid> -->
+        <ion-grid>
+          <ion-row>
+            <ion-col>1</ion-col>
+            <ion-input type="text" autofocus name="Quantity" placeholder="Quantity"></ion-input>
+            <ion-input type="text" autofocus name="unitDescription" placeholder="Description"></ion-input>
+            <ion-input type="text" autofocus name="UnitPrice" placeholder="Price"></ion-input>
+            <ion-input type="text" autofocus name="subTotal" placeholder="Total Price"></ion-input>
+          </ion-row>
+        </ion-grid>
+        <ion-grid>
+          <ion-row>
+            <ion-col>2</ion-col>
+            <ion-col>2</ion-col>
+            <ion-col>Boxes of Coffee</ion-col>
+            <ion-col>650.00</ion-col>
+            <ion-col>1,300.00</ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
     </div>
   </ion-content>
 </template>
@@ -32,7 +61,7 @@
 <script lang="ts">
 import { IonContent } from '@ionic/vue';
 import { defineComponent } from 'vue';
-import Header from '../core/components/Header.vue'
+import Header from '@/core/components/Header.vue';
 
 export default defineComponent({
   name: 'Add',
@@ -44,7 +73,7 @@ export default defineComponent({
     supplier: {
       required: true,
       type: String
-    } ,
+    },
     description: {
       required: true,
       type: String
@@ -59,7 +88,7 @@ export default defineComponent({
 /* *{
   outline: solid yellow 1px;
 } */
-  h1{
+  h1 {
     display: block;
     margin: 1%;
 
@@ -93,8 +122,15 @@ export default defineComponent({
   }
   hr {
     margin: 0% -1%;
+    padding: 10px;
     border-bottom: grey solid;
     opacity: 50%;
+  }
+  .tableTitle {
+    background-color: aqua;
+    color: black;
+    font-weight: bold;
+    margin-top: 1%;
   }
 
 </style>

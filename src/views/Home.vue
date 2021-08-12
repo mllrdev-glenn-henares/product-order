@@ -1,10 +1,6 @@
 <template>
   <ion-page>
-  <ion-toolbar>
-    <ion-button id="signInButton">Sign In</ion-button>
-    <h1>LOGO</h1>
-    <ion-title>Purchase Order</ion-title>
-  </ion-toolbar>
+    <Header/>
     <ion-content :fullscreen="true">
       <div class="filterButton">
         <ion-button>Pending</ion-button>
@@ -46,13 +42,13 @@
           <ion-col> Pending </ion-col>
         </ion-row>
       </ion-grid>
-      <ion-button id="addButton">add Icon</ion-button>
+      <ion-button id="addButton" href="/add">add Icon</ion-button>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonContent, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonButton } from '@ionic/vue';
+import { IonContent, IonPage, IonGrid, IonRow, IonButton } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
 import PurchaseOrder from '../types/purchaseOrder';
 
@@ -62,8 +58,6 @@ export default defineComponent({
     IonContent,
  
     IonPage,
-    IonTitle,
-    IonToolbar,
     IonGrid,
     IonRow,
     IonButton
@@ -82,11 +76,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-  h1{
-    display: inline-block;
-    margin-left: 2%;
- 
-  }
   ion-title{
     display: inline-block;
   }

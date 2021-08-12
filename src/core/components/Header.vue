@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-toolbar>    
-      <h1>LOGO</h1>
+      <img  alt="Logo">
       <ion-title>Purchase Order</ion-title>
       <ion-button id="signInButton">Sign In</ion-button>
     </ion-toolbar>
@@ -17,7 +17,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-  h1{
+  img{
     display: inline-block;
     margin-left: 2%;
  
