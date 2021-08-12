@@ -32,8 +32,7 @@ import { IonContent, IonInput, IonPage } from "@ionic/vue";
 import { defineComponent } from "vue";
 import Toolbar from "@/components/Toolbar.vue";
 import { reactive } from "vue";
-import axios from "axios";
-import {loginUser} from "@/core/services/api.service"
+import { loginUser } from "@/core/services/api.service";
 export default defineComponent({
   name: "Home",
   components: {
@@ -49,7 +48,7 @@ export default defineComponent({
     });
 
     const login = async () => {
-      loginUser(data.email, data.password)
+      loginUser(data.email, data.password);
     };
     return { data, login };
   },
