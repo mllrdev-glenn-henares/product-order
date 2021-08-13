@@ -57,7 +57,6 @@ import { IonContent, IonInput, IonPage } from "@ionic/vue";
 import Toolbar from "@/components/shared/Toolbar.vue";
 import { defineComponent } from "vue";
 import { reactive } from "vue";
-import { signUpUser } from "@/core/services/api.service";
 
 export default defineComponent({
   name: "Home",
@@ -77,14 +76,6 @@ export default defineComponent({
       role:""
     });
     const register = async () => {
-      signUpUser(
-        data.firstName,
-        data.middleName,
-        data.lastName,
-        data.email,
-        data.password,
-        data.role
-      );
     };
     return { data, register };
   },
