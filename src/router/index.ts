@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "@ionic/vue-router";
 import { RouteRecordRaw } from "vue-router";
 import { RouteNames } from "@/core/enums/route-names.enum";
 
-import Home from "@/pages/Home.vue";
+import Home from "@/views/Home.vue";
 import Login from "@/pages/Login.vue";
 import Register from "@/pages/Register.vue";
 

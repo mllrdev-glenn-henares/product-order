@@ -1,10 +1,7 @@
-interface IName {
-    firstName: string;
-    middleName: string;
-    lastName: string;
+interface IUser {
+  firstName: string,
+  lastName: string,
+  middleName: string
 }
 
-interface IUser extends IName {
-    email: string;
-    password: string;
-}
+export default IUser
