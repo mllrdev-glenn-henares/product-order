@@ -1,9 +1,8 @@
-interface IName {
-    firstName: string;
-    lastName: string;
-}
-
-interface IUser extends IName {
-    email: string;
-    password: string;
+interface IUser{
+    firstName: string
+    middleName: string
+    lastName: string
+    email: string
+    password: string
+    role: string
 }

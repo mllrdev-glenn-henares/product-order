@@ -1,7 +1,7 @@
 <template>
   <ion-header :translucent="true">
     <ion-toolbar>
-      <div id="title-bar" >
+      <div id="toolbar-container" >
         <ion-title>Product Order</ion-title>
         <ion-title id="middle-title">{{titleText}}</ion-title>
       </div>
@@ -20,12 +20,17 @@ export default defineComponent({
     IonHeader,
     IonToolbar
   },
-  props: ['titleText'],
+  props: {
+    titleText: {
+      type: String,
+      required: true
+    },
+  },
 });
 </script>
 
 <style scoped>
-#title-bar {
+#toolbar-container {
   display: flex;
   justify-content: flex-start;
   flex-direction: row;

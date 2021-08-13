@@ -32,7 +32,6 @@ import {
 } from "@ionic/vue";
 import Toolbar from '@/components/Toolbar.vue'
 import { defineComponent } from "vue";
-import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Home",
@@ -41,10 +40,6 @@ export default defineComponent({
     IonPage,
     IonInput,
     Toolbar,
-  },
-   setup() {
-    const router = useRouter();
-    return { router };
   },
 });
 </script>
@@ -62,7 +57,7 @@ export default defineComponent({
   padding: 10px;
 }
 ion-item {
-  width: 5in;
+  width: 600px;
 }
 ion-button {
   width: auto;

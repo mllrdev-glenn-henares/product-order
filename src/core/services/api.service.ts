@@ -1,6 +1,6 @@
 import router from "@/router"
 import axios from "axios"
-import { apiLoginUrl, apiSignUpUrl } from "@/core/models/api-urls"
+import { apiLoginUrl, apiSignUpUrl } from "@/core/services/api-urls"
 
 export function loginUser(emailInput: string, passwordInput: string) {
     const loginData = {
