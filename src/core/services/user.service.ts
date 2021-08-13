@@ -26,3 +26,30 @@ export function loginUser(emailInput: string, passwordInput: string) {
             console.log("Error on Authentication");
         })
 }
+
+export function signUpUser(firstName: string, lastName: string, middleName: string, email: string, password: string, role: string) {
+    const signUpData = {
+        "firstName": firstName,
+        "middleName": middleName,
+        "lastName": lastName,
+        "email": email,
+        "password": password
+    }
+    axios({
+        method: "POST",
+        url: environment.baseUrl + "/register",
+        data: signUpData
+    })
+        .then(function (response) {
+            console.log(response.data.isSuccessful)
+            if (response.data.isSuccessful) {
+                router.push("/login")
+            }
+            else if (!response.data.isSuccessful) {
+                router.push("/register")
+            }
+        })
+        .catch(function (error) {
+            console.log("Error on Authentication");
+        })
+}
