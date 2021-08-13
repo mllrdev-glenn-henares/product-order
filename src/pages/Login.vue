@@ -30,7 +30,7 @@
 <script lang="ts">
 import { IonContent, IonInput, IonPage } from "@ionic/vue";
 import { defineComponent } from "vue";
-import Toolbar from "@/components/Toolbar.vue";
+import Toolbar from "@/components/shared/Toolbar.vue";
 import { reactive } from "vue";
 import { loginUser } from "@/core/services/user.service";
 export default defineComponent({
@@ -64,7 +64,6 @@ export default defineComponent({
   align-items: center;
   padding: 10px;
 }
-
 ion-button {
   width: 7em;
   height: 2.5em;
