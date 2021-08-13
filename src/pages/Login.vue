@@ -55,7 +55,6 @@ export default defineComponent({
   align-items: center;
   padding: 10px;
 }
-
 ion-button {
   width: 7em;
   height: 2.5em;
