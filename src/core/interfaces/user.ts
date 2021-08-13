@@ -1,4 +1,4 @@
-interface IUser{
+interface IUser {
     firstName: string
     middleName: string
     lastName: string

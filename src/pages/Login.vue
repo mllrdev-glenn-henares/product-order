@@ -32,7 +32,7 @@ import { IonContent, IonInput, IonPage } from "@ionic/vue";
 import { defineComponent } from "vue";
 import Toolbar from "@/components/Toolbar.vue";
 import { reactive } from "vue";
-import { loginUser } from "@/core/services/api.service";
+import { loginUser } from "@/core/services/user.service";
 export default defineComponent({
   name: "Home",
   components: {

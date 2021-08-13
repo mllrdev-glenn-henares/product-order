@@ -1,6 +1,6 @@
 import router from "@/router"
 import axios from "axios"
-import { apiLoginUrl, apiSignUpUrl } from "@/core/services/api-urls"
+import { environment } from "@/environments/environment"
 
 export function loginUser(emailInput: string, passwordInput: string) {
     const loginData = {
@@ -10,7 +10,7 @@ export function loginUser(emailInput: string, passwordInput: string) {
 
     axios({
         method: "POST",
-        url: apiLoginUrl,
+        url: environment.baseUrl + "/login",
         data: loginData
     })
         .then(function (response) {
@@ -37,7 +37,7 @@ export function signUpUser(firstName: string, lastName: string, middleName: stri
     }
     axios({
         method: "POST",
-        url: apiSignUpUrl,
+        url: environment.baseUrl + "/register",
         data: signUpData
     })
         .then(function (response) {
