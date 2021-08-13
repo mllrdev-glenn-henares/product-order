@@ -1,7 +1,4 @@
-import axios from "axios"
+export const apiUrl = 'http://localhost:8081/api'
+export const apiLoginUrl = apiUrl + '/user/login'
+export const apiSignUpUrl = apiUrl + '/user/sign-up'
 
-const apiUrl = 'http://localhost:8081/api'
-const apiLoginUrl = apiUrl + '/user/login'
-const apiSignupUrl = apiUrl + '/user/sign-up'
-
-export default { apiUrl, apiLoginUrl, apiSignupUrl}
