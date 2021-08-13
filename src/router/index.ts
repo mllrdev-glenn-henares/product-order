@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "@ionic/vue-router";
 import { RouteRecordRaw } from "vue-router";
-import { RouteNames } from "@/core/enums/route-names";
+import { RouteNames } from "@/core/enums/route-names.enum";
 
 import Home from "@/pages/Home.vue";
 import Login from "@/pages/Login.vue";
@@ -9,7 +9,7 @@ import Register from "@/pages/Register.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    redirect: "/home",
+    redirect: "/login",
   },
   {
     path: "/home",
