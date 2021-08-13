@@ -39,7 +39,7 @@ import PurchaseAction from '@/core/enums/action.enum';
 import PurchaseStatus from '@/core/enums/status.enum';
 import { IonContent, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonButton } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
-import IPurchaseOrder from '../core/interfaces/purchase-order';
+import IPurchaseOrder from '../core/interfaces/purchase-order.interface';
 
 export default defineComponent({
   name: 'Home',
