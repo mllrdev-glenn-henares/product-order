@@ -71,6 +71,11 @@ export default defineComponent({
   }
   ion-grid{
     text-align: center;
+    color: black;
+    margin: 2%;
+  }
+  ion-col{
+    outline: 1px solid black;
   }
   #signInButton{
     float: right;
