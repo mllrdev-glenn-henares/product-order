@@ -17,6 +17,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
+  *{
+    outline: 1px solid yellow;
+  }
   img{
     display: inline-block;
     margin-left: 2%;

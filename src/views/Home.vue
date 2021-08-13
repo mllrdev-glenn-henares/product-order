@@ -50,17 +50,18 @@
 <script lang="ts">
 import { IonContent, IonPage, IonGrid, IonRow, IonButton } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
-import PurchaseOrder from '../types/purchaseOrder';
+import PurchaseOrder from '@/types/purchaseOrder';
+import Header from '@/core/components/Header.vue';
 
 export default defineComponent({
   name: 'Home',
   components: {
     IonContent,
- 
     IonPage,
     IonGrid,
     IonRow,
-    IonButton
+    IonButton,
+    Header
   },
   setup() {
 

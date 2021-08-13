@@ -25,36 +25,9 @@
         </ion-item>
       </div>
       <hr>
-      <div class="mainDetail">
-        <!-- <ion-grid class="tableTitle">
-          <ion-row>
-            <ion-col>#</ion-col>
-            <ion-col>Quantity</ion-col>
-            <ion-col>Description</ion-col>
-            <ion-col>Unit Price</ion-col>
-            <ion-col>subtotal</ion-col>
-          </ion-row>
-        </ion-grid> -->
-        <ion-grid>
-          <ion-row>
-            <ion-col>1</ion-col>
-            <ion-input type="text" autofocus name="Quantity" placeholder="Quantity"></ion-input>
-            <ion-input type="text" autofocus name="unitDescription" placeholder="Description"></ion-input>
-            <ion-input type="text" autofocus name="UnitPrice" placeholder="Price"></ion-input>
-            <ion-input type="text" autofocus name="subTotal" placeholder="Total Price"></ion-input>
-          </ion-row>
-        </ion-grid>
-        <ion-grid>
-          <ion-row>
-            <ion-col>2</ion-col>
-            <ion-col>2</ion-col>
-            <ion-col>Boxes of Coffee</ion-col>
-            <ion-col>650.00</ion-col>
-            <ion-col>1,300.00</ion-col>
-          </ion-row>
-        </ion-grid>
-      </div>
+      <OrderItem/>
     </div>
+    
   </ion-content>
 </template>
 
@@ -62,12 +35,15 @@
 import { IonContent } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import Header from '@/core/components/Header.vue';
+import OrderItem from '@/core/components/OrderItem.vue';
+
 
 export default defineComponent({
   name: 'Add',
   components: {
     Header,
     IonContent,
+    OrderItem
   },
   props: {
     supplier: {
@@ -85,9 +61,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* *{
-  outline: solid yellow 1px;
-} */
+  /* *{
+    outline: solid yellow 1px;
+  } */
   h1 {
     display: block;
     margin: 1%;
@@ -103,18 +79,6 @@ export default defineComponent({
   }
   p {
     color: white;
-  }
-  ion-label {
-    width: 35%;
-    padding: 2%;
-    margin-left: 2%;
-  }
-  ion-input {
-
-    --padding-bottom: 8px;
-  }
-  ion-item {
-    display: block;
   }
   .headDetail {
     display: inline-block;
