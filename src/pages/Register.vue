@@ -45,7 +45,6 @@
             ></ion-input>
           </ion-item>
           <ion-button type="submit">Complete Registration</ion-button>
-          >
         </div>
       </form>
     </ion-content>
@@ -54,7 +53,7 @@
 
 <script lang="ts">
 import { IonContent, IonInput, IonPage } from "@ionic/vue";
-import Toolbar from "@/components/shared/Toolbar.vue";
+import Toolbar from "@/shared/components/Toolbar.vue";
 import { defineComponent } from "vue";
 import { reactive } from "vue";
 import { signUpUser } from "@/core/services/user.service";
@@ -74,7 +73,7 @@ export default defineComponent({
       lastName: "",
       email: "",
       password: "",
-      role:""
+      role: "",
     });
     const register = async () => {
       signUpUser(
@@ -85,6 +84,12 @@ export default defineComponent({
         data.password,
         data.role
       );
+      data.firstName = "";
+      data.middleName = "";
+      data.lastName = "";
+      data.email = "";
+      data.password = "";
+      data.role = "";
     };
     return { data, register };
   },

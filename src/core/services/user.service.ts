@@ -2,6 +2,7 @@ import router from "@/router"
 import axios from "axios"
 import { environment } from "@/environments/environment"
 
+
 export async function loginUser(emailInput: string, passwordInput: string) {
     const loginData = {
         "email": emailInput,
@@ -27,7 +28,7 @@ export async function loginUser(emailInput: string, passwordInput: string) {
         })
 }
 
-export function signUpUser(firstName: string, lastName: string, middleName: string, email: string, password: string, role: string) {
+export async function signUpUser(firstName: string, lastName: string, middleName: string, email: string, password: string, role: string) {
     const signUpData = {
         "firstName": firstName,
         "middleName": middleName,
@@ -35,7 +36,7 @@ export function signUpUser(firstName: string, lastName: string, middleName: stri
         "email": email,
         "password": password
     }
-    axios({
+    await axios({
         method: "POST",
         url: environment.baseUrl + "/register",
         data: signUpData

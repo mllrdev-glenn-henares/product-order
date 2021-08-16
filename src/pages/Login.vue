@@ -30,7 +30,7 @@
 <script lang="ts">
 import { IonContent, IonInput, IonPage } from "@ionic/vue";
 import { defineComponent } from "vue";
-import Toolbar from "@/components/shared/Toolbar.vue";
+import Toolbar from "@/shared/components/Toolbar.vue";
 import { reactive } from "vue";
 import { loginUser } from "@/core/services/user.service";
 export default defineComponent({
@@ -48,7 +48,9 @@ export default defineComponent({
     });
 
     const login = async () => {
-      loginUser(data.email, data.password);
+      loginUser(data.email, data.password)
+      data.email =""
+      data.password =""
     };
     return { data, login };
   },
@@ -56,7 +58,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
 #container {
   justify-content: center;
   display: flex;
