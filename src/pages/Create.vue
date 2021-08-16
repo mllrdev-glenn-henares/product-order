@@ -1,5 +1,5 @@
 <template>
-  <Header/>
+  <Toolbar title-text = "Create"/>
   <ion-content>
     <div class="mainCreate">
       <h1>Purchase Order</h1>
@@ -34,16 +34,16 @@
 <script lang="ts">
 import { IonContent } from '@ionic/vue';
 import { defineComponent } from 'vue';
-import Header from '@/core/components/Header.vue';
 import OrderItem from '@/core/components/OrderItem.vue';
+import Toolbar from '@/components/shared/Toolbar.vue';
 
 
 export default defineComponent({
-  name: 'Add',
+  name: 'Create',
   components: {
-    Header,
     IonContent,
-    OrderItem
+    OrderItem,
+    Toolbar
   },
   props: {
     supplier: {

@@ -1,11 +1,14 @@
 <template>
   <ion-page>
-    <Header/>
+  <ion-toolbar>
+    <Toolbar title-text = "Home"/>
+  </ion-toolbar>
     <ion-content :fullscreen="true">
       <div class="filterButton">
-        <ion-button>Pending</ion-button>
-        <ion-button>Approve</ion-button>
-        <ion-button>Declined</ion-button>
+        <ion-button button @click="handleClick(PurchaseStatus.PENDING)">Pending</ion-button>
+        <ion-button button @click="handleClick(PurchaseStatus.APPROVED)">Approve</ion-button>
+        <ion-button button @click="handleClick(PurchaseStatus.DECLINED)">Declined</ion-button>
+        <ion-button button @click="handleClick(PurchaseStatus.CLOSE)">Closed</ion-button>
       </div>
       <ion-grid class="tableTitle">
         <ion-row>
@@ -13,79 +16,98 @@
           <ion-col> PO Description </ion-col>
           <ion-col> Request Date </ion-col>
           <ion-col> Status </ion-col>
-          <ion-col> Action </ion-col>
+          <!-- <ion-col> Action </ion-col> -->
         </ion-row>
       </ion-grid>
-      <ion-grid>
-        <ion-row>
-          <ion-col> {{ order[0].purchaseOrderNumber }} </ion-col>
-          <ion-col> {{order[0].description}} </ion-col>
-          <ion-col> {{order[0].date}} </ion-col>
-          <ion-col> {{order[0].status}} </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col> PO-0001 </ion-col>
-          <ion-col> sample Description </ion-col>
-          <ion-col> July 22, 2021 </ion-col>
-          <ion-col> Pending </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col> PO-0001 </ion-col>
-          <ion-col> sample Description </ion-col>
-          <ion-col> July 22, 2021 </ion-col>
-          <ion-col> Pending </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col> PO-0001 </ion-col>
-          <ion-col> sample Description </ion-col>
-          <ion-col> July 22, 2021 </ion-col>
-          <ion-col> Pending </ion-col>
-        </ion-row>
-      </ion-grid>
-      <ion-button id="addButton" href="/add">add Icon</ion-button>
+      <order-list :orders = "orders" :status= "status"/>
+      <list-jerry :user = "user"/>
+      <ion-button id="addButton" href="/create">add Icon</ion-button>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonContent, IonPage, IonGrid, IonRow, IonButton } from '@ionic/vue';
+import PurchaseAction from '@/core/enums/action.enum';
+import PurchaseStatus from '@/core/enums/status.enum';
+import { IonContent, IonPage, IonToolbar, IonGrid, IonRow, IonButton } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
-import PurchaseOrder from '@/types/purchaseOrder';
-import Header from '@/core/components/Header.vue';
+import IPurchaseOrder from '@/core/interfaces/purchase-order';
+import IUser from '@/core/interfaces/user';
+import OrderList from '@/core/component/OrderList.vue';
+import Toolbar from '@/components/shared/Toolbar.vue';
+
 
 export default defineComponent({
   name: 'Home',
   components: {
     IonContent,
     IonPage,
+    IonToolbar,
     IonGrid,
     IonRow,
     IonButton,
-    Header
+    OrderList,
+    Toolbar
   },
   setup() {
 
-    const order = ref<PurchaseOrder[]>([
-      { purchaseOrderNumber: 'PO-0001', description: 'description one', date: new Date(), status: 'pending', action: 'reviewed' }
+    const orders = ref<IPurchaseOrder[]>([
+      { id: 'PO-001', description: 'description one', date: new Date(), status: PurchaseStatus.PENDING, action: PurchaseAction.REVIEWED },
+      { id: 'PO-002', description: 'description two', date: new Date(), status: PurchaseStatus.APPROVED, action: PurchaseAction.REVIEWED },
+      { id: 'PO-003', description: 'description three', date: new Date(), status: PurchaseStatus.DECLINED, action: PurchaseAction.REVIEWED },
+      { id: 'PO-004', description: 'description four', date: new Date(), status: PurchaseStatus.CLOSE, action: PurchaseAction.REVIEWED },
+      { id: 'PO-005', description: 'description five', date: new Date(), status: PurchaseStatus.CLOSE, action: PurchaseAction.REVIEWED },
+      { id: 'PO-006', description: 'description six', date: new Date(), status: PurchaseStatus.DECLINED, action: PurchaseAction.REVIEWED },
+      { id: 'PO-007', description: 'description seven', date: new Date(), status: PurchaseStatus.APPROVED, action: PurchaseAction.REVIEWED },
+      { id: 'PO-008', description: 'description eight', date: new Date(), status: PurchaseStatus.PENDING, action: PurchaseAction.REVIEWED },
+      { id: 'PO-009', description: 'description nine', date: new Date(), status: PurchaseStatus.CLOSE, action: PurchaseAction.REVIEWED }
+      
 
     ])
 
-    return {order}
+    const user = ref<IUser>({
+      firstName: 'Jerry', lastName: 'Bayoneta', middleName: 'Gutual'
+      
+      })
 
+    const status = ref<PurchaseStatus>(PurchaseStatus.PENDING)
+    
+    const handleClick = (term: PurchaseStatus) => {
+      status.value = term
+    }
+
+    return {orders, user, handleClick, PurchaseStatus, status}
+
+  },
+  methods: {
+    buttonClickDetail(id: string) { //get POnumber to display detail of PO
+      alert("this will go to details page of PO number "+ id)
+    },
+    buttonClickSignIn() { // get user.id & password to validate user existance
+      alert("this will go to Sign In Page")
+    },
+    buttonClickAddOrder(){ //get user.id to tag who made the PO.
+      alert("this will go to Creation of PO page")
+    }
   }
 });
 </script>
 
 <style scoped>
+  img{
+    display: inline-block;
+    margin-left: 2%;
+ 
+  }
   ion-title{
     display: inline-block;
+    margin-top: 1%;
   }
   .tableTitle{
     background-color: aqua;
     color: black;
     font-weight: bold;
-    margin-left: 5%;
-    margin-right: 5%;
+    margin: 5% 0% 3%,
   }
   ion-grid{
     text-align: center;
