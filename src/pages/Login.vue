@@ -48,7 +48,7 @@ export default defineComponent({
     });
 
     const login = async () => {
-      loginUser(data.email, data.password)
+      await loginUser(data.email, data.password)
       data.email =""
       data.password =""
     };

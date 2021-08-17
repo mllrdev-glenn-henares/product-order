@@ -76,7 +76,7 @@ export default defineComponent({
       role: "",
     });
     const register = async () => {
-      signUpUser(
+      await signUpUser(
         data.firstName,
         data.middleName,
         data.lastName,

@@ -3,13 +3,13 @@ import axios from "axios"
 import { environment } from "@/environments/environment"
 
 
-export async function loginUser(emailInput: string, passwordInput: string) {
+export function loginUser(emailInput: string, passwordInput: string) {
     const loginData = {
         "email": emailInput,
         "password": passwordInput
     }
 
-    await axios({
+    axios({
         method: "POST",
         url: environment.baseUrl + "/login",
         data: loginData
@@ -28,7 +28,7 @@ export async function loginUser(emailInput: string, passwordInput: string) {
         })
 }
 
-export async function signUpUser(firstName: string, lastName: string, middleName: string, email: string, password: string, role: string) {
+export function signUpUser(firstName: string, lastName: string, middleName: string, email: string, password: string, role: string) {
     const signUpData = {
         "firstName": firstName,
         "middleName": middleName,
@@ -36,7 +36,7 @@ export async function signUpUser(firstName: string, lastName: string, middleName
         "email": email,
         "password": password
     }
-    await axios({
+    axios({
         method: "POST",
         url: environment.baseUrl + "/register",
         data: signUpData
