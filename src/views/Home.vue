@@ -33,8 +33,8 @@ import { IonContent, IonPage, IonToolbar, IonGrid, IonRow, IonButton } from '@io
 import { defineComponent, ref } from 'vue';
 import IPurchaseOrder from '@/core/interfaces/purchase-order';
 import IUser from '@/core/interfaces/user';
-import OrderList from '@/core/component/OrderList.vue';
-import Toolbar from '@/components/shared/Toolbar.vue';
+import OrderList from '@/shared/components/OrderList.vue';
+import Toolbar from '@/shared/components/Toolbar.vue';
 
 
 export default defineComponent({

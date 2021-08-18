@@ -30,7 +30,7 @@
 import { IonContent, IonInput, IonPage } from "@ionic/vue";
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
-import Toolbar from "@/components/shared/Toolbar.vue";
+import Toolbar from "@/shared/components/Toolbar.vue";
 export default defineComponent({
   name: "Home",
   components: {
