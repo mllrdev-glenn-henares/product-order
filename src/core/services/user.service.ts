@@ -34,7 +34,8 @@ export function signUpUser(firstName: string, lastName: string, middleName: stri
         "middleName": middleName,
         "lastName": lastName,
         "email": email,
-        "password": password
+        "password": password,
+        "role": role
     }
     axios({
         method: "POST",
