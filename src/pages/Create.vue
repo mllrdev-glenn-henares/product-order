@@ -76,7 +76,7 @@
         <ion-button button type="submit">ADD</ion-button>
       </form>
       <ion-text color="light">
-        <h3>Grand Total {{ orderDetail.grandTotal }}</h3>
+        <h3>Grand Total {{orderDetail.grandTotal}}</h3>
       </ion-text>
       <ion-button class="submitButton" button type="submit">Create</ion-button>
       <ion-button class="cancelButton" button href="/home">Cancel</ion-button>
