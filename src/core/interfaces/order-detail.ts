@@ -6,7 +6,7 @@ interface IOrderDetail {
   supplier: string,
   purchaseDate: Date,
   grandTotal: number,
-  description: IPurchaseOrder['description']
+  description: string
 }
 
 export default IOrderDetail
