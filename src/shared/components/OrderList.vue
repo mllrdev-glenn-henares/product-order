@@ -24,7 +24,7 @@ export default defineComponent({
       required : true,
       type: Array as PropType<IPurchaseOrder[]>
     },
-    users: {
+    user: {
       required: true,
       type: Object as PropType<IUser>
     },

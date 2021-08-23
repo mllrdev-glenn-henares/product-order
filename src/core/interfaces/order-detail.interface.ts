@@ -1,5 +1,4 @@
-import IItem from "@/core/interfaces/item";
-import IPurchaseOrder from "@/core/interfaces/purchase-order"
+import IItem from "@/core/interfaces/item.interface";
 
 interface IOrderDetail {
   item: IItem[],
