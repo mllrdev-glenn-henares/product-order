@@ -3,7 +3,7 @@
     <Toolbar title-text="Register" />
 
     <ion-content :fullscreen="true">
-      <form v-on:submit.prevent="register">
+      <form v-on:submit.prevent="onRegister">
         <div id="container">
           <ion-item>
             <ion-input
@@ -56,7 +56,9 @@ import { IonContent, IonInput, IonPage } from "@ionic/vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import { defineComponent } from "vue";
 import { reactive } from "vue";
-import { signUpUser } from "@/core/services/user.service";
+import { signUp } from "@/core/services/user.service";
+import IUser from "@/core/interfaces/user.interface"
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "Home",
@@ -67,7 +69,7 @@ export default defineComponent({
     Toolbar,
   },
   setup() {
-    const data = reactive({
+    const data: IUser = reactive({
       firstName: "",
       middleName: "",
       lastName: "",
@@ -75,23 +77,23 @@ export default defineComponent({
       password: "",
       role: "",
     });
-    const register = async () => {
-      await signUpUser(
-        data.firstName,
-        data.middleName,
-        data.lastName,
-        data.email,
-        data.password,
-        data.role
-      );
+    const router = useRouter()
+    const onRegister = async () => {
+      signUp(data).then((isSuccess: boolean) => {
+        if (isSuccess) {
+          router.push("/login");
+        } else {
+          router.push("/sign-up");
+        }
+      })
       data.firstName = "";
       data.middleName = "";
       data.lastName = "";
       data.email = "";
       data.password = "";
       data.role = "";
-    };
-    return { data, register };
+    }
+    return { data, onRegister };
   },
 });
 </script>
