@@ -34,6 +34,7 @@ import Toolbar from "@/shared/components/Toolbar.vue";
 import { reactive } from "vue";
 import { login } from "@/core/services/user.service";
 import { useRouter } from "vue-router";
+import ILoginDetails from "@/core/interfaces/login-details.interface";
 
 export default defineComponent({
   name: "Home",
@@ -44,13 +45,13 @@ export default defineComponent({
     Toolbar,
   },
   setup() {
-    const data = reactive({
+    const data: ILoginDetails = reactive({
       email: "",
       password: "",
     });
     const router = useRouter();
     const onLogin = async () => {
-      login(data.email, data.password).then((isSuccess: boolean) => {
+      login(data).then((isSuccess: boolean) => {
         if (isSuccess) {
           router.push("/home");
         } else {

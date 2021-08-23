@@ -6,15 +6,11 @@ import ILoginResponse from "@/core/interfaces/login-response.interface"
 import ISignUpResponse from "@/core/interfaces/sign-up-response.interface"
 
 
-export async function login(emailInput: string, passwordInput: string) {
-    const loginData: ILoginDetails = {
-        "email": emailInput,
-        "password": passwordInput
-    }
+export async function login(loginDetails: ILoginDetails) {
     return await axios({
         method: "POST",
         url: environment.baseUrl + "/api/user/login",
-        data: loginData
+        data: loginDetails,
     })
         .then(function (response) {
             const loginResponse: ILoginResponse = response.data;
