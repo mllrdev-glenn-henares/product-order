@@ -31,7 +31,7 @@ import PurchaseAction from '@/core/enums/action.enum';
 import PurchaseStatus from '@/core/enums/status.enum';
 import { IonContent, IonPage, IonToolbar, IonGrid, IonRow, IonButton } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
-import IPurchaseOrder from '@/core/interfaces/purchase-order';
+import IPurchaseOrder from '@/core/interfaces/purchase-order.interface';
 import IUser from '@/core/interfaces/user';
 import OrderList from '@/shared/components/OrderList.vue';
 import Toolbar from '@/shared/components/Toolbar.vue';
