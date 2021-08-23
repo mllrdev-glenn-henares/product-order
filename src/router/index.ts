@@ -2,15 +2,12 @@ import { createRouter, createWebHistory } from "@ionic/vue-router";
 import { RouteRecordRaw } from "vue-router";
 import { RouteName } from "@/core/enums/route-name.enum";
 
-import Home from "@/views/Home.vue";
+import Home from "@/pages/Home.vue";
 import Login from "@/pages/Login.vue";
 import Register from "@/pages/Register.vue";
+import Create from "@/pages/Create.vue"
 
 const routes: Array<RouteRecordRaw> = [
-  {
-    path: "/",
-    redirect: "/login",
-  },
   {
     path: "/home",
     name: RouteName.HOME,
@@ -25,6 +22,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/register",
     name: RouteName.REGISTER,
     component: Register,
+  },
+  {
+    path: "/create",
+    name: RouteName.CREATE,
+    component: Create,
   },
 ];
 
