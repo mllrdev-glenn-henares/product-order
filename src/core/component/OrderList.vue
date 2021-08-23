@@ -1,8 +1,8 @@
 <template>
   <div class="order-list">
     <ion-grid>
-      <ion-row v-for="order in purchaseOrderSequences" :key="order.purchaseOrderNumber">
-        <ion-col> {{ order.purchaseOrderNumber }} </ion-col>
+      <ion-row v-for="order in purchaseOrderSequences" :key="order.id">
+        <ion-col> {{ order.id }} </ion-col>
         <ion-col> {{ order.description }} </ion-col>
         <ion-col> {{ order.date }} </ion-col>
         <ion-col> {{ order.status }} </ion-col>
