@@ -29,7 +29,6 @@
 <script lang="ts">
 import { IonContent, IonInput, IonPage } from "@ionic/vue";
 import { defineComponent } from "vue";
-import { useRouter } from "vue-router";
 import Toolbar from "@/shared/components/Toolbar.vue";
 export default defineComponent({
   name: "Home",

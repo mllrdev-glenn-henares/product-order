@@ -75,8 +75,16 @@
         </ion-row>
         <ion-button button type="submit">ADD</ion-button>
       </form>
-      <ion-text color="light">
-        <h3>Grand Total {{orderDetail.grandTotal}}</h3>
+      <ion-text color="light" size="large">
+        <h3>
+          <ion-input
+            type="number" 
+            name="grandTotal" 
+            v-model="orderDetail.grandTotal" 
+            placeholder="Grand Total" 
+            disabled
+          ></ion-input>
+        </h3>
       </ion-text>
       <ion-button class="submitButton" button type="submit">Create</ion-button>
       <ion-button class="cancelButton" button href="/home">Cancel</ion-button>
@@ -89,7 +97,7 @@ import { IonContent, IonTitle, IonItem, IonInput } from "@ionic/vue";
 import { defineComponent, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item";
-import IOrderDetail from "@/core/interfaces/order-detail"
+import IOrderDetail from "@/core/interfaces/order-detail";
 
 export default defineComponent({
   name: "Create",
@@ -101,53 +109,36 @@ export default defineComponent({
     IonInput,
   },
   setup() {
-    const item = ref<IItem>({
-      name: "",
-      quantity: 0,
-      unitPrice: 0,
-      subTotal: 0,
-    });
+    const item = ref<IItem>({} as IItem);
 
     const itemDetails = ref<IItem[]>([]);
 
     const orderDetail = ref<IOrderDetail>({
-      item: [{
-        name: "",
-        quantity: 0,
-        unitPrice: 0,
-        subTotal: 0,
-      }],
+      item: [],
       supplier: "",
-      purchaseDate: new Date,
+      purchaseDate: new Date(),
       grandTotal: 0,
-      description: ""
+      description: "",
     });
 
     return { itemDetails, item, orderDetail };
-
   },
   methods: {
     addItemDetail() {
-      this.item.subTotal = this.item.unitPrice * this.item.quantity;
-      this.itemDetails.push(this.item);
-      
-      this.item = {
-        name: "",
-        quantity: 0,
-        unitPrice: 0,
-        subTotal: 0,
-      };
-      
-      this.itemDetails.forEach((index) => {
-        this.orderDetail.grandTotal += index.subTotal;
+      this.item.subTotal =
+        ( this.item.unitPrice || 0 ) * ( this.item.quantity || 1 );
+      this.itemDetails.push( this.item );
+      this.orderDetail.grandTotal = 0;
+      this.itemDetails.forEach((item: IItem) => {
+        this.orderDetail.grandTotal += item.subTotal || 0;
       });
 
+      this.item = {} as IItem;
     },
     createPurchaseOrder() {
       console.log(this.orderDetail);
-      
-    }
-  }
+    },
+  },
 });
 </script>
 

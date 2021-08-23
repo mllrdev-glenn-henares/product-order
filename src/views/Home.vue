@@ -78,17 +78,6 @@ export default defineComponent({
 
     return {orders, user, handleClick, PurchaseStatus, status}
 
-  },
-  methods: {
-    buttonClickDetail(id: string) { //get POnumber to display detail of PO
-      alert("this will go to details page of PO number "+ id)
-    },
-    buttonClickSignIn() { // get user.id & password to validate user existance
-      alert("this will go to Sign In Page")
-    },
-    buttonClickAddOrder(){ //get user.id to tag who made the PO.
-      alert("this will go to Creation of PO page")
-    }
   }
 });
 </script>
