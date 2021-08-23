@@ -96,8 +96,8 @@
 import { IonContent, IonTitle, IonItem, IonInput } from "@ionic/vue";
 import { defineComponent, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
-import IItem from "@/core/interfaces/item";
-import IOrderDetail from "@/core/interfaces/order-detail";
+import IItem from "@/core/interfaces/item.interface";
+import IOrderDetail from "@/core/interfaces/order-detail.interface";
 
 export default defineComponent({
   name: "Create",

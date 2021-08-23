@@ -34,7 +34,7 @@ import Toolbar from "@/shared/components/Toolbar.vue";
 import { reactive } from "vue";
 import { userService } from "@/core/services/user.service";
 import { useRouter } from "vue-router";
-import ILoginDetails from "@/core/interfaces/login-details.interface";
+import ILoginDetails from "@/core/interfaces/login/login-request.interface";
 
 export default defineComponent({
   name: "Home",

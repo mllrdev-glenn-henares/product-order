@@ -57,8 +57,8 @@ import Toolbar from "@/shared/components/Toolbar.vue";
 import { defineComponent } from "vue";
 import { reactive } from "vue";
 import { userService } from "@/core/services/user.service";
-import IUser from "@/core/interfaces/user.interface"
 import { useRouter } from "vue-router";
+import ISignUpRequest from "@/core/interfaces/signup/sign-up-request.interface";
 
 export default defineComponent({
   name: "Home",
@@ -69,7 +69,7 @@ export default defineComponent({
     Toolbar,
   },
   setup() {
-    const data: IUser = reactive({
+    const data: ISignUpRequest = reactive({
       firstName: "",
       middleName: "",
       lastName: "",

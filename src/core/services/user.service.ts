@@ -1,15 +1,12 @@
-import axios from "axios"
-import environment from "@/environments/environment"
-import IUser from "@/core/interfaces/user.interface"
-import ILoginDetails from "@/core/interfaces/login-details.interface"
-import ILoginResponse from "@/core/interfaces/login-response.interface"
-import ISignUpResponse from "@/core/interfaces/sign-up-response.interface"
+import ILoginRequest from "@/core/interfaces/login/login-request.interface"
+import ILoginResponse from "@/core/interfaces/login/login-response.interface"
+import ISignUpResponse from "@/core/interfaces/signup/sign-up-response.interface"
 import { client } from "./client.service"
-import { Method } from "axios";
+import ISignUpRequest from "../interfaces/signup/sign-up-request.interface"
 
 const USER = "user";
 
-const login = async (loginDetails: ILoginDetails) => {
+const login = async (loginDetails: ILoginRequest) => {
     return await client({
         data: loginDetails,
         method: "POST",
@@ -30,7 +27,7 @@ const login = async (loginDetails: ILoginDetails) => {
         })
 }
 
-const signUp = async (signUpDetails: IUser) => {
+const signUp = async (signUpDetails: ISignUpRequest) => {
     return await client({
         data: signUpDetails,
         method: "POST",
