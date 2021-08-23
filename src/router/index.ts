@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "@ionic/vue-router";
 import { RouteRecordRaw } from "vue-router";
 import { RouteName } from "@/core/enums/route-name.enum";
 
-import Home from "@/views/Home.vue";
+import Home from "@/pages/Home.vue";
 import Login from "@/pages/Login.vue";
 import Register from "@/pages/Register.vue";
 import Create from "@/pages/Create.vue"
@@ -25,7 +25,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/create",
-    name: RouteNames.CREATE,
+    name: RouteName.CREATE,
     component: Create,
   },
 ];
