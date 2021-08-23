@@ -3,19 +3,20 @@
     <Toolbar title-text="Login" />
 
     <ion-content :fullscreen="true">
-      <form>
-        // @submit.prevent="login"
-        <div id="login">
+      <form v-on:submit.prevent="login">
+        <div id="container">
           <ion-item>
             <ion-input
               placeholder="Email"
               type="email"
+              v-model="data.email"
             ></ion-input>
           </ion-item>
           <ion-item>
             <ion-input
               placeholder="Password"
               type="password"
+              v-model="data.password"
             ></ion-input>
           </ion-item>
           <ion-button type="submit">Login</ion-button>
@@ -29,8 +30,9 @@
 <script lang="ts">
 import { IonContent, IonInput, IonPage } from "@ionic/vue";
 import { defineComponent } from "vue";
-import { useRouter } from "vue-router";
-import Toolbar from "@/components/shared/Toolbar.vue";
+import Toolbar from "@/shared/components/Toolbar.vue";
+import { reactive } from "vue";
+import { loginUser } from "@/core/services/user.service";
 export default defineComponent({
   name: "Home",
   components: {
@@ -39,16 +41,24 @@ export default defineComponent({
     IonInput,
     Toolbar,
   },
+  setup() {
+    const data = reactive({
+      email: "",
+      password: "",
+    });
+
+    const login = async () => {
+      await loginUser(data.email, data.password)
+      data.email =""
+      data.password =""
+    };
+    return { data, login };
+  },
 });
 </script>
 
 <style scoped>
-#login-title {
-  text-align: center;
-  margin: 15px;
-}
-
-#login {
+#container {
   justify-content: center;
   display: flex;
   flex-direction: column;

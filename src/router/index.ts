@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "@ionic/vue-router";
 import { RouteRecordRaw } from "vue-router";
-import { RouteNames } from "@/core/enums/route-names.enum";
+import { RouteName } from "@/core/enums/route-name.enum";
 
 import Home from "@/views/Home.vue";
 import Login from "@/pages/Login.vue";
@@ -13,17 +13,17 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/home",
-    name: RouteNames.HOME,
+    name: RouteName.HOME,
     component: Home,
   },
   {
     path: "/login",
-    name: RouteNames.LOGIN,
+    name: RouteName.LOGIN,
     component: Login,
   },
   {
     path: "/register",
-    name: RouteNames.REGISTER,
+    name: RouteName.REGISTER,
     component: Register,
   },
 ];
