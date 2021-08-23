@@ -4,13 +4,17 @@ import IUser from "@/core/interfaces/user.interface"
 import ILoginDetails from "@/core/interfaces/login-details.interface"
 import ILoginResponse from "@/core/interfaces/login-response.interface"
 import ISignUpResponse from "@/core/interfaces/sign-up-response.interface"
+import { client } from "./client.service"
+import { Method } from "axios";
 
+const USER = "user";
 
-export async function login(loginDetails: ILoginDetails) {
-    return await axios({
-        method: "POST",
-        url: environment.baseUrl + "/api/user/login",
+const login = async (loginDetails: ILoginDetails) => {
+    return await client({
         data: loginDetails,
+        method: "POST",
+        url: `${USER}/login`
+
     })
         .then(function (response) {
             const loginResponse: ILoginResponse = response.data;
@@ -26,11 +30,12 @@ export async function login(loginDetails: ILoginDetails) {
         })
 }
 
-export async function signUp(signUpDetails: IUser) {
-    return await axios({
+const signUp = async (signUpDetails: IUser) => {
+    return await client({
+        data: signUpDetails,
         method: "POST",
-        url: environment.baseUrl + "/api/user/sign-up",
-        data: signUpDetails
+        url: `${USER}/signUp`
+
     })
         .then(function (response) {
             const singUpResponse: ISignUpResponse = response.data
@@ -42,7 +47,10 @@ export async function signUp(signUpDetails: IUser) {
                 return false
             }
         })
-        .catch(function (error) {
-            return false
-        })
+        .catch(() => { return false })
+}
+
+export const userService = {
+    login: login,
+    signUp: signUp
 }

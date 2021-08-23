@@ -56,7 +56,7 @@ import { IonContent, IonInput, IonPage } from "@ionic/vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import { defineComponent } from "vue";
 import { reactive } from "vue";
-import { signUp } from "@/core/services/user.service";
+import { userService } from "@/core/services/user.service";
 import IUser from "@/core/interfaces/user.interface"
 import { useRouter } from "vue-router";
 
@@ -79,7 +79,7 @@ export default defineComponent({
     });
     const router = useRouter()
     const onRegister = async () => {
-      signUp(data).then((isSuccess: boolean) => {
+      userService.signUp(data).then((isSuccess: boolean) => {
         if (isSuccess) {
           router.push("/login");
         } else {
