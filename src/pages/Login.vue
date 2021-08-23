@@ -3,7 +3,7 @@
     <Toolbar title-text="Login" />
 
     <ion-content :fullscreen="true">
-      <form v-on:submit.prevent="login">
+      <form v-on:submit.prevent="onLogin">
         <div id="container">
           <ion-item>
             <ion-input
@@ -32,7 +32,10 @@ import { IonContent, IonInput, IonPage } from "@ionic/vue";
 import { defineComponent } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import { reactive } from "vue";
-import { loginUser } from "@/core/services/user.service";
+import { login } from "@/core/services/user.service";
+import { useRouter } from "vue-router";
+import ILoginDetails from "@/core/interfaces/login-details.interface";
+
 export default defineComponent({
   name: "Home",
   components: {
@@ -42,17 +45,23 @@ export default defineComponent({
     Toolbar,
   },
   setup() {
-    const data = reactive({
+    const data: ILoginDetails = reactive({
       email: "",
       password: "",
     });
-
-    const login = async () => {
-      await loginUser(data.email, data.password)
-      data.email =""
-      data.password =""
+    const router = useRouter();
+    const onLogin = async () => {
+      login(data).then((isSuccess: boolean) => {
+        if (isSuccess) {
+          router.push("/home");
+        } else {
+          router.push("/login");
+        }
+      });
+      data.email = "";
+      data.password = "";
     };
-    return { data, login };
+    return { data, onLogin };
   },
 });
 </script>

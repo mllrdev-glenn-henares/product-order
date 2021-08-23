@@ -1,7 +1,9 @@
 import { IEnvironment } from "./IEnvironment";
 
-export const environment: IEnvironment = {
+const environment: IEnvironment = {
     envName: "DEV",
     production : false,
-    baseUrl :'http://localhost:8081/api/user'
+    baseUrl :'http://localhost:8081'
 }
+
+export default environment;

@@ -13,9 +13,9 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
-import PurchaseStatus from 'src/core/enums/status.enum';
-import IPurchaseOrder from 'src/core/interfaces/purchase-order';
-import IUser from 'src/core/interfaces/user';
+import PurchaseStatus from '@/core/enums/status.enum';
+import IPurchaseOrder from '@/core/interfaces/purchase-order.interface';
+import IUser from '@/core/interfaces/user.interface';
 
 export default defineComponent({
   name: 'order-list',

@@ -1,56 +1,48 @@
-import router from "@/router"
 import axios from "axios"
-import { environment } from "@/environments/environment"
+import environment from "@/environments/environment"
+import IUser from "@/core/interfaces/user.interface"
+import ILoginDetails from "@/core/interfaces/login-details.interface"
+import ILoginResponse from "@/core/interfaces/login-response.interface"
+import ISignUpResponse from "@/core/interfaces/sign-up-response.interface"
 
 
-export function loginUser(emailInput: string, passwordInput: string) {
-    const loginData = {
-        "email": emailInput,
-        "password": passwordInput
-    }
-
-    axios({
+export async function login(loginDetails: ILoginDetails) {
+    return await axios({
         method: "POST",
-        url: environment.baseUrl + "/login",
-        data: loginData
+        url: environment.baseUrl + "/api/user/login",
+        data: loginDetails,
     })
         .then(function (response) {
-            console.log(response.data.isSuccessful)
+            const loginResponse: ILoginResponse = response.data;
+            console.log(loginResponse.isSuccessful)
             if (response.data.isSuccessful) {
-                router.push("/home")
+                sessionStorage.setItem('token', 'Bearer ' + response.data.token)
+                return true
             }
-            else if (!response.data.isSuccessful) {
-                router.push("/login")
-            }
+            return false
         })
         .catch(function (error) {
-            console.log("Error on Authentication");
+            return false
         })
 }
 
-export function signUpUser(firstName: string, lastName: string, middleName: string, email: string, password: string, role: string) {
-    const signUpData = {
-        "firstName": firstName,
-        "middleName": middleName,
-        "lastName": lastName,
-        "email": email,
-        "password": password
-    }
-    axios({
+export async function signUp(signUpDetails: IUser) {
+    return await axios({
         method: "POST",
-        url: environment.baseUrl + "/register",
-        data: signUpData
+        url: environment.baseUrl + "/api/user/sign-up",
+        data: signUpDetails
     })
         .then(function (response) {
-            console.log(response.data.isSuccessful)
+            const singUpResponse: ISignUpResponse = response.data
+            console.log(response.data)
             if (response.data.isSuccessful) {
-                router.push("/login")
+                return true
             }
-            else if (!response.data.isSuccessful) {
-                router.push("/register")
+            else {
+                return false
             }
         })
         .catch(function (error) {
-            console.log("Error on Authentication");
+            return false
         })
 }
