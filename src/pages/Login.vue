@@ -33,6 +33,8 @@ import { defineComponent } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import { reactive } from "vue";
 import { loginUser } from "@/core/services/user.service";
+import { useRouter } from "vue-router";
+
 export default defineComponent({
   name: "Home",
   components: {
@@ -46,11 +48,15 @@ export default defineComponent({
       email: "",
       password: "",
     });
-
+    const router = useRouter();
     const login = async () => {
-      await loginUser(data.email, data.password)
-      data.email =""
-      data.password =""
+      if (await loginUser(data.email, data.password)) {
+        router.push("/home")
+      } else {
+        router.push("/login")
+      }
+      data.email = "";
+      data.password = "";
     };
     return { data, login };
   },

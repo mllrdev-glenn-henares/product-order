@@ -1,35 +1,38 @@
 import router from "@/router"
 import axios from "axios"
-import { environment } from "@/environments/environment"
+import environment from "@/environments/environment"
+import IUser from "@/core/interfaces/user.interface"
+import ILoginDetails from "@/core/interfaces/login-details.interface"
 
-
-export function loginUser(emailInput: string, passwordInput: string) {
-    const loginData = {
+export async function loginUser(emailInput: string, passwordInput: string) {
+    const loginData: ILoginDetails = {
         "email": emailInput,
         "password": passwordInput
     }
-
-    axios({
+    let loginSuccess = false;
+    await axios({
         method: "POST",
-        url: environment.baseUrl + "/login",
+        url: environment.baseUrl + "/api/user/login",
         data: loginData
     })
         .then(function (response) {
             console.log(response.data.isSuccessful)
             if (response.data.isSuccessful) {
-                router.push("/home")
+                sessionStorage.setItem('token', 'Bearer ' + response.data.token)
+                loginSuccess = true
             }
             else if (!response.data.isSuccessful) {
                 router.push("/login")
             }
         })
         .catch(function (error) {
-            console.log("Error on Authentication");
+            console.log("Error on Authentication")
         })
+        return loginSuccess
 }
 
 export function signUpUser(firstName: string, lastName: string, middleName: string, email: string, password: string, role: string) {
-    const signUpData = {
+    const signUpData: IUser = {
         "firstName": firstName,
         "middleName": middleName,
         "lastName": lastName,
@@ -39,7 +42,7 @@ export function signUpUser(firstName: string, lastName: string, middleName: stri
     }
     axios({
         method: "POST",
-        url: environment.baseUrl + "/register",
+        url: environment.baseUrl + "/api/user/sign-up",
         data: signUpData
     })
         .then(function (response) {
@@ -52,6 +55,6 @@ export function signUpUser(firstName: string, lastName: string, middleName: stri
             }
         })
         .catch(function (error) {
-            console.log("Error on Authentication");
+            console.log("Error on Authentication")
         })
 }

@@ -1,4 +1,4 @@
-export interface IUser {
+interface IUser {
     firstName: string
     middleName: string
     lastName: string
@@ -6,3 +6,5 @@ export interface IUser {
     password: string
     role: string
 }
+
+export default IUser
