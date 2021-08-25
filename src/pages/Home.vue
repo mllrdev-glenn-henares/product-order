@@ -13,10 +13,10 @@
       <ion-grid class="tableTitle">
         <ion-row>
           <ion-col> PO Number </ion-col>
+          <ion-col> Supplier </ion-col>
           <ion-col> PO Description </ion-col>
           <ion-col> Request Date </ion-col>
           <ion-col> Status </ion-col>
-          <!-- <ion-col> Action </ion-col> -->
         </ion-row>
       </ion-grid>
       <order-list :orders = "orders" :status= "status"/>
@@ -27,7 +27,6 @@
 </template>
 
 <script lang="ts">
-import PurchaseAction from '@/core/enums/action.enum';
 import PurchaseStatus from '@/core/enums/status.enum';
 import { IonContent, IonPage, IonToolbar, IonGrid, IonRow, IonButton } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
@@ -52,15 +51,15 @@ export default defineComponent({
   setup() {
 
     const orders = ref<IPurchaseOrder[]>([
-      { id: 'PO-001', description: 'description one', date: new Date(), status: PurchaseStatus.PENDING, action: PurchaseAction.REVIEWED },
-      { id: 'PO-002', description: 'description two', date: new Date(), status: PurchaseStatus.APPROVED, action: PurchaseAction.REVIEWED },
-      { id: 'PO-003', description: 'description three', date: new Date(), status: PurchaseStatus.DECLINED, action: PurchaseAction.REVIEWED },
-      { id: 'PO-004', description: 'description four', date: new Date(), status: PurchaseStatus.CLOSE, action: PurchaseAction.REVIEWED },
-      { id: 'PO-005', description: 'description five', date: new Date(), status: PurchaseStatus.CLOSE, action: PurchaseAction.REVIEWED },
-      { id: 'PO-006', description: 'description six', date: new Date(), status: PurchaseStatus.DECLINED, action: PurchaseAction.REVIEWED },
-      { id: 'PO-007', description: 'description seven', date: new Date(), status: PurchaseStatus.APPROVED, action: PurchaseAction.REVIEWED },
-      { id: 'PO-008', description: 'description eight', date: new Date(), status: PurchaseStatus.PENDING, action: PurchaseAction.REVIEWED },
-      { id: 'PO-009', description: 'description nine', date: new Date(), status: PurchaseStatus.CLOSE, action: PurchaseAction.REVIEWED }
+      { id: 'PO-001', supplier: 'supplier one', description: 'description one', date: new Date(), status: PurchaseStatus.PENDING },
+      { id: 'PO-002', supplier: 'supplier two', description: 'description two', date: new Date(), status: PurchaseStatus.APPROVED },
+      { id: 'PO-003', supplier: 'supplier two', description: 'description three', date: new Date(), status: PurchaseStatus.DECLINED },
+      { id: 'PO-004', supplier: 'supplier two', description: 'description four', date: new Date(), status: PurchaseStatus.CLOSE },
+      { id: 'PO-005', supplier: 'supplier two', description: 'description five', date: new Date(), status: PurchaseStatus.CLOSE },
+      { id: 'PO-006', supplier: 'supplier two', description: 'description six', date: new Date(), status: PurchaseStatus.DECLINED },
+      { id: 'PO-007', supplier: 'supplier two', description: 'description seven', date: new Date(), status: PurchaseStatus.APPROVED },
+      { id: 'PO-008', supplier: 'supplier two', description: 'description eight', date: new Date(), status: PurchaseStatus.PENDING },
+      { id: 'PO-009', supplier: 'supplier two', description: 'description nine', date: new Date(), status: PurchaseStatus.CLOSE }
       
 
     ])

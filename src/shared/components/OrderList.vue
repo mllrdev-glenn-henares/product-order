@@ -3,6 +3,7 @@
     <ion-grid>
       <ion-row v-for="order in purchaseOrderSequences" :key="order.id">
         <ion-col> {{ order.id }} </ion-col>
+        <ion-col> {{ order.supplier }} </ion-col>
         <ion-col> {{ order.description }} </ion-col>
         <ion-col> {{ order.date }} </ion-col>
         <ion-col> {{ order.status }} </ion-col>
