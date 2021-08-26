@@ -1,7 +1,7 @@
 <template>
   <div class="order-list">
     <ion-grid>
-      <ion-row v-for="order in purchaseOrderSequences" :key="order.id">
+      <ion-row v-for="order in purchaseOrderSequences" :key="order.id" @load="timeFormater">
         <ion-col> {{ order.id }} </ion-col>
         <ion-col> {{ order.description }} </ion-col>
         <ion-col> {{ order.date }} </ion-col>
@@ -16,6 +16,7 @@ import { defineComponent, PropType, computed } from 'vue'
 import PurchaseStatus from '@/core/enums/status.enum';
 import IPurchaseOrder from '@/core/interfaces/purchase-order.interface';
 import IUser from '@/core/interfaces/user.interface';
+import moment from 'moment'
 
 export default defineComponent({
   name: 'order-list',
@@ -35,6 +36,12 @@ export default defineComponent({
     
   },
   setup(props) {
+    const timeFormater = computed(() => {
+      return props.orders.forEach((order: IPurchaseOrder) => {
+        return order.date = moment.utc(order.date).format('MM/DD/yyyy');
+      });
+    })
+    
     const purchaseOrderSequences = computed(() => {
         return [...props.orders].sort((a: IPurchaseOrder ) => {
           if (a.status === props.status) {
@@ -48,7 +55,7 @@ export default defineComponent({
           return 0
       })
     })
-    return { purchaseOrderSequences }
+    return { purchaseOrderSequences, timeFormater }
   }
 })
 </script>

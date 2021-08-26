@@ -3,7 +3,7 @@ import PurchaseAction from '@/core/enums/action.enum'
 interface IPurchaseOrder {
     id: string,
     description: string,
-    date: Date,
+    date: Date | string,
     status: PurchaseStatus,
     action: PurchaseAction
 }
