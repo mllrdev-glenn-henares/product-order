@@ -1,10 +1,10 @@
 <template>
   <div class="order-list">
     <ion-grid>
-      <ion-row v-for="order in purchaseOrderSequences" :key="order.id" @load="timeFormater">
+      <ion-row v-for="order in purchaseOrderSequences" :key="order.id" >
         <ion-col> {{ order.id }} </ion-col>
         <ion-col> {{ order.description }} </ion-col>
-        <ion-col> {{ order.date }} </ion-col>
+        <ion-col> {{ timeFormater(order.date) }} </ion-col>
         <ion-col> {{ order.status }} </ion-col>
       </ion-row>
     </ion-grid>
@@ -36,10 +36,8 @@ export default defineComponent({
     
   },
   setup(props) {
-    const timeFormater = computed(() => {
-      return props.orders.forEach((order: IPurchaseOrder) => {
-        return order.date = moment.utc(order.date).format('MM/DD/yyyy');
-      });
+    const timeFormater = ((date: Date | string) => {
+        return date = moment.utc(date).format('MM/DD/YYYY');
     })
     
     const purchaseOrderSequences = computed(() => {
