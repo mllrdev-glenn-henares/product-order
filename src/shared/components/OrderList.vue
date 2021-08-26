@@ -1,7 +1,7 @@
 <template>
   <div class="order-list">
     <ion-grid>
-      <ion-row @click="handleOrderRowClick(order.id)" v-for="order in purchaseOrderSequences" :key="order.id">
+      <ion-row @click="handleOrderRowClick(order.id)" v-for="order in purchaseOrders" :key="order.id">
         <ion-col> {{ order.id }} </ion-col>
         <ion-col> {{ order.description }} </ion-col>
         <ion-col> {{ order.date }} </ion-col>
@@ -35,7 +35,7 @@ export default defineComponent({
     
   },
   setup(props) {
-    const purchaseOrderSequences = computed(() => {
+    const purchaseOrders = computed(() => {
         return [...props.orders].sort(( a: IPurchaseOrder ) => {
           if (a.status === props.status) {
             return -1
@@ -48,12 +48,12 @@ export default defineComponent({
           return 0
       })
     })
-    return { purchaseOrderSequences }
+    return { purchaseOrders }
   },
   methods: {
     handleOrderRowClick(id: string) {
-      const clickedOrder = this.purchaseOrderSequences.find((purchaseOrderSequences) => {
-        return purchaseOrderSequences.id === id;
+      const clickedOrder = this.purchaseOrders.find((purchaseOrders) => {
+        return purchaseOrders.id === id;
       });
       console.log(clickedOrder);
     }
