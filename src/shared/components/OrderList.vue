@@ -52,10 +52,7 @@ export default defineComponent({
   },
   methods: {
     handleOrderRowClick(id: string) {
-      const clickedOrder = this.purchaseOrders.find((purchaseOrders) => {
-        return purchaseOrders.id === id;
-      });
-      console.log(clickedOrder);
+      alert(id)
     }
     
   }
