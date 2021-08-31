@@ -35,6 +35,7 @@ import { reactive } from "vue";
 import { userService } from "@/core/services/user.service";
 import { useRouter } from "vue-router";
 import ILoginDetails from "@/core/interfaces/login/login-request.interface";
+import { getTokenProperties } from "@/core/services/jwt.service";
 
 export default defineComponent({
   name: "Home",
