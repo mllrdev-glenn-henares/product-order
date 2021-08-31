@@ -1,11 +1,10 @@
 import PurchaseStatus from '@/core/enums/status.enum'
-import PurchaseAction from '@/core/enums/action.enum'
 interface IPurchaseOrder {
     id: string,
+    supplier: string,
     description: string,
     date: Date | string,
-    status: PurchaseStatus,
-    action: PurchaseAction
+    status: PurchaseStatus
 }
 
 export default IPurchaseOrder
