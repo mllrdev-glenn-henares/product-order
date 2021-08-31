@@ -9,6 +9,12 @@ import Create from "@/pages/Create.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
+    path: "/",
+    redirect: {
+      name: "Login"
+    }
+  },
+  {
     path: "/home",
     name: RouteName.HOME,
     component: Home,
@@ -35,4 +41,14 @@ const router = createRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  const publicPages = ['/login', '/register']
+  const authRequired = !publicPages.includes(to.path)
+  const loggedIn = sessionStorage.getItem('token')
+
+  if (authRequired && !loggedIn) {
+    return next('/login')
+  }
+  next()
+})
 export default router;

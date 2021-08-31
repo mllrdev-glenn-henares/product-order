@@ -1,6 +1,6 @@
 import environment from "@/environments/environment";
 import axios from "axios";
-import IClientRequest from "../interfaces/client-request.interface";
+import IClientRequest from "@/core/interfaces/client-request.interface";
 
 
 export function client(request: IClientRequest) {

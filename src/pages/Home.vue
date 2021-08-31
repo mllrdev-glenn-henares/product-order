@@ -32,7 +32,7 @@ import PurchaseStatus from '@/core/enums/status.enum';
 import { IonContent, IonPage, IonToolbar, IonGrid, IonRow, IonButton } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
 import IPurchaseOrder from '@/core/interfaces/purchase-order.interface';
-import IName from '@/core/interfaces/user';
+import IName from '@/core/interfaces/user.interface';
 import OrderList from '@/shared/components/OrderList.vue';
 import Toolbar from '@/shared/components/Toolbar.vue';
 
@@ -66,7 +66,7 @@ export default defineComponent({
     ])
 
     const user = ref<IName>({
-      firstName: 'Jerry', lastName: 'Bayoneta', middleName: 'Gutual'
+      firstName: 'Jerry', lastName: 'Bayoneta', middleName: 'Gutual', email:'', role:''
       })
 
     const status = ref<PurchaseStatus>(PurchaseStatus.PENDING)

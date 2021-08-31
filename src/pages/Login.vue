@@ -52,6 +52,7 @@ export default defineComponent({
     });
     const router = useRouter();
     const onLogin = async () => {
+      getTokenProperties()
       userService.login(data).then((isSuccess: boolean) => {
         if (isSuccess) {
           router.push("/home");
