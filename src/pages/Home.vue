@@ -31,7 +31,7 @@ import PurchaseStatus from '@/core/enums/status.enum';
 import { IonContent, IonPage, IonToolbar, IonGrid, IonRow, IonButton } from '@ionic/vue';
 import { defineComponent, ref } from 'vue';
 import IPurchaseOrder from '@/core/interfaces/purchase-order.interface';
-import IName from '@/core/interfaces/user';
+import IName from '@/core/interfaces/name.interface';
 import OrderList from '@/shared/components/OrderList.vue';
 import Toolbar from '@/shared/components/Toolbar.vue';
 
@@ -50,19 +50,7 @@ export default defineComponent({
   },
   setup() {
 
-    const orders = ref<IPurchaseOrder[]>([
-      { id: 'PO-001', supplier: 'supplier one', description: 'description one', date: new Date(), status: PurchaseStatus.PENDING },
-      { id: 'PO-002', supplier: 'supplier two', description: 'description two', date: new Date(), status: PurchaseStatus.APPROVED },
-      { id: 'PO-003', supplier: 'supplier two', description: 'description three', date: new Date(), status: PurchaseStatus.DECLINED },
-      { id: 'PO-004', supplier: 'supplier two', description: 'description four', date: new Date(), status: PurchaseStatus.CLOSE },
-      { id: 'PO-005', supplier: 'supplier two', description: 'description five', date: new Date(), status: PurchaseStatus.CLOSE },
-      { id: 'PO-006', supplier: 'supplier two', description: 'description six', date: new Date(), status: PurchaseStatus.DECLINED },
-      { id: 'PO-007', supplier: 'supplier two', description: 'description seven', date: new Date(), status: PurchaseStatus.APPROVED },
-      { id: 'PO-008', supplier: 'supplier two', description: 'description eight', date: new Date(), status: PurchaseStatus.PENDING },
-      { id: 'PO-009', supplier: 'supplier two', description: 'description nine', date: new Date(), status: PurchaseStatus.CLOSE }
-      
-
-    ])
+    const orders = ref<IPurchaseOrder[]>([])
 
     const user = ref<IName>({
       firstName: 'Jerry', lastName: 'Bayoneta', middleName: 'Gutual'
@@ -73,6 +61,8 @@ export default defineComponent({
     const handleClick = (term: PurchaseStatus) => {
       status.value = term
     }
+
+
 
     return {orders, user, handleClick, PurchaseStatus, status}
 
