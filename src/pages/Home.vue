@@ -1,14 +1,22 @@
 <template>
   <ion-page>
-  <ion-toolbar>
-    <Toolbar title-text = "Home"/>
-  </ion-toolbar>
+    <ion-toolbar>
+      <Toolbar title-text="Home" />
+    </ion-toolbar>
     <ion-content :fullscreen="true">
       <div class="filterButton">
-        <ion-button button @click="handleClick(PurchaseStatus.PENDING)">Pending</ion-button>
-        <ion-button button @click="handleClick(PurchaseStatus.APPROVED)">Approve</ion-button>
-        <ion-button button @click="handleClick(PurchaseStatus.DECLINED)">Declined</ion-button>
-        <ion-button button @click="handleClick(PurchaseStatus.CLOSE)">Closed</ion-button>
+        <ion-button button @click="handleClick(PurchaseStatus.PENDING)"
+          >Pending</ion-button
+        >
+        <ion-button button @click="handleClick(PurchaseStatus.APPROVED)"
+          >Approve</ion-button
+        >
+        <ion-button button @click="handleClick(PurchaseStatus.DECLINED)"
+          >Declined</ion-button
+        >
+        <ion-button button @click="handleClick(PurchaseStatus.CLOSE)"
+          >Closed</ion-button
+        >
       </div>
       <ion-grid class="tableTitle">
         <ion-row>
@@ -19,26 +27,36 @@
           <ion-col> Status </ion-col>
         </ion-row>
       </ion-grid>
-      <order-list :orders = "orders" :status= "status"/>
-      <list-jerry :user = "user"/>
+      <order-list :orders="orders" :status="status" />
+      <list-jerry :user="user" />
       <ion-button id="addButton" href="/create">add Icon</ion-button>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import PurchaseStatus from '@/core/enums/status.enum';
-import { IonContent, IonPage, IonToolbar, IonGrid, IonRow, IonButton } from '@ionic/vue';
-import { defineComponent, onActivated, onBeforeMount, onBeforeUnmount, onBeforeUpdate, onMounted, ref } from 'vue';
-import IPurchaseOrder from '@/core/interfaces/purchase-order.interface';
-import IName from '@/core/interfaces/name.interface';
-import OrderList from '@/shared/components/OrderList.vue';
-import Toolbar from '@/shared/components/Toolbar.vue';
-import getUserOrder from '@/core/services/user-order.service'
-
+import PurchaseStatus from "@/core/enums/status.enum";
+import {
+  IonContent,
+  IonPage,
+  IonToolbar,
+  IonGrid,
+  IonRow,
+  IonButton,
+} from "@ionic/vue";
+import {
+  defineComponent,
+  onUpdated,
+  ref,
+} from "vue";
+import IPurchaseOrder from "@/core/interfaces/purchase-order.interface";
+import IName from "@/core/interfaces/name.interface";
+import OrderList from "@/shared/components/OrderList.vue";
+import Toolbar from "@/shared/components/Toolbar.vue";
+import getUserOrder from "@/core/services/user-order.service";
 
 export default defineComponent({
-  name: 'Home',
+  name: "Home",
   components: {
     IonContent,
     IonPage,
@@ -47,64 +65,72 @@ export default defineComponent({
     IonRow,
     IonButton,
     OrderList,
-    Toolbar
+    Toolbar,
   },
   setup() {
-
-    const orders = ref<IPurchaseOrder[]>([])
-
-   onMounted(() => {
-      getUserOrder().then((value) => {
-      console.log(value);
-      orders.value = value || [];
-      })
-   })
+    const orders = ref<IPurchaseOrder[]>([]);
 
     const user = ref<IName>({
-      firstName: 'Jerry', lastName: 'Bayoneta', middleName: 'Gutual'
-      })
+      firstName: "Jerry",
+      lastName: "Bayoneta",
+      middleName: "Gutual",
+    });
 
-    const status = ref<PurchaseStatus>(PurchaseStatus.PENDING)
-    
+    const status = ref<PurchaseStatus>(PurchaseStatus.PENDING);
+
     const handleClick = (term: PurchaseStatus) => {
-      status.value = term
-    }
+      status.value = term;
+    };
 
-    return {orders, user, handleClick, PurchaseStatus, status}
-  }
+    onUpdated(() => {
+      getUserOrder().then((value) => {
+        console.log(value);
+        orders.value = value || [];
+      });
+    });
+    return {
+      orders,
+      user,
+      handleClick,
+      PurchaseStatus,
+      status,
+      nested: {
+        orders
+      }
+    };
+  },
 });
 </script>
 
 <style scoped>
-  img{
-    display: inline-block;
-    margin-left: 2%;
- 
-  }
-  ion-title{
-    display: inline-block;
-    margin-top: 1%;
-  }
-  .tableTitle{
-    background-color: aqua;
-    color: black;
-    font-weight: bold;
-    margin: 5% 0% 3%,
-  }
-  ion-grid{
-    text-align: center;
-  }
-  #signInButton{
-    float: right;
-    margin-top: 13px;
-    margin-right: 2%;
-  }
-  #addButton{
-    float: right;
-    vertical-align: top;
-    margin-right: 2%;
-  }
-  .filterButton{
-    margin-left: 5%;
-  }
+img {
+  display: inline-block;
+  margin-left: 2%;
+}
+ion-title {
+  display: inline-block;
+  margin-top: 1%;
+}
+.tableTitle {
+  background-color: aqua;
+  color: black;
+  font-weight: bold;
+  margin: 1% 0% 1%;
+}
+ion-grid {
+  text-align: center;
+}
+#signInButton {
+  float: right;
+  margin-top: 13px;
+  margin-right: 2%;
+}
+#addButton {
+  float: right;
+  vertical-align: top;
+  margin-right: 2%;
+}
+.filterButton {
+  margin-left: 5%;
+}
 </style>

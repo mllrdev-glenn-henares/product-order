@@ -1,8 +1,9 @@
 import { client } from "@/core/services/client.service"
+import IOrderDetail from "@/core/interfaces/order-detail.interface"
 
-const createOrder = async () => {
+const createOrder = async (orderDetails: IOrderDetail) => {
   return await client({
-    data: '',
+    data: orderDetails,
     method: 'POST',
     url: 'order/createPO'
   })
