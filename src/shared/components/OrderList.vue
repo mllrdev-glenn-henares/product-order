@@ -43,20 +43,14 @@ export default defineComponent({
     
     const purchaseOrders = computed(() => {
         return [...props.orders].sort((a: IPurchaseOrder ) => {
-          console.log(a.status, props.status)
-          console.log(Object.keys(PurchaseStatus)[Object.values(PurchaseStatus).indexOf(props.status)])
-
           if (a.status === Object.keys(PurchaseStatus)[Object.values(PurchaseStatus).indexOf(props.status)]) {
-            console.log("1")
             return -1
           }
           
           if (a.status < props.status) {
-             console.log("2")
             return 1
           }
-          
-           console.log("3")
+
           return 0
       })
     })
