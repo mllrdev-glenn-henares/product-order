@@ -3,7 +3,7 @@ interface IPurchaseOrder {
     id: string,
     supplier: string,
     description: string,
-    date: Date | string,
+    createdAt: Date | string,
     status: PurchaseStatus
 }
 

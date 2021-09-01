@@ -29,11 +29,12 @@
 <script lang="ts">
 import PurchaseStatus from '@/core/enums/status.enum';
 import { IonContent, IonPage, IonToolbar, IonGrid, IonRow, IonButton } from '@ionic/vue';
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onActivated, onBeforeMount, onBeforeUnmount, onBeforeUpdate, onMounted, ref } from 'vue';
 import IPurchaseOrder from '@/core/interfaces/purchase-order.interface';
 import IName from '@/core/interfaces/name.interface';
 import OrderList from '@/shared/components/OrderList.vue';
 import Toolbar from '@/shared/components/Toolbar.vue';
+import getUserOrder from '@/core/services/user-order.service'
 
 
 export default defineComponent({
@@ -52,6 +53,13 @@ export default defineComponent({
 
     const orders = ref<IPurchaseOrder[]>([])
 
+   onMounted(() => {
+      getUserOrder().then((value) => {
+      console.log(value);
+      orders.value = value || [];
+      })
+   })
+
     const user = ref<IName>({
       firstName: 'Jerry', lastName: 'Bayoneta', middleName: 'Gutual'
       })
@@ -62,10 +70,7 @@ export default defineComponent({
       status.value = term
     }
 
-
-
     return {orders, user, handleClick, PurchaseStatus, status}
-
   }
 });
 </script>

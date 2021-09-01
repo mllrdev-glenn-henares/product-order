@@ -1,15 +1,11 @@
 <template>
   <div class="order-list">
     <ion-grid>
-<<<<<<< HEAD
-      <ion-row v-for="order in purchaseOrderSequences" :key="order.id" >
-=======
       <ion-row @click="handleOrderRowClick(order.id)" v-for="order in purchaseOrders" :key="order.id">
->>>>>>> origin/develop
         <ion-col> {{ order.id }} </ion-col>
         <ion-col> {{ order.supplier }} </ion-col>
         <ion-col> {{ order.description }} </ion-col>
-        <ion-col> {{ timeFormater(order.date) }} </ion-col>
+        <ion-col> {{ timeFormater(order.createdAt) }} </ion-col>
         <ion-col> {{ order.status }} </ion-col>
       </ion-row>
     </ion-grid>
@@ -41,39 +37,36 @@ export default defineComponent({
     
   },
   setup(props) {
-<<<<<<< HEAD
     const timeFormater = ((date: Date | string) => {
         return date = moment.utc(date).format('MM/DD/YYYY');
     })
     
-    const purchaseOrderSequences = computed(() => {
-        return [...props.orders].sort((a: IPurchaseOrder ) => {
-=======
     const purchaseOrders = computed(() => {
-        return [...props.orders].sort(( a: IPurchaseOrder ) => {
->>>>>>> origin/develop
-          if (a.status === props.status) {
+        return [...props.orders].sort((a: IPurchaseOrder ) => {
+          console.log(a.status, props.status)
+          console.log(Object.keys(PurchaseStatus)[Object.values(PurchaseStatus).indexOf(props.status)])
+
+          if (a.status === Object.keys(PurchaseStatus)[Object.values(PurchaseStatus).indexOf(props.status)]) {
+            console.log("1")
             return -1
           }
           
-          if (a.status > props.status) {
+          if (a.status < props.status) {
+             console.log("2")
             return 1
           }
           
+           console.log("3")
           return 0
       })
     })
-<<<<<<< HEAD
-    return { purchaseOrderSequences, timeFormater }
-=======
-    return { purchaseOrders }
+    return { purchaseOrders, timeFormater }
   },
   methods: {
     handleOrderRowClick(id: string) {
       alert(id)
     }
     
->>>>>>> origin/develop
   }
 })
 </script>
