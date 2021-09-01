@@ -52,17 +52,15 @@ export default defineComponent({
   setup() {
 
     const orders = ref<IPurchaseOrder[]>([
-      { id: 'PO-001', description: 'description one', date: new Date(), status: PurchaseStatus.PENDING, action: PurchaseAction.REVIEWED },
-      { id: 'PO-002', description: 'description two', date: new Date(), status: PurchaseStatus.APPROVED, action: PurchaseAction.REVIEWED },
-      { id: 'PO-003', description: 'description three', date: new Date(), status: PurchaseStatus.DECLINED, action: PurchaseAction.REVIEWED },
-      { id: 'PO-004', description: 'description four', date: new Date(), status: PurchaseStatus.CLOSE, action: PurchaseAction.REVIEWED },
-      { id: 'PO-005', description: 'description five', date: new Date(), status: PurchaseStatus.CLOSE, action: PurchaseAction.REVIEWED },
-      { id: 'PO-006', description: 'description six', date: new Date(), status: PurchaseStatus.DECLINED, action: PurchaseAction.REVIEWED },
-      { id: 'PO-007', description: 'description seven', date: new Date(), status: PurchaseStatus.APPROVED, action: PurchaseAction.REVIEWED },
-      { id: 'PO-008', description: 'description eight', date: new Date(), status: PurchaseStatus.PENDING, action: PurchaseAction.REVIEWED },
-      { id: 'PO-009', description: 'description nine', date: new Date(), status: PurchaseStatus.CLOSE, action: PurchaseAction.REVIEWED }
-      
-
+      { id: 'PO-001', description: 'description one',   date: new Date(), status: PurchaseStatus.PENDING,   action: PurchaseAction.REVIEWED },
+      { id: 'PO-002', description: 'description two',   date: new Date(), status: PurchaseStatus.APPROVED,  action: PurchaseAction.REVIEWED },
+      { id: 'PO-003', description: 'description three', date: new Date(), status: PurchaseStatus.DECLINED,  action: PurchaseAction.REVIEWED },
+      { id: 'PO-004', description: 'description four',  date: new Date(), status: PurchaseStatus.CLOSE,     action: PurchaseAction.REVIEWED },
+      { id: 'PO-005', description: 'description five',  date: new Date(), status: PurchaseStatus.CLOSE,     action: PurchaseAction.REVIEWED },
+      { id: 'PO-006', description: 'description six',   date: new Date(), status: PurchaseStatus.DECLINED,  action: PurchaseAction.REVIEWED },
+      { id: 'PO-007', description: 'description seven', date: new Date(), status: PurchaseStatus.APPROVED,  action: PurchaseAction.REVIEWED },
+      { id: 'PO-008', description: 'description eight', date: new Date(), status: PurchaseStatus.PENDING,   action: PurchaseAction.REVIEWED },
+      { id: 'PO-009', description: 'description nine',  date: new Date(), status: PurchaseStatus.CLOSE,     action: PurchaseAction.REVIEWED }
     ])
 
     const user = ref<IName>({

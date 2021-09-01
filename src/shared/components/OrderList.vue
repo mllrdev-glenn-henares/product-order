@@ -32,7 +32,6 @@ export default defineComponent({
       required: true,
       type: Object as PropType<PurchaseStatus>
     }
-    
   },
   setup(props) {
     const purchaseOrderSequences = computed(() => {
@@ -57,7 +56,6 @@ export default defineComponent({
   h1{
     display: inline-block;
     margin-left: 2%;
- 
   }
   ion-title{
     display: inline-block;

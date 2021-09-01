@@ -29,9 +29,8 @@
 
 <script lang="ts">
 import { IonContent, IonInput, IonPage } from "@ionic/vue";
-import { defineComponent } from "vue";
+import { defineComponent, reactive } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
-import { reactive } from "vue";
 import { userService } from "@/core/services/user.service";
 import { useRouter } from "vue-router";
 import ILoginDetails from "@/core/interfaces/login/login-request.interface";
@@ -52,7 +51,6 @@ export default defineComponent({
     });
     const router = useRouter();
     const onLogin = async () => {
-      getTokenProperties()
       userService.login(data).then((isSuccess: boolean) => {
         if (isSuccess) {
           router.push("/home");
