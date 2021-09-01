@@ -5,7 +5,7 @@
         <ion-col> {{ order.id }} </ion-col>
         <ion-col> {{ order.supplier }} </ion-col>
         <ion-col> {{ order.description }} </ion-col>
-        <ion-col> {{ timeFormater(order.date) }} </ion-col>
+        <ion-col> {{ timeFormater(order.createdAt) }} </ion-col>
         <ion-col> {{ order.status }} </ion-col>
       </ion-row>
     </ion-grid>
@@ -13,18 +13,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed, ref } from 'vue'
+import { defineComponent, PropType, computed } from 'vue'
 import PurchaseStatus from '@/core/enums/status.enum';
-import IPurchaseOrder from '@/core/interfaces/purchase-order.interface';
 import IUser from '@/core/interfaces/user.interface';
 import moment from 'moment'
+import IPurchaseOrderResponse from '@/core/interfaces/purchase-order/purchase-order-reponse.interface';
 
 export default defineComponent({
   name: 'order-list',
   props: {
     orders: {
       required : true,
-      type: Array as PropType<IPurchaseOrder[]>
+      type: Array as PropType<Array<IPurchaseOrderResponse['simple']>>
     },
     user: {
       required: true,
@@ -42,15 +42,15 @@ export default defineComponent({
     })
     
     const purchaseOrders = computed(() => {
-        return [...props.orders].sort((a: IPurchaseOrder ) => {
-          if (a.status === props.status) {
+        return [...props.orders].sort((a: IPurchaseOrderResponse['simple'] ) => {
+          if (a.status === Object.keys(PurchaseStatus)[Object.values(PurchaseStatus).indexOf(props.status)]) {
             return -1
           }
           
-          if (a.status > props.status) {
+          if (a.status < props.status) {
             return 1
           }
-          
+
           return 0
       })
     })

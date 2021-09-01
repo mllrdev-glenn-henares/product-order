@@ -5,20 +5,32 @@
       <ion-title>
         <h1>Purchase Order</h1>
       </ion-title>
-      <form class="headDetail" >
+      <form class="headDetail">
         <ion-item>
           <ion-label>Supplier</ion-label>
-          <ion-input type="text" name="supplier" v-model="orderDetail.supplier"></ion-input>
+          <ion-input
+            type="text"
+            name="supplier"
+            v-model="orderDetail.supplier"
+          ></ion-input>
         </ion-item>
         <ion-item>
           <ion-label>PO description</ion-label>
-          <ion-input type="text" name="description" v-model="orderDetail.description"></ion-input>
+          <ion-input
+            type="text"
+            name="description"
+            v-model="orderDetail.description"
+          ></ion-input>
         </ion-item>
       </form>
       <div class="headDetail">
         <ion-item>
           <ion-label>Purchase Date</ion-label>
-          <ion-input type="date" name="purchaseDate" v-model="orderDetail.purchaseDate"></ion-input>
+          <ion-input
+            type="date"
+            name="purchaseDate"
+            v-model="orderDetail.purchaseDate"
+          ></ion-input>
         </ion-item>
         <ion-item>
           <ion-label>Requestor</ion-label>
@@ -78,10 +90,10 @@
       <ion-text color="light" size="large">
         <h3>
           <ion-input
-            type="number" 
-            name="grandTotal" 
-            v-model="orderDetail.grandTotal" 
-            placeholder="Grand Total" 
+            type="number"
+            name="grandTotal"
+            v-model="orderDetail.grandTotal"
+            placeholder="Grand Total"
             disabled
           ></ion-input>
         </h3>
@@ -97,7 +109,9 @@ import { IonContent, IonTitle, IonItem, IonInput } from "@ionic/vue";
 import { defineComponent, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
-import IOrderDetail from "@/core/interfaces/order-detail.interface";
+import { orderService } from "@/core/services/order.service";
+import router from "@/router";
+import IPurchaseOrder from "@/core/interfaces/purchase-order/purchase-order.interface";
 
 export default defineComponent({
   name: "Create",
@@ -113,7 +127,7 @@ export default defineComponent({
 
     const itemDetails = ref<IItem[]>([]);
 
-    const orderDetail = ref<IOrderDetail>({
+    const orderDetail = ref<IPurchaseOrder>({
       item: [],
       supplier: "",
       purchaseDate: new Date(),
@@ -126,8 +140,8 @@ export default defineComponent({
   methods: {
     addItemDetail() {
       this.item.subTotal =
-        ( this.item.unitPrice || 0 ) * ( this.item.quantity || 1 );
-      this.itemDetails.push( this.item );
+        (this.item.unitPrice || 0) * (this.item.quantity || 1);
+      this.itemDetails.push(this.item);
       this.orderDetail.grandTotal = 0;
       this.itemDetails.forEach((item: IItem) => {
         this.orderDetail.grandTotal += item.subTotal || 0;
@@ -136,7 +150,9 @@ export default defineComponent({
       this.item = {} as IItem;
     },
     createPurchaseOrder() {
-      console.log(this.orderDetail);
+      this.orderDetail.item = this.itemDetails;
+      orderService.requestor.create(this.orderDetail);
+      router.push("/home");
     },
   },
 });
