@@ -49,7 +49,6 @@ import {
   onUpdated,
   ref,
 } from "vue";
-import IPurchaseOrder from "@/core/interfaces/purchase-order/purchase-order.interface";
 import IName from "@/core/interfaces/name.interface";
 import OrderList from "@/shared/components/OrderList.vue";
 import Toolbar from "@/shared/components/Toolbar.vue";

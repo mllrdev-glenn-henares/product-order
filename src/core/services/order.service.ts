@@ -1,9 +1,9 @@
 import { client } from "@/core/services/client.service"
 import IPurchaseOrder from "../interfaces/purchase-order/purchase-order.interface";
-import IPurchaseOrderResponse from "../interfaces/purchase-order/purchase-order-reponse.interface";
+import IPurchaseOrderResponse from "../interfaces/purchase-order/purchase-order-response.interface";
 import IUserRoles from "../interfaces/user-roles.interface";
 
-const getAll = async () => { // approver / admin
+const getAll = async () => {
   return await client({
     data: '',
     method: 'GET',
