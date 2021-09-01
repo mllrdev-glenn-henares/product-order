@@ -1,23 +1,65 @@
-import IOrderDetail from "@/core/interfaces/order-detail.interface"
-import { client } from "./client.service"
+import { client } from "@/core/services/client.service"
+import IPurchaseOrder from "@/core/interfaces/purchase-order/purchase-order.interface";
+import IPurchaseOrderResponse from "@/core/interfaces/purchase-order/purchase-order-response.interface";
+import IUserRoles from "@/core/interfaces/user-roles.interface";
 
-const USER = "user";
-const ORDER = "order"
-const edit = async (orderDetails: IOrderDetail, orderID: number) => { 
-
-    return await client({
-        data: orderDetails,
-        method: "PUT",
-        url: `${USER}/${ORDER}/${orderID}/orderDetails`
+const getAll = async () => {
+  return await client({
+    data: '',
+    method: 'GET',
+    url: 'order/all'
+  })
+    .then( response => {
+      const orders: Array<IPurchaseOrderResponse['admin']> = response.data;
+      return orders
     })
-        .then(function (response) {
-            console.log(response.data)
-            if (response.data.isSuccessful) {
-                return true
-            }
-            else {
-                return false
-            }
-        })
-        .catch(() => { return false })
+    .catch( error => {
+      console.log(error)
+      return null
+    })
 }
+
+const getAllByUser = async () => {
+  return client({
+    data: '',
+    method: 'GET',
+    url: 'order/user'
+  })
+    .then( response => {
+      const orders: Array<IPurchaseOrderResponse['simple']> = response.data;
+      return orders
+    })
+    .catch( error =>{
+      console.log(error)
+      return null
+    })
+}
+
+const create = async (order: IPurchaseOrder) => {
+  return await client({
+    data: order,
+    method: 'POST',
+    url: 'order/createPO'
+  })
+    .then( response => {
+      console.log(response.data.message)
+    })
+    .catch( error => {
+      console.log(error)
+    })
+}
+
+export const orderService: IUserRoles = {
+  admin: {
+    getAll
+  },
+
+  requestor: {
+    create,
+    getAllByUser
+  },
+  approver: {
+    getAll
+  }
+}
+

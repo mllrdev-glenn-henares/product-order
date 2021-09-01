@@ -1,10 +1,11 @@
 <template>
   <div class="order-list">
     <ion-grid>
-      <ion-row v-for="order in purchaseOrderSequences" :key="order.id">
+      <ion-row @click="handleOrderRowClick(order.id)" v-for="order in purchaseOrders" :key="order.id">
         <ion-col> {{ order.id }} </ion-col>
+        <ion-col> {{ order.supplier }} </ion-col>
         <ion-col> {{ order.description }} </ion-col>
-        <ion-col> {{ order.date }} </ion-col>
+        <ion-col> {{ timeFormater(order.createdAt) }} </ion-col>
         <ion-col> {{ order.status }} </ion-col>
       </ion-row>
     </ion-grid>
@@ -14,15 +15,17 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
 import PurchaseStatus from '@/core/enums/status.enum';
-import IPurchaseOrder from '@/core/interfaces/purchase-order.interface';
 import IUser from '@/core/interfaces/user.interface';
+import moment from 'moment'
+import IPurchaseOrderResponse from '@/core/interfaces/purchase-order/purchase-order-response.interface';
+
 
 export default defineComponent({
   name: 'order-list',
   props: {
     orders: {
       required : true,
-      type: Array as PropType<IPurchaseOrder[]>
+      type: Array as PropType<Array<IPurchaseOrderResponse['simple']>>
     },
     user: {
       required: true,
@@ -34,20 +37,30 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const purchaseOrderSequences = computed(() => {
-        return [...props.orders].sort((a: IPurchaseOrder ) => {
-          if (a.status === props.status) {
+    const timeFormater = ((date: Date | string) => {
+        return date = moment.utc(date).format('MM/DD/YYYY');
+    })
+    
+    const purchaseOrders = computed(() => {
+        return [...props.orders].sort((a: IPurchaseOrderResponse['simple'] ) => {
+          if (a.status === Object.keys(PurchaseStatus)[Object.values(PurchaseStatus).indexOf(props.status)]) {
             return -1
           }
           
-          if (a.status > props.status) {
+          if (a.status < props.status) {
             return 1
           }
-          
+
           return 0
       })
     })
-    return { purchaseOrderSequences }
+    return { purchaseOrders, timeFormater }
+  },
+  methods: {
+    handleOrderRowClick(id: string) {
+      alert(id)
+    }
+    
   }
 })
 </script>
