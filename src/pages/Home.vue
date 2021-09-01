@@ -53,7 +53,7 @@ import IPurchaseOrder from "@/core/interfaces/purchase-order.interface";
 import IName from "@/core/interfaces/name.interface";
 import OrderList from "@/shared/components/OrderList.vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
-import getUserOrder from "@/core/services/user-order.service";
+import { orderService } from "@/core/services/order.service";
 
 export default defineComponent({
   name: "Home",
@@ -83,7 +83,7 @@ export default defineComponent({
     };
 
     onUpdated(() => {
-      getUserOrder().then((value) => {
+      orderService.getUserOrder().then((value) => {
         console.log(value);
         orders.value = value || [];
       });

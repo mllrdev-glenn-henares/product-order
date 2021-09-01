@@ -110,7 +110,7 @@ import { defineComponent, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
 import IOrderDetail from "@/core/interfaces/order-detail.interface";
-import createOrder from "@/core/services/create-order.service";
+import { orderService } from "@/core/services/order.service";
 import router from "@/router";
 
 export default defineComponent({
@@ -151,7 +151,7 @@ export default defineComponent({
     },
     createPurchaseOrder() {
       this.orderDetail.item = this.itemDetails;
-      createOrder(this.orderDetail);
+      orderService.createOrder(this.orderDetail);
       router.push("/home");
     },
   },
