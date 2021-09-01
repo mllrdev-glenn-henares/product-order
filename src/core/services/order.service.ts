@@ -1,15 +1,16 @@
 import { client } from "@/core/services/client.service"
-import IPurchaseOrder from "@/core/interfaces/purchase-order.interface"
-import IOrderDetail from "@/core/interfaces/order-detail.interface";
+import IPurchaseOrder from "../interfaces/purchase-order/purchase-order.interface";
+import IPurchaseOrderResponse from "../interfaces/purchase-order/purchase-order-reponse.interface";
+import IUserRoles from "../interfaces/user-roles.interface";
 
-const getAllOrder = async () => {
+const getAll = async () => { // approver / admin
   return await client({
     data: '',
     method: 'GET',
     url: 'order/all'
   })
     .then( response => {
-      const orders: Array<IPurchaseOrder> = response.data;
+      const orders: Array<IPurchaseOrderResponse['admin']> = response.data;
       return orders
     })
     .catch( error => {
@@ -18,14 +19,14 @@ const getAllOrder = async () => {
     })
 }
 
-const getUserOrder = async () => {
+const getAllByUser = async () => {
   return client({
     data: '',
     method: 'GET',
     url: 'order/user'
   })
     .then( response => {
-      const orders: Array<IPurchaseOrder> = response.data;
+      const orders: Array<IPurchaseOrderResponse['simple']> = response.data;
       return orders
     })
     .catch( error =>{
@@ -34,9 +35,9 @@ const getUserOrder = async () => {
     })
 }
 
-const createOrder = async (orderDetails: IOrderDetail) => {
+const create = async (order: IPurchaseOrder) => {
   return await client({
-    data: orderDetails,
+    data: order,
     method: 'POST',
     url: 'order/createPO'
   })
@@ -48,8 +49,17 @@ const createOrder = async (orderDetails: IOrderDetail) => {
     })
 }
 
-export const orderService = {
-  getAllOrder: getAllOrder,
-  getUserOrder: getUserOrder,
-  createOrder: createOrder
+export const orderService: IUserRoles = {
+  admin: {
+    getAll
+  },
+
+  requestor: {
+    create,
+    getAllByUser
+  },
+  approver: {
+    getAll
+  }
 }
+

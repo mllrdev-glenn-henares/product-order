@@ -1,6 +1,6 @@
 import IItem from "@/core/interfaces/item.interface";
 
-interface IOrderDetail {
+interface IPurchaseOrder {
   item: IItem[],
   supplier: string,
   purchaseDate: Date,
@@ -8,4 +8,4 @@ interface IOrderDetail {
   description: string
 }
 
-export default IOrderDetail
+export default IPurchaseOrder

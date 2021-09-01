@@ -49,11 +49,12 @@ import {
   onUpdated,
   ref,
 } from "vue";
-import IPurchaseOrder from "@/core/interfaces/purchase-order.interface";
+import IPurchaseOrder from "@/core/interfaces/purchase-order/purchase-order.interface";
 import IName from "@/core/interfaces/name.interface";
 import OrderList from "@/shared/components/OrderList.vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import { orderService } from "@/core/services/order.service";
+import IPurchaseOrderResponse from "@/core/interfaces/purchase-order/purchase-order-reponse.interface";
 
 export default defineComponent({
   name: "Home",
@@ -68,7 +69,7 @@ export default defineComponent({
     Toolbar,
   },
   setup() {
-    const orders = ref<IPurchaseOrder[]>([]);
+    const orders = ref<IPurchaseOrderResponse['simple'][]>([]);
 
     const user = ref<IName>({
       firstName: "Jerry",
@@ -83,7 +84,7 @@ export default defineComponent({
     };
 
     onUpdated(() => {
-      orderService.getUserOrder().then((value) => {
+      orderService.requestor.getAllByUser().then((value: IPurchaseOrderResponse['simple'][]) => {
         console.log(value);
         orders.value = value || [];
       });

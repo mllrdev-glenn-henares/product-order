@@ -109,9 +109,9 @@ import { IonContent, IonTitle, IonItem, IonInput } from "@ionic/vue";
 import { defineComponent, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
-import IOrderDetail from "@/core/interfaces/order-detail.interface";
 import { orderService } from "@/core/services/order.service";
 import router from "@/router";
+import IPurchaseOrder from "@/core/interfaces/purchase-order/purchase-order.interface";
 
 export default defineComponent({
   name: "Create",
@@ -127,7 +127,7 @@ export default defineComponent({
 
     const itemDetails = ref<IItem[]>([]);
 
-    const orderDetail = ref<IOrderDetail>({
+    const orderDetail = ref<IPurchaseOrder>({
       item: [],
       supplier: "",
       purchaseDate: new Date(),
@@ -151,7 +151,7 @@ export default defineComponent({
     },
     createPurchaseOrder() {
       this.orderDetail.item = this.itemDetails;
-      orderService.createOrder(this.orderDetail);
+      orderService.requestor.create(this.orderDetail);
       router.push("/home");
     },
   },
