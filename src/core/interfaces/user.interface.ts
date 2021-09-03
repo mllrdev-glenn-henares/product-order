@@ -1,7 +1,6 @@
 import UserRole from "@/core/enums/user-role.enum";
 
 interface IUser {
-
     id: number;
     email: string;
     firstName: string;

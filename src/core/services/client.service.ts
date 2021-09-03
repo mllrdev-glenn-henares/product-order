@@ -1,8 +1,9 @@
 import environment from "@/environments/environment";
 import axios from "axios";
-import IClientRequest from "../interfaces/client-request.interface";
+import SessionStorageKey from "@/core/enums/session-storage-key.enum";
+import IClientRequest from "@/core/interfaces/client-request.interface";
 
-const token = sessionStorage.getItem('token')
+const token = sessionStorage.getItem(SessionStorageKey.TOKEN)
 export function client(request: IClientRequest) {
   return axios({
     method: request.method,
