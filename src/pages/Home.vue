@@ -82,14 +82,12 @@ export default defineComponent({
       role.value = getTokenProperties().role;
       if( role.value === UserRole.REQUESTOR) {
         orderService.requestor.getAllByUser().then((value: IPurchaseOrderResponse['simple'][]) => {
-          console.log(value);
           orders.value = value || [];
         });
       }
       
       if( role.value === UserRole.APPROVER ) {
         orderService.approver.getAll().then((value: IPurchaseOrderResponse['simple'][]) => {
-          console.log(value);
           orders.value = value || [];          
         }); 
       }
