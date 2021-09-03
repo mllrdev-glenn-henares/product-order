@@ -52,7 +52,7 @@ import OrderList from "@/shared/components/OrderList.vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import { orderService } from "@/core/services/order.service";
 import IPurchaseOrderResponse from "@/core/interfaces/purchase-order/purchase-order-response.interface";
-import UserRole from "@/core/enums/user-roles.enum";
+import UserRole from "@/core/enums/user-role.enum";
 import getTokenProperties from "@/core/services/jwt.service";
 
 export default defineComponent({
@@ -80,18 +80,20 @@ export default defineComponent({
 
     onUpdated(() => {
       role.value = getTokenProperties().role;
-      if( role.value === UserRole.REQUESTOR) {
-        orderService.requestor.getAllByUser().then((value: IPurchaseOrderResponse['simple'][]) => {
-          orders.value = value || [];
-        });
+      switch(role.value) {
+        case UserRole.REQUESTOR:
+          orderService.requestor.getAllByUser().then((value: IPurchaseOrderResponse['simple'][]) => {
+            orders.value = value || [];
+          });
+          break;
+          
+        case UserRole.APPROVER:
+          orderService.approver.getAll().then((value: IPurchaseOrderResponse['simple'][]) => {
+            orders.value = value || [];          
+          });
+          break;
+
       }
-      
-      if( role.value === UserRole.APPROVER ) {
-        orderService.approver.getAll().then((value: IPurchaseOrderResponse['simple'][]) => {
-          orders.value = value || [];          
-        }); 
-      }
-      
     });
     return {
       orders,
