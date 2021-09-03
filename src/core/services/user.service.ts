@@ -17,8 +17,8 @@ const login = async (loginDetails: ILoginRequest) => {
             const loginResponse: ILoginResponse = response.data;
             console.log(loginResponse.isSuccessful)
             if (response.data.isSuccessful) {
-                sessionStorage.setItem('key', 'Bearer ' + response.data.token)
-                sessionStorage.setItem('token', response.data.token)
+                sessionStorage.setItem('token', `Bearer ${response.data.token}`)
+                sessionStorage.setItem('user', response.data.token)
                 return true
             }
             return false
