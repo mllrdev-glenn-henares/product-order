@@ -17,7 +17,7 @@ import { defineComponent, PropType, computed } from 'vue'
 import PurchaseStatus from '@/core/enums/status.enum';
 import IUser from '@/core/interfaces/user.interface';
 import moment from 'moment'
-import IPurchaseOrderResponse from '@/core/interfaces/purchase-order/purchase-order-reponse.interface';
+import IPurchaseOrderResponse from '@/core/interfaces/purchase-order/purchase-order-response.interface';
 
 export default defineComponent({
   name: 'order-list',

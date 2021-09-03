@@ -1,7 +1,7 @@
 import IItem from "@/core/interfaces/item.interface";
 
 interface IPurchaseOrder {
-  item: IItem[],
+  items: IItem[],
   supplier: string,
   purchaseDate: Date,
   grandTotal: number,

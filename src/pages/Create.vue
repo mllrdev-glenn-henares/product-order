@@ -128,7 +128,7 @@ export default defineComponent({
     const itemDetails = ref<IItem[]>([]);
 
     const orderDetail = ref<IPurchaseOrder>({
-      item: [],
+      items: [],
       supplier: "",
       purchaseDate: new Date(),
       grandTotal: 0,
@@ -150,7 +150,7 @@ export default defineComponent({
       this.item = {} as IItem;
     },
     createPurchaseOrder() {
-      this.orderDetail.item = this.itemDetails;
+      this.orderDetail.items = this.itemDetails;
       orderService.requestor.create(this.orderDetail);
       router.push("/home");
     },
