@@ -1,11 +1,10 @@
 import jwtDecode from "jwt-decode"
 import IUser from "@/core/interfaces/user.interface";
 
-const token = sessionStorage.getItem('token') as string
-function getTokenProperties() {
-  const payload: IUser = JSON.parse(JSON.stringify(jwtDecode(token)))
-  console.log(payload);
-  return payload
+const userPayload: string  = sessionStorage.getItem('user')!!;
+function getUserFromPayload() {
+  const user: IUser = JSON.parse(JSON.stringify(jwtDecode(userPayload)))
+  return user
 }
 
-export default getTokenProperties
+export default getUserFromPayload
