@@ -59,7 +59,7 @@ const purchaseStatusUpdate = async(statusUpdate: IChangePurchaseStatus) => {
     .then(() => {
       return true
     })
-    .catch((error) => {
+    .catch(() => {
       return false
     })
 }
