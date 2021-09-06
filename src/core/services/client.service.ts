@@ -2,7 +2,7 @@ import environment from "@/environments/environment";
 import axios from "axios";
 import SessionStorageKey from "@/core/enums/session-storage-key.enum";
 import IClientRequest from "@/core/interfaces/client-request.interface";
-import IError from "../interfaces/error.interface";
+import IError from "@/core/interfaces/error.interface";
 
 const token = sessionStorage.getItem(SessionStorageKey.TOKEN)
 export function client(request: IClientRequest) {
@@ -14,7 +14,6 @@ export function client(request: IClientRequest) {
       'Authorization': token
     }
   }).then(response => {
-    console.log(response);
     const error: IError = response.data
     if (error.errorCode) {
       throw error;

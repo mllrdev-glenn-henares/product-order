@@ -1,8 +1,8 @@
 import { client } from "@/core/services/client.service"
 import IPurchaseOrder from "../interfaces/purchase-order/purchase-order.interface";
 import IPurchaseOrderResponse from "../interfaces/purchase-order/purchase-order-response.interface";
-import IUserRoles from "../interfaces/user-roles.interface";
-import IChangePurchaseStatus from "../interfaces/purchase-order/purchase-order-request.interface";
+import IUserRoles from "@/core/interfaces/user-roles.interface";
+import IChangePurchaseStatus from "@/core/interfaces/purchase-order/purchase-order-request.interface";
 
 const getAll = async () => {
   return await client({
@@ -48,10 +48,6 @@ const create = async (order: IPurchaseOrder) => {
     .catch( error => {
       console.log(error)
     })
-}
-
-interface PurchaseOrderResponseTest {
-  id?: string;
 }
 
 const purchaseStatusUpdate = async(statusUpdate: IChangePurchaseStatus) => {

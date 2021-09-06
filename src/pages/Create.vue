@@ -147,7 +147,7 @@ export default defineComponent({
 
 
     const orderStatusUpdate = ref<IPurchaseOrderRequest['approver']>({
-      id: 'PO-000002',
+      id: '',
       orderDetails: {
         status: PurchaseStatus.PENDING
       } 
