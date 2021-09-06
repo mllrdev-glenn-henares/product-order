@@ -14,7 +14,7 @@
         <ion-button button @click="handleClick(PurchaseStatus.DENIED)"
           >Declined</ion-button
         >
-        <ion-button button @click="handleClick(PurchaseStatus.CLOSE)"
+        <ion-button button @click="handleClick(PurchaseStatus.CLOSED)"
           >Closed</ion-button
         >
       </div>
