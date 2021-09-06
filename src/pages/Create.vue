@@ -181,7 +181,6 @@ export default defineComponent({
     declinePurchaseOrder() {
       this.orderStatusUpdate.orderDetails.status = PurchaseStatus.DENIED;
       orderService.approver.purchaseStatusUpdate(this.orderStatusUpdate);
-      console.log(this.orderStatusUpdate.orderDetails);
     }
   },
 });

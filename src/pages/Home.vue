@@ -11,7 +11,7 @@
         <ion-button button @click="handleClick(PurchaseStatus.APPROVED)"
           >Approve</ion-button
         >
-        <ion-button button @click="handleClick(PurchaseStatus.DECLINED)"
+        <ion-button button @click="handleClick(PurchaseStatus.DENIED)"
           >Declined</ion-button
         >
         <ion-button button @click="handleClick(PurchaseStatus.CLOSE)"

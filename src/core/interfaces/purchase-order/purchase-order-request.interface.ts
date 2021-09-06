@@ -5,10 +5,8 @@ interface IChangePurchaseStatus {
   id: string,
   orderDetails: {
     status: PurchaseStatus;
-    
   }
 }
-
 export default interface IPurchaseOrderRequest extends IUserRoles {
   admin: IChangePurchaseStatus,
   approver: IChangePurchaseStatus, 
