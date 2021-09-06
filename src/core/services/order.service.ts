@@ -50,17 +50,21 @@ const create = async (order: IPurchaseOrder) => {
     })
 }
 
+interface PurchaseOrderResponseTest {
+  id?: string;
+}
+
 const purchaseStatusUpdate = async(statusUpdate: IChangePurchaseStatus) => {
   return await client({
     data: statusUpdate,
     method: 'PATCH',
     url: 'order/updateOrder'
   })
-    .then( response => {
-      console.log(response.data.message);
+    .then(() => {
+      return true
     })
-    .catch( error => {
-      console.log(error)
+    .catch((error) => {
+      return false
     })
 }
 

@@ -2,7 +2,7 @@ enum PurchaseStatus {
     PENDING = 'PENDING',
     APPROVED = 'APPROVED',
     DENIED = 'DENIED',
-    CLOSE = 'CLOSE'
+    CLOSE = 'CLOSED'
 }
 
 export default PurchaseStatus

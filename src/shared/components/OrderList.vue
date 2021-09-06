@@ -59,7 +59,6 @@ export default defineComponent({
   },
   methods: {
     handleOrderRowClick(id: string) {
-      alert(id);
       router.push("/create");
     }
     

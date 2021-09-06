@@ -147,7 +147,7 @@ export default defineComponent({
 
 
     const orderStatusUpdate = ref<IPurchaseOrderRequest['approver']>({
-      id: '',
+      id: 'PO-000002',
       orderDetails: {
         status: PurchaseStatus.PENDING
       } 
@@ -180,7 +180,17 @@ export default defineComponent({
     },
     declinePurchaseOrder() {
       this.orderStatusUpdate.orderDetails.status = PurchaseStatus.DENIED;
-      orderService.approver.purchaseStatusUpdate(this.orderStatusUpdate);
+      orderService.approver.purchaseStatusUpdate(this.orderStatusUpdate).then((confirm: boolean) => {
+        switch(confirm){
+          case true:
+            alert(`${this.orderStatusUpdate.id} have been denied`)
+            break;
+          case false:
+            alert('PO status update failed')
+            break;
+        }
+        
+      });
     }
   },
 });
