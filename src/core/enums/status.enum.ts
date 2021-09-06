@@ -1,8 +1,8 @@
 enum PurchaseStatus {
-    PENDING = 'pending',
-    APPROVED = 'approved',
-    DECLINED = 'declined',
-    CLOSE = 'close'
+    PENDING = 'PENDING',
+    APPROVED = 'APPROVED',
+    DENIED = 'DENIED',
+    CLOSE = 'CLOSE'
 }
 
 export default PurchaseStatus
