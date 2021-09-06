@@ -180,8 +180,8 @@ export default defineComponent({
     },
     declinePurchaseOrder() {
       this.orderStatusUpdate.orderDetails.status = PurchaseStatus.DENIED;
-      orderService.approver.purchaseStatusUpdate(this.orderStatusUpdate).then((confirm: boolean) => {
-        switch(confirm){
+      orderService.approver.purchaseStatusUpdate(this.orderStatusUpdate).then((success: boolean) => {
+        switch(success){
           case true:
             alert(`${this.orderStatusUpdate.id} have been denied`)
             break;
