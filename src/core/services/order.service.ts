@@ -1,7 +1,8 @@
 import { client } from "@/core/services/client.service"
-import IPurchaseOrder from "@/core/interfaces/purchase-order/purchase-order.interface";
-import IPurchaseOrderResponse from "@/core/interfaces/purchase-order/purchase-order-response.interface";
+import IPurchaseOrder from "../interfaces/purchase-order/purchase-order.interface";
+import IPurchaseOrderResponse from "../interfaces/purchase-order/purchase-order-response.interface";
 import IUserRoles from "@/core/interfaces/user-roles.interface";
+import IChangePurchaseStatus from "@/core/interfaces/purchase-order/purchase-order-request.interface";
 
 const getAll = async () => {
   return await client({
@@ -77,6 +78,20 @@ const edit = async (order: IPurchaseOrder) => {
     })
 }
 
+const purchaseStatusUpdate = async(statusUpdate: IChangePurchaseStatus) => {
+  return await client({
+    data: statusUpdate,
+    method: 'PATCH',
+    url: 'order/updateOrder'
+  })
+    .then(() => {
+      return true
+    })
+    .catch(() => {
+      return false
+    })
+}
+
 export const orderService: IUserRoles = {
   admin: {
     getAll
@@ -88,7 +103,8 @@ export const orderService: IUserRoles = {
     getOrder
   },
   approver: {
-    getAll
+    getAll,
+    purchaseStatusUpdate
   }
 }
 

@@ -98,20 +98,30 @@
           ></ion-input>
         </h3>
       </ion-text>
-      <ion-button class="submitButton" button type="submit">Create</ion-button>
-      <ion-button class="cancelButton" button href="/home">Cancel</ion-button>
+      <div v-if="role === UserRole.REQUESTOR">
+        <ion-button class="submitButton" button type="submit">Create</ion-button>
+        <ion-button class="cancelButton" button href="/home">Cancel</ion-button>
+      </div>
     </form>
+    <div v-if="role === UserRole.APPROVER">
+      <ion-button id="declineButton" @click="declinePurchaseOrder()">DECLINE</ion-button>
+    </div>
+    
   </ion-content>
 </template>
 
 <script lang="ts">
 import { IonContent, IonTitle, IonItem, IonInput } from "@ionic/vue";
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
 import { orderService } from "@/core/services/order.service";
 import router from "@/router";
 import IPurchaseOrder from "@/core/interfaces/purchase-order/purchase-order.interface";
+import IPurchaseOrderRequest from "@/core/interfaces/purchase-order/purchase-order-request.interface";
+import PurchaseStatus from "@/core/enums/status.enum";
+import UserRole from "@/core/enums/user-role.enum";
+import getUserFromPayload from "@/core/services/jwt.service";
 
 export default defineComponent({
   name: "Create",
@@ -135,7 +145,21 @@ export default defineComponent({
       description: "",
     });
 
-    return { itemDetails, item, orderDetail };
+
+    const orderStatusUpdate = ref<IPurchaseOrderRequest['approver']>({
+      id: '',
+      orderDetails: {
+        status: PurchaseStatus.PENDING
+      } 
+    });
+
+    const role = ref<UserRole>()
+
+    onMounted(() =>{
+      role.value = getUserFromPayload().role;
+    })
+
+    return { itemDetails, item, orderDetail, orderStatusUpdate, role, UserRole };
   },
   methods: {
     addItemDetail() {
@@ -151,10 +175,23 @@ export default defineComponent({
     },
     createPurchaseOrder() {
       this.orderDetail.items = this.itemDetails;
-      console.log(this.orderDetail)
       orderService.requestor.create(this.orderDetail);
       router.push("/home");
     },
+    declinePurchaseOrder() {
+      this.orderStatusUpdate.orderDetails.status = PurchaseStatus.DENIED;
+      orderService.approver.purchaseStatusUpdate(this.orderStatusUpdate).then((success: boolean) => {
+        switch(success){
+          case true:
+            alert(`${this.orderStatusUpdate.id} have been denied`)
+            break;
+          case false:
+            alert('PO status update failed')
+            break;
+        }
+        
+      });
+    }
   },
 });
 </script>
@@ -205,4 +242,9 @@ ion-input {
 h3 {
   margin-left: 75%;
 }
+#declineButton{
+  margin-left: 75%;
+  display: inline-block;
+}
+
 </style>

@@ -2,7 +2,13 @@ import ILoginRequest from "@/core/interfaces/login/login-request.interface"
 import ILoginResponse from "@/core/interfaces/login/login-response.interface"
 import ISignUpResponse from "@/core/interfaces/signup/sign-up-response.interface"
 import { client } from "./client.service"
+<<<<<<< HEAD
 import ISignUpRequest from "@/core/interfaces/signup/sign-up-request.interface"
+import SessionStorageKey from "../enums/session-storage-key.enum"
+=======
+import ISignUpRequest from "../interfaces/signup/sign-up-request.interface"
+import SessionStorageKey from "../enums/session-storage-key.enum"
+>>>>>>> origin-ssh/develop
 
 const USER = "user";
 
@@ -16,7 +22,8 @@ const login = async (loginDetails: ILoginRequest) => {
         .then(function (response) {
             const loginResponse: ILoginResponse = response.data;
             if (response.data.isSuccessful) {
-                sessionStorage.setItem('token', 'Bearer ' + response.data.token)
+                sessionStorage.setItem(SessionStorageKey.TOKEN, `Bearer ${response.data.token}`)
+                sessionStorage.setItem(SessionStorageKey.USER, response.data.token)
                 return true
             }
             return false

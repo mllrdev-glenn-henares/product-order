@@ -1,18 +1,11 @@
-import jwtDecode from "jwt-decode";
-import IJWTResponse from "@/core/interfaces/jwt-response.interface";
+import jwtDecode from "jwt-decode"
+import IUser from "@/core/interfaces/user.interface";
+import SessionStorageKey from "@/core/enums/session-storage-key.enum";
 
-const token = sessionStorage.getItem("token")!;
-const payload: IJWTResponse= JSON.parse(JSON.stringify(jwtDecode(token)))
-
-export function getTokenProperties() {
-    console.log(payload)
-    return payload
+const userPayload: string  = sessionStorage.getItem(SessionStorageKey.USER)!!;
+function getUserFromPayload() {
+  const user: IUser = JSON.parse(JSON.stringify(jwtDecode(userPayload)))
+  return user
 }
 
-export function isAuthenticated() {
-    if (Date.now() >= payload.exp *1000) {
-        return false
-    }
-    sessionStorage.removeItem('token')
-    return true
-}
+export default getUserFromPayload

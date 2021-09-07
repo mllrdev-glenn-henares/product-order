@@ -20,7 +20,6 @@ import moment from 'moment'
 import IPurchaseOrderResponse from '@/core/interfaces/purchase-order/purchase-order-response.interface';
 import router from '@/router';
 
-
 export default defineComponent({
   name: 'order-list',
   props: {

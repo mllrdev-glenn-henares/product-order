@@ -11,10 +11,10 @@
         <ion-button button @click="handleClick(PurchaseStatus.APPROVED)"
           >Approve</ion-button
         >
-        <ion-button button @click="handleClick(PurchaseStatus.DECLINED)"
+        <ion-button button @click="handleClick(PurchaseStatus.DENIED)"
           >Declined</ion-button
         >
-        <ion-button button @click="handleClick(PurchaseStatus.CLOSE)"
+        <ion-button button @click="handleClick(PurchaseStatus.CLOSED)"
           >Closed</ion-button
         >
       </div>
@@ -28,8 +28,7 @@
         </ion-row>
       </ion-grid>
       <order-list :orders="orders" :status="status" />
-      <list-jerry :user="user" />
-      <ion-button id="addButton" href="/create">add Icon</ion-button>
+      <ion-button id="addButton" href="/create" v-if="role === UserRole.REQUESTOR">add Icon</ion-button>
     </ion-content>
   </ion-page>
 </template>
@@ -50,11 +49,15 @@ import {
   onUpdated,
   ref,
 } from "vue";
-import IName from "@/core/interfaces/name.interface";
 import OrderList from "@/shared/components/OrderList.vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import { orderService } from "@/core/services/order.service";
 import IPurchaseOrderResponse from "@/core/interfaces/purchase-order/purchase-order-response.interface";
+<<<<<<< HEAD
+=======
+import UserRole from "@/core/enums/user-role.enum";
+import getTokenProperties from "@/core/services/jwt.service";
+>>>>>>> origin-ssh/develop
 
 export default defineComponent({
   name: "Home",
@@ -71,30 +74,46 @@ export default defineComponent({
   setup() {
     const orders = ref<IPurchaseOrderResponse['simple'][]>([]);
 
-    const user = ref<IName>({
-      firstName: "Jerry",
-      lastName: "Bayoneta",
-      middleName: "Gutual",
-    });
-
     const status = ref<PurchaseStatus>(PurchaseStatus.PENDING);
 
     const handleClick = (term: PurchaseStatus) => {
       status.value = term;
     };
 
+<<<<<<< HEAD
     onMounted(() => {
       orderService.requestor.getAllByUser().then((value: IPurchaseOrderResponse['simple'][]) => {
         console.log(value);
         orders.value = value || [];
       });
+=======
+    const role = ref<UserRole>()
+
+    onUpdated(() => {
+      role.value = getTokenProperties().role;
+      switch(role.value) {
+        case UserRole.REQUESTOR:
+          orderService.requestor.getAllByUser().then((value: IPurchaseOrderResponse['simple'][]) => {
+            orders.value = value || [];
+          });
+          break;
+          
+        case UserRole.APPROVER:
+          orderService.approver.getAll().then((value: IPurchaseOrderResponse['simple'][]) => {
+            orders.value = value || [];          
+          });
+          break;
+
+      }
+>>>>>>> origin-ssh/develop
     });
     return {
       orders,
-      user,
       handleClick,
       PurchaseStatus,
       status,
+      role,
+      UserRole,
       nested: {
         orders
       }
@@ -133,5 +152,8 @@ ion-grid {
 }
 .filterButton {
   margin-left: 5%;
+}
+h1 {
+  color:black
 }
 </style>
