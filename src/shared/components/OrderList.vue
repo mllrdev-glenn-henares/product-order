@@ -18,6 +18,7 @@ import PurchaseStatus from '@/core/enums/status.enum';
 import IUser from '@/core/interfaces/user.interface';
 import moment from 'moment'
 import IPurchaseOrderResponse from '@/core/interfaces/purchase-order/purchase-order-response.interface';
+import router from '@/router';
 
 
 export default defineComponent({
@@ -58,9 +59,13 @@ export default defineComponent({
   },
   methods: {
     handleOrderRowClick(id: string) {
-      alert(id)
-    }
-    
+      router.push({
+        name: 'View',
+        params: {
+          orderId: id
+        }
+      })
+    } 
   }
 })
 </script>

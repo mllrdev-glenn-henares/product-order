@@ -1,11 +1,11 @@
 import IItem from "@/core/interfaces/item.interface";
 
 interface IPurchaseOrder {
-  item: IItem[],
+  items: IItem[],
   supplier: string,
   purchaseDate: Date,
   grandTotal: number,
-  description: string
+  description: string 
 }
 
 export default IPurchaseOrder

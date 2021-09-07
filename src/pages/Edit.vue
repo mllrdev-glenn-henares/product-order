@@ -109,7 +109,8 @@ import { IonContent, IonTitle, IonItem, IonInput } from "@ionic/vue";
 import { defineComponent, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
-import IOrderDetail from "@/core/interfaces/order-detail.interface";
+import IPurchaseOrder from "@/core/interfaces/purchase-order/purchase-order.interface";
+import {useRouter} from "vue-router"
 
 export default defineComponent({
   name: "Create",
@@ -121,26 +122,14 @@ export default defineComponent({
     IonInput,
   },
   setup() {
+    const router = useRouter();
+
     const item = ref<IItem>({} as IItem);
 
     const itemDetails = ref<IItem[]>([]);
 
-    const sampleOrder: IOrderDetail = {
-      item: [
-        {
-          name: "Pencil",
-          unitPrice: 5,
-          quantity: 5,
-          subTotal: 0,
-        },
-      ],
-      supplier: "Rob",
-      purchaseDate: new Date(),
-      grandTotal: 0,
-      description: "description here",
-    };
-    const orderDetail = ref<IOrderDetail>({
-      item: [],
+    const orderDetail = ref<IPurchaseOrder>({
+      items: [],
       supplier: "",
       purchaseDate: new Date(),
       grandTotal: 0,
@@ -165,6 +154,9 @@ export default defineComponent({
       console.log(this.orderDetail);
     },
   },
+  created() {
+    console.log(this.$route.params.orderId)
+  }
 });
 </script>
 

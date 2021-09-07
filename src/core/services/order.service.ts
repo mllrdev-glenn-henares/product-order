@@ -9,27 +9,41 @@ const getAll = async () => {
     method: 'GET',
     url: 'order/all'
   })
-    .then( response => {
+    .then(response => {
       const orders: Array<IPurchaseOrderResponse['admin']> = response.data;
       return orders
     })
-    .catch( error => {
+    .catch(error => {
       console.log(error)
       return null
     })
 }
-
+const getOrder = async (orderId: string) => {
+  return await client({
+    data: '',
+    method: 'GET',
+    url: `order/${orderId}/orderDetails`
+  })
+    .then(response => {
+      const orders: IPurchaseOrder = response.data;
+      return orders
+    })
+    .catch(error => {
+      console.log(error)
+      return null
+    })
+}
 const getAllByUser = async () => {
   return client({
     data: '',
     method: 'GET',
     url: 'order/user'
   })
-    .then( response => {
+    .then(response => {
       const orders: Array<IPurchaseOrderResponse['simple']> = response.data;
       return orders
     })
-    .catch( error =>{
+    .catch(error => {
       console.log(error)
       return null
     })
@@ -41,10 +55,24 @@ const create = async (order: IPurchaseOrder) => {
     method: 'POST',
     url: 'order/createPO'
   })
-    .then( response => {
+    .then(response => {
       console.log(response.data.message)
     })
-    .catch( error => {
+    .catch(error => {
+      console.log(error)
+    })
+}
+
+const edit = async (order: IPurchaseOrder) => {
+  return await client({
+    data: order,
+    method: 'PUT',
+    url: 'order/editPO'
+  })
+    .then(response => {
+      console.log(response.data.message)
+    })
+    .catch(error => {
       console.log(error)
     })
 }
@@ -56,7 +84,8 @@ export const orderService: IUserRoles = {
 
   requestor: {
     create,
-    getAllByUser
+    getAllByUser,
+    getOrder
   },
   approver: {
     getAll

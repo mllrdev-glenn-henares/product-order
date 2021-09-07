@@ -46,6 +46,7 @@ import {
 } from "@ionic/vue";
 import {
   defineComponent,
+  onMounted,
   onUpdated,
   ref,
 } from "vue";
@@ -53,7 +54,7 @@ import IName from "@/core/interfaces/name.interface";
 import OrderList from "@/shared/components/OrderList.vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import { orderService } from "@/core/services/order.service";
-import IPurchaseOrderResponse from "@/core/interfaces/purchase-order/purchase-order-reponse.interface";
+import IPurchaseOrderResponse from "@/core/interfaces/purchase-order/purchase-order-response.interface";
 
 export default defineComponent({
   name: "Home",
@@ -82,7 +83,7 @@ export default defineComponent({
       status.value = term;
     };
 
-    onUpdated(() => {
+    onMounted(() => {
       orderService.requestor.getAllByUser().then((value: IPurchaseOrderResponse['simple'][]) => {
         console.log(value);
         orders.value = value || [];

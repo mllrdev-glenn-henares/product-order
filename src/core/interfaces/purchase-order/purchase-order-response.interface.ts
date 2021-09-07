@@ -1,6 +1,6 @@
 import PurchaseStatus from "@/core/enums/status.enum";
-import IUserRoles from "../user-roles.interface";
-import IPurchaseOrder from "./purchase-order.interface";
+import IUserRoles from "@/core/interfaces/user-roles.interface";
+import IPurchaseOrder from "@/core/interfaces/purchase-order/purchase-order.interface";
 
 interface ISimple {
   id: string,

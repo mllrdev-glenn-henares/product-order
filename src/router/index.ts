@@ -6,6 +6,8 @@ import Home from "@/pages/Home.vue";
 import Login from "@/pages/Login.vue";
 import Register from "@/pages/Register.vue";
 import Create from "@/pages/Create.vue"
+import Edit from "@/pages/Edit.vue"
+import View from "@/pages/ViewOrder.vue"
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -34,6 +36,16 @@ const routes: Array<RouteRecordRaw> = [
     name: RouteName.CREATE,
     component: Create,
   },
+  {
+    path: "/edit",
+    name: RouteName.EDIT,
+    component: Edit,
+  },
+  {
+    path: "/view-order",
+    name: RouteName.VIEW,
+    component: View,
+  }
 ];
 
 const router = createRouter({
