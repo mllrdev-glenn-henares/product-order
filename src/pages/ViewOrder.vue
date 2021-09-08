@@ -30,14 +30,14 @@
           <ion-col />
           <ion-col />
           <ion-col />
-          <ion-col>{{ orderDetail.grandTotal }}</ion-col>
+          <ion-col>
+            <h3>{{ orderDetail.grandTotal }}</h3>
+          </ion-col>
         </ion-row>
       </ion-grid>
       <hr />
-      <ion-button @click="onEdit(this.$route.params.orderId)">
-        Edit
-      </ion-button>
-      <ion-button>Cancel</ion-button>
+      <ion-button class="submitButton" button @click="onEdit()"> Edit </ion-button>
+      <ion-button class="cancelButton" button href="/home">Cancel</ion-button>
     </ion-content>
   </ion-page>
 </template>
@@ -47,10 +47,9 @@ import { IonContent } from "@ionic/vue";
 import { defineComponent, onMounted, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
-import IPurchaseOrder from "@/core/interfaces/purchase-order/purchase-order.interface";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { orderService } from "@/core/services/order.service";
-import IPurchaseOrderResponse from "@/core/interfaces/purchase-order/purchase-order-response.interface";
+import IPurchaseOrderRequest from "@/core/interfaces/purchase-order/purchase-order-request.interface";
 
 export default defineComponent({
   name: "Create",
@@ -60,37 +59,36 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-
+    const route = useRoute();
     const item = ref<IItem>({} as IItem);
+    const itemDetails = ref<IPurchaseOrderRequest["IEditItems"][]>([]);
 
-    const itemDetails = ref<IItem[]>([]);
-
-    const orderDetail = ref<IPurchaseOrder>({
-      items: [],
-      supplier: "",
-      purchaseDate: new Date(),
-      grandTotal: 0,
+    const orderDetail = ref<IPurchaseOrderRequest["requestor"]>({
+      orderId: "",
       description: "",
+      purchaseDate: new Date(),
+      supplier: "",
+      orderItems: itemDetails.value,
+      grandTotal: 0,
     });
     onMounted(() => {
       orderService.requestor
-        .getOrder("PO-000001")
-        .then((value: any) => {
-         console.log(value.supplier)
-         console.log(orderDetail.value)
-         orderDetail.value = value
-         itemDetails.value = value.orderItems
+        .getOrder(route.params.orderId)
+        .then((value: IPurchaseOrderRequest["requestor"]) => {
+          console.log(value);
+          orderDetail.value = value;
+          itemDetails.value = value.orderItems;
         });
     });
-    const onEdit = (id: string | string[]) => {
+    const onEdit = () => {
       router.push({
         name: "Edit",
-        params: {
-          orderId: id,
-        },
       });
     };
     return { itemDetails, item, orderDetail, onEdit };
+  },
+  created() {
+    console.log(this.$route.params.orderId);
   },
 });
 </script>

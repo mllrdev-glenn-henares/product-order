@@ -99,14 +99,17 @@
         </h3>
       </ion-text>
       <div v-if="role === UserRole.REQUESTOR">
-        <ion-button class="submitButton" button type="submit">Create</ion-button>
+        <ion-button class="submitButton" button type="submit"
+          >Create</ion-button
+        >
         <ion-button class="cancelButton" button href="/home">Cancel</ion-button>
       </div>
     </form>
     <div v-if="role === UserRole.APPROVER">
-      <ion-button id="declineButton" @click="declinePurchaseOrder()">DECLINE</ion-button>
+      <ion-button id="declineButton" @click="declinePurchaseOrder()"
+        >DECLINE</ion-button
+      >
     </div>
-    
   </ion-content>
 </template>
 
@@ -145,21 +148,27 @@ export default defineComponent({
       description: "",
     });
 
-
-    const orderStatusUpdate = ref<IPurchaseOrderRequest['approver']>({
-      id: '',
+    const orderStatusUpdate = ref<IPurchaseOrderRequest["approver"]>({
+      id: "",
       orderDetails: {
-        status: PurchaseStatus.PENDING
-      } 
+        status: PurchaseStatus.PENDING,
+      },
     });
 
-    const role = ref<UserRole>()
+    const role = ref<UserRole>();
 
-    onMounted(() =>{
+    onMounted(() => {
       role.value = getUserFromPayload().role;
-    })
+    });
 
-    return { itemDetails, item, orderDetail, orderStatusUpdate, role, UserRole };
+    return {
+      itemDetails,
+      item,
+      orderDetail,
+      orderStatusUpdate,
+      role,
+      UserRole,
+    };
   },
   methods: {
     addItemDetail() {
@@ -180,18 +189,19 @@ export default defineComponent({
     },
     declinePurchaseOrder() {
       this.orderStatusUpdate.orderDetails.status = PurchaseStatus.DENIED;
-      orderService.approver.purchaseStatusUpdate(this.orderStatusUpdate).then((success: boolean) => {
-        switch(success){
-          case true:
-            alert(`${this.orderStatusUpdate.id} have been denied`)
-            break;
-          case false:
-            alert('PO status update failed')
-            break;
-        }
-        
-      });
-    }
+      orderService.approver
+        .purchaseStatusUpdate(this.orderStatusUpdate)
+        .then((success: boolean) => {
+          switch (success) {
+            case true:
+              alert(`${this.orderStatusUpdate.id} have been denied`);
+              break;
+            case false:
+              alert("PO status update failed");
+              break;
+          }
+        });
+    },
   },
 });
 </script>
@@ -242,9 +252,8 @@ ion-input {
 h3 {
   margin-left: 75%;
 }
-#declineButton{
+#declineButton {
   margin-left: 75%;
   display: inline-block;
 }
-
 </style>

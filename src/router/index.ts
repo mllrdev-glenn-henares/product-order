@@ -37,12 +37,12 @@ const routes: Array<RouteRecordRaw> = [
     component: Create,
   },
   {
-    path: "/edit",
+    path: "/edit-order/:orderId",
     name: RouteName.EDIT,
     component: Edit,
   },
   {
-    path: "/view-order",
+    path: "/view-order/:orderId",
     name: RouteName.VIEW,
     component: View,
   }
@@ -56,7 +56,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const publicPages = ['/login', '/register']
   const authRequired = !publicPages.includes(to.path)
-  const loggedIn = sessionStorage.getItem('token')
+  const loggedIn = sessionStorage.getItem('TOKEN')
 
   if (authRequired && !loggedIn) {
     return next('/login')

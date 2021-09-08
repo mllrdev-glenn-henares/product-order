@@ -53,11 +53,8 @@ import OrderList from "@/shared/components/OrderList.vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import { orderService } from "@/core/services/order.service";
 import IPurchaseOrderResponse from "@/core/interfaces/purchase-order/purchase-order-response.interface";
-<<<<<<< HEAD
-=======
 import UserRole from "@/core/enums/user-role.enum";
 import getTokenProperties from "@/core/services/jwt.service";
->>>>>>> origin-ssh/develop
 
 export default defineComponent({
   name: "Home",
@@ -80,13 +77,6 @@ export default defineComponent({
       status.value = term;
     };
 
-<<<<<<< HEAD
-    onMounted(() => {
-      orderService.requestor.getAllByUser().then((value: IPurchaseOrderResponse['simple'][]) => {
-        console.log(value);
-        orders.value = value || [];
-      });
-=======
     const role = ref<UserRole>()
 
     onUpdated(() => {
@@ -105,7 +95,6 @@ export default defineComponent({
           break;
 
       }
->>>>>>> origin-ssh/develop
     });
     return {
       orders,
