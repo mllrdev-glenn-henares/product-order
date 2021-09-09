@@ -98,7 +98,7 @@
           ></ion-input>
         </h3>
       </ion-text>
-      <ion-button class="submitButton" button type="submit">Create</ion-button>
+      <ion-button class="submitButton" @click="onSubmitEdit()">Edit</ion-button>
       <ion-button class="cancelButton" button href="/home">Cancel</ion-button>
     </form>
   </ion-content>
@@ -106,11 +106,13 @@
 
 <script lang="ts">
 import { IonContent, IonTitle, IonItem, IonInput } from "@ionic/vue";
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
-import IPurchaseOrder from "@/core/interfaces/purchase-order/purchase-order.interface";
-import {useRouter} from "vue-router"
+import { useRoute, useRouter } from "vue-router";
+import { orderService } from "@/core/services/order.service";
+import router from "@/router";
+import IPurchaseOrderRequest from "@/core/interfaces/purchase-order/purchase-order-request.interface";
 
 export default defineComponent({
   name: "Create",
@@ -121,22 +123,35 @@ export default defineComponent({
     IonItem,
     IonInput,
   },
+
   setup() {
     const router = useRouter();
+    const route = useRoute();
+    const orderIdParam = route.params.orderId
+    const item = ref<IPurchaseOrderRequest['IEditItems']>({} as IPurchaseOrderRequest['IEditItems']);
 
-    const item = ref<IItem>({} as IItem);
+    const itemDetails = ref<IPurchaseOrderRequest['IEditItems'][]>([]);
 
-    const itemDetails = ref<IItem[]>([]);
-
-    const orderDetail = ref<IPurchaseOrder>({
-      items: [],
-      supplier: "",
-      purchaseDate: new Date(),
-      grandTotal: 0,
+    const orderDetail = ref<IPurchaseOrderRequest['requestor']>({
+      orderId: '',
       description: "",
+      purchaseDate: new Date(),
+      supplier: "",
+      orderItems: [],
+      grandTotal: 0
     });
 
-    return { itemDetails, item, orderDetail };
+    onMounted(() => {
+      orderService.requestor
+        .getOrder(orderIdParam)
+        .then((value: any) => {
+          console.log(value.orderItems);
+          orderDetail.value = value;
+          itemDetails.value = value.orderItems;
+        });
+    });
+
+    return { itemDetails, item, orderDetail, router };
   },
   methods: {
     addItemDetail() {
@@ -148,15 +163,22 @@ export default defineComponent({
         this.orderDetail.grandTotal += item.subTotal || 0;
       });
 
-      this.item = {} as IItem;
+      this.item = {} as IPurchaseOrderRequest['IEditItems'];
     },
     createPurchaseOrder() {
       console.log(this.orderDetail);
     },
+    onSubmitEdit() {
+      orderService.requestor.edit(this.orderDetail).then((isSuccess: boolean) => {
+        if (isSuccess) {
+          router.push("/home");
+        }
+        else {
+          alert("Failed to edit.")
+        }
+      });
+    },
   },
-  created() {
-    console.log(this.$route.params.orderId)
-  }
 });
 </script>
 

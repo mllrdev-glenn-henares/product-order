@@ -3,7 +3,7 @@ import IPurchaseOrder from "../interfaces/purchase-order/purchase-order.interfac
 import IPurchaseOrderResponse from "../interfaces/purchase-order/purchase-order-response.interface";
 import IUserRoles from "@/core/interfaces/user-roles.interface";
 import IChangePurchaseStatus from "@/core/interfaces/purchase-order/purchase-order-request.interface";
-
+import IEditPurchaseOrder from "@/core/interfaces/purchase-order/purchase-order-request.interface"
 const getAll = async () => {
   return await client({
     data: '',
@@ -64,21 +64,29 @@ const create = async (order: IPurchaseOrder) => {
     })
 }
 
-const edit = async (order: IPurchaseOrder) => {
+const edit = async (order: IEditPurchaseOrder['requestor']) => {
   return await client({
     data: order,
     method: 'PUT',
-    url: 'order/editPO'
+    url: 'order/updatePurchaseOrder'
   })
     .then(response => {
-      console.log(response.data.message)
+      if (response.data.isSuccessful) {
+        console.log(response.data)
+        return true
+      }
+      else {
+        return false
+      }
     })
     .catch(error => {
       console.log(error)
+      return false
     })
+  return false
 }
 
-const purchaseStatusUpdate = async(statusUpdate: IChangePurchaseStatus) => {
+const purchaseStatusUpdate = async (statusUpdate: IChangePurchaseStatus) => {
   return await client({
     data: statusUpdate,
     method: 'PATCH',
@@ -100,7 +108,8 @@ export const orderService: IUserRoles = {
   requestor: {
     create,
     getAllByUser,
-    getOrder
+    getOrder,
+    edit
   },
   approver: {
     getAll,
