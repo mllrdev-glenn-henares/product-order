@@ -1,7 +1,7 @@
 <template>
   <Toolbar title-text="Create" />
   <ion-content>
-    <form class="mainCreate" @submit.prevent="createPurchaseOrder">
+    <form class="mainCreate" @submit.prevent="updateOrder">
       <ion-title>
         <h1>Purchase Order</h1>
       </ion-title>
@@ -44,7 +44,7 @@
         <ion-col>Unit Price</ion-col>
         <ion-col>Sub-Total</ion-col>
       </ion-row>
-      <ion-row v-for="item in itemDetails" :key="item.name">
+      <ion-row v-for="item in itemList" :key="item.name">
         <ion-col>{{ item.name }}</ion-col>
         <ion-col>{{ item.quantity }}</ion-col>
         <ion-col>{{ item.unitPrice }}</ion-col>
@@ -106,11 +106,13 @@
 
 <script lang="ts">
 import { IonContent, IonTitle, IonItem, IonInput } from "@ionic/vue";
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
-import IPurchaseOrder from "@/core/interfaces/purchase-order/purchase-order.interface";
-import {useRouter} from "vue-router"
+import IOrder from "@/core/interfaces/order/order.interface";
+import { orderService } from "@/core/services/api/order.service";
+import { useRoute } from "vue-router";
+import IGetOrderByIdResponse from "@/core/interfaces/order/responses/get-order-by-id.interface";
 
 export default defineComponent({
   name: "Create",
@@ -122,41 +124,62 @@ export default defineComponent({
     IonInput,
   },
   setup() {
-    const router = useRouter();
-
+    const route = useRoute();
     const item = ref<IItem>({} as IItem);
 
-    const itemDetails = ref<IItem[]>([]);
+    const itemList = ref<IItem[]>([]);
 
-    const orderDetail = ref<IPurchaseOrder>({
-      items: [],
+    const orderDetail = ref<IOrder>({
+      orderId: "",
+      orderItems: [],
       supplier: "",
       purchaseDate: new Date(),
       grandTotal: 0,
       description: "",
     });
 
-    return { itemDetails, item, orderDetail };
+    onMounted(() => {
+      orderService.requestor
+        .getById(route.params.orderId)
+        .then((value: IGetOrderByIdResponse) => {
+          console.log(value);
+          orderDetail.value = value;
+          itemList.value = value.orderItems;
+        });
+    });
+
+    return { itemList, item, orderDetail };
   },
   methods: {
     addItemDetail() {
       this.item.subTotal =
         (this.item.unitPrice || 0) * (this.item.quantity || 1);
-      this.itemDetails.push(this.item);
+      this.itemList.push(this.item);
       this.orderDetail.grandTotal = 0;
-      this.itemDetails.forEach((item: IItem) => {
+      this.itemList.forEach((item: IItem) => {
         this.orderDetail.grandTotal += item.subTotal || 0;
       });
 
-      this.item = {} as IItem;
+      this.item = {} as IItem
     },
-    createPurchaseOrder() {
-      console.log(this.orderDetail);
+    updateOrder() {
+      orderService.requestor
+        .updateOrder(this.orderDetail)
+        .then((success: boolean) => {
+          switch (success) {
+            case true:
+              alert(`${this.orderDetail.orderId} is updated`);
+              break;
+            case false:
+              alert(`failed to update ${this.orderDetail.orderId}`);
+              break;
+          }
+        });
     },
   },
   created() {
-    console.log(this.$route.params.orderId)
-  }
+    console.log(this.$route.params.orderId);
+  },
 });
 </script>
 

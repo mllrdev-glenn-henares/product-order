@@ -21,15 +21,15 @@ import { defineComponent, PropType, computed } from "vue";
 import PurchaseStatus from "@/core/enums/status.enum";
 import IUser from "@/core/interfaces/user.interface";
 import moment from "moment";
-import IPurchaseOrderResponse from "@/core/interfaces/purchase-order/purchase-order-response.interface";
 import router from "@/router";
+import IOrderSimple from "@/core/interfaces/order/order-simple.interface";
 
 export default defineComponent({
   name: "order-list",
   props: {
     orders: {
       required: true,
-      type: Array as PropType<Array<IPurchaseOrderResponse["simple"]>>,
+      type: Array as PropType<Array<IOrderSimple>>,
     },
     user: {
       required: true,
@@ -41,12 +41,14 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const $filters: any = {}
+
     const timeFormater = (date: Date | string) => {
       return (date = moment.utc(date).format("MM/DD/YYYY"));
     };
 
     const purchaseOrders = computed(() => {
-      return [...props.orders].sort((a: IPurchaseOrderResponse["simple"]) => {
+      return [...props.orders].sort((a: IOrderSimple) => {
         if (
           a.status ===
           Object.keys(PurchaseStatus)[
@@ -63,7 +65,7 @@ export default defineComponent({
         return 0;
       });
     });
-    return { purchaseOrders, timeFormater };
+    return { $filters, purchaseOrders, timeFormater };
   },
   methods: {
     handleOrderRowClick(id: string) {

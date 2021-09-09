@@ -45,16 +45,17 @@ import {
 } from "@ionic/vue";
 import {
   defineComponent,
-  onMounted,
   onUpdated,
   ref,
 } from "vue";
 import OrderList from "@/shared/components/OrderList.vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
-import { orderService } from "@/core/services/order.service";
-import IPurchaseOrderResponse from "@/core/interfaces/purchase-order/purchase-order-response.interface";
+import { orderService } from "@/core/services/api/order.service";
 import UserRole from "@/core/enums/user-role.enum";
 import getTokenProperties from "@/core/services/jwt.service";
+import IGetAllOrdersByUserIdResponse from "@/core/interfaces/order/responses/get-all-orders-by-user-id.interface";
+import IGetAllOrdersResponse from "@/core/interfaces/order/responses/get-all-orders.interface";
+import IOrderSimple from "@/core/interfaces/order/order-simple.interface";
 
 export default defineComponent({
   name: "Home",
@@ -69,7 +70,7 @@ export default defineComponent({
     Toolbar,
   },
   setup() {
-    const orders = ref<IPurchaseOrderResponse['simple'][]>([]);
+    const orders = ref<IOrderSimple[]>([]);
 
     const status = ref<PurchaseStatus>(PurchaseStatus.PENDING);
 
@@ -83,14 +84,14 @@ export default defineComponent({
       role.value = getTokenProperties().role;
       switch(role.value) {
         case UserRole.REQUESTOR:
-          orderService.requestor.getAllByUser().then((value: IPurchaseOrderResponse['simple'][]) => {
-            orders.value = value || [];
+          orderService.requestor.getAllByUser().then((value: IGetAllOrdersByUserIdResponse[]) => {
+            orders.value = value;
           });
           break;
           
         case UserRole.APPROVER:
-          orderService.approver.getAll().then((value: IPurchaseOrderResponse['simple'][]) => {
-            orders.value = value || [];          
+          orderService.approver.getAll().then((value: IGetAllOrdersResponse[]) => {
+            orders.value = value;          
           });
           break;
 

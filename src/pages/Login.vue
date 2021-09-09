@@ -31,9 +31,10 @@
 import { IonContent, IonInput, IonPage } from "@ionic/vue";
 import { defineComponent, reactive } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
-import { userService } from "@/core/services/user.service";
-import { useRouter } from "vue-router";
-import ILoginDetails from "@/core/interfaces/login/login-request.interface";
+import ILoginRequest from "@/core/interfaces/login/login-request.interface";
+import router from "@/router";
+import { RouteName } from "@/core/enums/route-name.enum";
+import { userService } from "@/core/services/api/user.service";
 
 export default defineComponent({
   name: "Home",
@@ -44,17 +45,20 @@ export default defineComponent({
     Toolbar,
   },
   setup() {
-    const data: ILoginDetails = reactive({
+    const data: ILoginRequest = reactive({
       email: "",
       password: "",
     });
-    const router = useRouter();
     const onLogin = async () => {
       userService.login(data).then((isSuccess: boolean) => {
         if (isSuccess) {
-          router.push("/home");
+          router.push({
+            name: RouteName.HOME
+          });
         } else {
-          router.push("/login");
+          router.push({
+            name: RouteName.LOGIN
+          });
         }
       });
       data.email = "";

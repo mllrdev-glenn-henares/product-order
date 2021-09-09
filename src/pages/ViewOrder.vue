@@ -48,8 +48,9 @@ import { defineComponent, onMounted, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
 import { useRoute, useRouter } from "vue-router";
-import { orderService } from "@/core/services/order.service";
-import IPurchaseOrderRequest from "@/core/interfaces/purchase-order/purchase-order-request.interface";
+import { orderService } from "@/core/services/api/order.service";
+import IOrder from "@/core/interfaces/order/order.interface";
+import IGetOrderByIdResponse from "@/core/interfaces/order/responses/get-order-by-id.interface";
 
 export default defineComponent({
   name: "Create",
@@ -61,9 +62,9 @@ export default defineComponent({
     const router = useRouter();
     const route = useRoute();
     const item = ref<IItem>({} as IItem);
-    const itemDetails = ref<IPurchaseOrderRequest["IEditItems"][]>([]);
+    const itemDetails = ref<IItem[]>([]);
 
-    const orderDetail = ref<IPurchaseOrderRequest["requestor"]>({
+    const orderDetail = ref<IOrder>({
       orderId: "",
       description: "",
       purchaseDate: new Date(),
@@ -73,8 +74,8 @@ export default defineComponent({
     });
     onMounted(() => {
       orderService.requestor
-        .getOrder(route.params.orderId)
-        .then((value: IPurchaseOrderRequest["requestor"]) => {
+        .getById(route.params.orderId)
+        .then((value: IGetOrderByIdResponse) => {
           console.log(value);
           orderDetail.value = value;
           itemDetails.value = value.orderItems;

@@ -1,9 +1,9 @@
 import ILoginRequest from "@/core/interfaces/login/login-request.interface"
 import ILoginResponse from "@/core/interfaces/login/login-response.interface"
 import ISignUpResponse from "@/core/interfaces/signup/sign-up-response.interface"
-import { client } from "./client.service"
 import ISignUpRequest from "@/core/interfaces/signup/sign-up-request.interface"
 import SessionStorageKey from "@/core/enums/session-storage-key.enum"
+import { client } from "../client.service"
 
 const USER = "user";
 
