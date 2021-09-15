@@ -2,11 +2,12 @@
   <div class="order-list">
     <ion-grid>
       <ion-row @click="handleOrderRowClick(order.id)" v-for="order in purchaseOrders" :key="order.id">
-        <ion-col> {{ order.id }} </ion-col>
-        <ion-col> {{ order.supplier }} </ion-col>
-        <ion-col> {{ order.description }} </ion-col>
-        <ion-col> {{ timeFormater(order.createdAt) }} </ion-col>
-        <ion-col> {{ order.status }} </ion-col>
+        <ion-col size="2"> {{ order.id }} </ion-col>
+        <ion-col size="2"> {{ order.supplier }} </ion-col>
+        <ion-col size="2"> {{ order.description }} </ion-col>
+        <ion-col size="2"> {{ timeFormater(order.createdAt) }} </ion-col>
+        <ion-col size="2">$1,000</ion-col>
+        <ion-col :class="order.status" size="1.2"> {{ order.status }} </ion-col>
       </ion-row>
     </ion-grid>
   </div>
@@ -27,10 +28,6 @@ export default defineComponent({
       required : true,
       type: Array as PropType<Array<IPurchaseOrderResponse['simple']>>
     },
-    user: {
-      required: true,
-      type: Object as PropType<IUser>
-    },
     status: {
       required: true,
       type: Object as PropType<PurchaseStatus>
@@ -43,17 +40,18 @@ export default defineComponent({
     })
     
     const purchaseOrders = computed(() => {
-        return [...props.orders].sort((a: IPurchaseOrderResponse['simple'] ) => {
-          if (a.status === Object.keys(PurchaseStatus)[Object.values(PurchaseStatus).indexOf(props.status)]) {
-            return -1
-          }
-          
-          if (a.status < props.status) {
-            return 1
-          }
-
-          return 0
-      })
+        if (props.status === undefined) {
+          return props.orders
+        }
+        else {
+          return [...props.orders].filter((a: IPurchaseOrderResponse['simple'] ) => {
+              if (a.status === props.status) {
+                return -1
+              }
+              return 0
+          });
+        }
+      
     })
     return { purchaseOrders, timeFormater }
   },
@@ -66,7 +64,10 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>  
+<style scoped>
+/* *{
+  border: yellow solid 2px;
+} */
   h1{
     display: inline-block;
     margin-left: 2%;
@@ -83,12 +84,15 @@ export default defineComponent({
     margin-right: 5%;
   }
   ion-grid{
+    padding: 20px;
     text-align: center;
-    color: black;
-    margin: 2%;
+    color: #878a8f;
+    background-color: #ffffff;
+    font-size: 14px;
   }
   ion-col{
-    outline: 1px solid black;
+   text-align: left;
+   margin-bottom: 5px;
   }
   #signInButton{
     float: right;
@@ -100,7 +104,37 @@ export default defineComponent({
     vertical-align: top;
     margin-right: 2%;
   }
-  .filterButton{
-    margin-left: 5%;
+  ion-row {
+    border-bottom: solid #f5f5f5 2px;
+    margin: 5px;
+    font-weight: 300;
+  }
+  .APPROVED {
+    text-align: center;
+    border-radius: 20px;
+    color: #72b2a4;
+    background-color: #c8eae5;
+    width: 10px;
+  }
+  .DENIED {
+    text-align: center;
+    border-radius: 20px;
+    color: #b75b69;
+    background-color: #eec7ce;
+    width: 10px;
+  }
+  .PENDING {
+    text-align: center;
+    border-radius: 20px;
+    color: #527ace;
+    background-color: #bdd0f6;
+    width: 10px;
+  }
+  .CLOSED {
+    text-align: center;
+    border-radius: 20px;
+    color: #846fa0;
+    background-color: #d0b8ef;
+    width: 10px;
   }
 </style>
