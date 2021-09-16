@@ -28,21 +28,24 @@
 </template>
 
 <script lang="ts">
-import { IonContent, IonInput, IonPage } from "@ionic/vue";
+import { IonContent, IonInput, IonPage, IonItem, IonButton } from "@ionic/vue";
 import { defineComponent } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import { reactive } from "vue";
 import { userService } from "@/core/services/user.service";
 import { useRouter } from "vue-router";
 import ILoginDetails from "@/core/interfaces/login/login-request.interface";
+import { RouteName } from "@/core/enums/route-name.enum";
 
 export default defineComponent({
-  name: "Home",
+  name: "Login",
   components: {
     IonContent,
     IonPage,
     IonInput,
     Toolbar,
+    IonItem,
+    IonButton,
   },
   setup() {
     const data: ILoginDetails = reactive({
@@ -53,9 +56,13 @@ export default defineComponent({
     const onLogin = async () => {
       userService.login(data).then((isSuccess: boolean) => {
         if (isSuccess) {
-          router.push("/home");
+          router.push({
+            name: RouteName.HOME
+          });
         } else {
-          router.push("/login");
+          router.push({
+            name: RouteName.LOGIN
+          });
         }
       });
       data.email = "";

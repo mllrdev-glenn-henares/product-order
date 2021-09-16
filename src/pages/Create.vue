@@ -1,117 +1,138 @@
 <template>
-  <Toolbar title-text="Create" />
-  <ion-content>
-    <form class="mainCreate" @submit.prevent="createPurchaseOrder">
-      <ion-title>
-        <h1>Purchase Order</h1>
-      </ion-title>
-      <form class="headDetail">
-        <ion-item>
-          <ion-label>Supplier</ion-label>
-          <ion-input
-            type="text"
-            name="supplier"
-            v-model="orderDetail.supplier"
-          ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>PO description</ion-label>
-          <ion-input
-            type="text"
-            name="description"
-            v-model="orderDetail.description"
-          ></ion-input>
-        </ion-item>
-      </form>
-      <div class="headDetail">
-        <ion-item>
-          <ion-label>Purchase Date</ion-label>
-          <ion-input
-            type="date"
-            name="purchaseDate"
-            v-model="orderDetail.purchaseDate"
-          ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Requestor</ion-label>
-          <ion-input type="text" name="user"></ion-input>
-        </ion-item>
-      </div>
-      <hr />
-      <ion-row>
-        <ion-col>Item</ion-col>
-        <ion-col>Quamtity</ion-col>
-        <ion-col>Unit Price</ion-col>
-        <ion-col>Sub-Total</ion-col>
-      </ion-row>
-      <ion-row v-for="item in itemDetails" :key="item.name">
-        <ion-col>{{ item.name }}</ion-col>
-        <ion-col>{{ item.quantity }}</ion-col>
-        <ion-col>{{ item.unitPrice }}</ion-col>
-        <ion-col>{{ item.subTotal }}</ion-col>
-      </ion-row>
-      <form @submit.prevent="addItemDetail">
+  <ion-page>
+    <Toolbar />
+    <ion-content>
+      <form class="mainCreate" @submit.prevent="createPurchaseOrder">
+        <ion-title>
+          <h1>Purchase Order</h1>
+        </ion-title>
+        <form class="headDetail">
+          <ion-item>
+            <ion-label>Supplier</ion-label>
+            <ion-input
+              type="text"
+              name="supplier"
+              v-model="orderDetail.supplier"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>PO description</ion-label>
+            <ion-input
+              type="text"
+              name="description"
+              v-model="orderDetail.description"
+            ></ion-input>
+          </ion-item>
+        </form>
+        <div class="headDetail">
+          <ion-item>
+            <ion-label>Purchase Date</ion-label>
+            <ion-input
+              type="date"
+              name="purchaseDate"
+              v-model="orderDetail.purchaseDate"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>Requestor</ion-label>
+            <ion-input type="text" name="user"></ion-input>
+          </ion-item>
+        </div>
+        <hr />
         <ion-row>
-          <ion-input
-            type="text"
-            autofocus
-            v-model="item.name"
-            name="name"
-            placeholder="item"
-            required
-          ></ion-input>
-          <ion-input
-            type="number"
-            autofocus
-            v-model="item.quantity"
-            name="quantity"
-            placeholder="Quantity"
-            required
-          ></ion-input>
-          <ion-input
-            type="number"
-            autofocus
-            v-model="item.unitPrice"
-            name="unitPrice"
-            placeholder="Price"
-            required
-          ></ion-input>
-          <ion-input
-            type="number"
-            autofocus
-            v-model="item.subTotal"
-            name="subTotal"
-            placeholder="Total Price"
-            disabled
-          ></ion-input>
+          <ion-col>Item</ion-col>
+          <ion-col>Quamtity</ion-col>
+          <ion-col>Unit Price</ion-col>
+          <ion-col>Sub-Total</ion-col>
         </ion-row>
-        <ion-button button type="submit">ADD</ion-button>
+        <ion-row v-for="item in itemDetails" :key="item.name">
+          <ion-col>{{ item.name }}</ion-col>
+          <ion-col>{{ item.quantity }}</ion-col>
+          <ion-col>{{ item.unitPrice }}</ion-col>
+          <ion-col>{{ item.subTotal }}</ion-col>
+        </ion-row>
+        <form @submit.prevent="addItemDetail">
+          <ion-row>
+            <ion-input
+              type="text"
+              autofocus
+              v-model="item.name"
+              name="name"
+              placeholder="item"
+              required
+            ></ion-input>
+            <ion-input
+              type="number"
+              autofocus
+              v-model="item.quantity"
+              name="quantity"
+              placeholder="Quantity"
+              required
+            ></ion-input>
+            <ion-input
+              type="number"
+              autofocus
+              v-model="item.unitPrice"
+              name="unitPrice"
+              placeholder="Price"
+              required
+            ></ion-input>
+            <ion-input
+              type="number"
+              autofocus
+              v-model="item.subTotal"
+              name="subTotal"
+              placeholder="Total Price"
+              disabled
+            ></ion-input>
+          </ion-row>
+          <ion-button button type="submit">ADD</ion-button>
+        </form>
+        <ion-text color="light" size="large">
+          <h3>
+            <ion-input
+              type="number"
+              name="grandTotal"
+              v-model="orderDetail.grandTotal"
+              placeholder="Grand Total"
+              disabled
+            ></ion-input>
+          </h3>
+        </ion-text>
+        <div v-if="role === UserRole.REQUESTOR">
+          <ion-button class="submitButton" button type="submit"
+            >Create</ion-button
+          >
+          <ion-button
+            class="cancelButton"
+            button
+            @click="$router.push({ name: RouteName.HOME })"
+            >Cancel</ion-button
+          >
+        </div>
       </form>
-      <ion-text color="light" size="large">
-        <h3>
-          <ion-input
-            type="number"
-            name="grandTotal"
-            v-model="orderDetail.grandTotal"
-            placeholder="Grand Total"
-            disabled
-          ></ion-input>
-        </h3>
-      </ion-text>
-      <div v-if="role === UserRole.REQUESTOR">
-        <ion-button class="submitButton" button type="submit">Create</ion-button>
-        <ion-button class="cancelButton" button href="/home">Cancel</ion-button>
+      <div v-if="role === UserRole.APPROVER">
+        <ion-button id="declineButton" @click="declinePurchaseOrder()"
+          >DECLINE</ion-button
+        >
       </div>
-    </form>
-    <div v-if="role === UserRole.APPROVER">
-      <ion-button id="declineButton" @click="declinePurchaseOrder()">DECLINE</ion-button>
-    </div>
-    
-  </ion-content>
+    </ion-content>
+  </ion-page>
 </template>
 
 <script lang="ts">
-import { IonContent, IonTitle, IonItem, IonInput } from "@ionic/vue";
+import {
+  IonContent,
+  IonPage,
+  IonTitle,
+  IonItem,
+  IonInput,
+  IonLabel,
+  IonCol,
+  IonRow,
+  IonText,
+  IonButton,
+} from "@ionic/vue";
 import { defineComponent, onMounted, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
@@ -122,15 +143,22 @@ import IPurchaseOrderRequest from "@/core/interfaces/purchase-order/purchase-ord
 import PurchaseStatus from "@/core/enums/status.enum";
 import UserRole from "@/core/enums/user-role.enum";
 import getUserFromPayload from "@/core/services/jwt.service";
+import { RouteName } from "@/core/enums/route-name.enum";
 
 export default defineComponent({
   name: "Create",
   components: {
     IonContent,
+    IonPage,
     Toolbar,
     IonTitle,
     IonItem,
     IonInput,
+    IonLabel,
+    IonCol,
+    IonRow,
+    IonText,
+    IonButton,
   },
   setup() {
     const item = ref<IItem>({} as IItem);
@@ -145,21 +173,28 @@ export default defineComponent({
       description: "",
     });
 
-
-    const orderStatusUpdate = ref<IPurchaseOrderRequest['approver']>({
-      id: '',
+    const orderStatusUpdate = ref<IPurchaseOrderRequest["approver"]>({
+      id: "",
       orderDetails: {
-        status: PurchaseStatus.PENDING
-      } 
+        status: PurchaseStatus.PENDING,
+      },
     });
 
-    const role = ref<UserRole>()
+    const role = ref<UserRole>();
 
-    onMounted(() =>{
+    onMounted(() => {
       role.value = getUserFromPayload().role;
-    })
+    });
 
-    return { itemDetails, item, orderDetail, orderStatusUpdate, role, UserRole };
+    return {
+      itemDetails,
+      item,
+      orderDetail,
+      orderStatusUpdate,
+      role,
+      UserRole,
+      RouteName,
+    };
   },
   methods: {
     addItemDetail() {
@@ -170,28 +205,30 @@ export default defineComponent({
       this.itemDetails.forEach((item: IItem) => {
         this.orderDetail.grandTotal += item.subTotal || 0;
       });
-
       this.item = {} as IItem;
     },
     createPurchaseOrder() {
       this.orderDetail.items = this.itemDetails;
       orderService.requestor.create(this.orderDetail);
-      router.push("/home");
+      router.push({
+        name: RouteName.HOME,
+      });
     },
     declinePurchaseOrder() {
       this.orderStatusUpdate.orderDetails.status = PurchaseStatus.DENIED;
-      orderService.approver.purchaseStatusUpdate(this.orderStatusUpdate).then((success: boolean) => {
-        switch(success){
-          case true:
-            alert(`${this.orderStatusUpdate.id} have been denied`)
-            break;
-          case false:
-            alert('PO status update failed')
-            break;
-        }
-        
-      });
-    }
+      orderService.approver
+        .purchaseStatusUpdate(this.orderStatusUpdate)
+        .then((success: boolean) => {
+          switch (success) {
+            case true:
+              alert(`${this.orderStatusUpdate.id} have been denied`);
+              break;
+            case false:
+              alert("PO status update failed");
+              break;
+          }
+        });
+    },
   },
 });
 </script>
@@ -242,9 +279,8 @@ ion-input {
 h3 {
   margin-left: 75%;
 }
-#declineButton{
+#declineButton {
   margin-left: 75%;
   display: inline-block;
 }
-
 </style>

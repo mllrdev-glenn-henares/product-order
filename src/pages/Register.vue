@@ -59,9 +59,10 @@ import { reactive } from "vue";
 import { userService } from "@/core/services/user.service";
 import { useRouter } from "vue-router";
 import ISignUpRequest from "@/core/interfaces/signup/sign-up-request.interface";
+import { RouteName } from "@/core/enums/route-name.enum";
 
 export default defineComponent({
-  name: "Home",
+  name: "Register",
   components: {
     IonContent,
     IonPage,
@@ -81,9 +82,13 @@ export default defineComponent({
     const onRegister = async () => {
       userService.signUp(data).then((isSuccess: boolean) => {
         if (isSuccess) {
-          router.push("/login");
+          router.push({
+            name: RouteName.LOGIN
+          });
         } else {
-          router.push("/sign-up");
+          router.push({
+            name: RouteName.REGISTER
+          });
         }
       })
       data.firstName = "";

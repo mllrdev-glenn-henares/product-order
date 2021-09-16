@@ -6,12 +6,13 @@
     <ion-content :fullscreen="true">
       <div class="main">
         <div class="filterButton">
+          <ion-title>Product Order List</ion-title>
           <ion-segment value="all">
-            <ion-segment-button value="all" @click="handleClick(undefined)">
+            <ion-segment-button value="all" @click="handleClick(null)">
               <ion-label>all</ion-label>
             </ion-segment-button>
             <ion-segment-button
-              value="PENDING"
+              value="null"
               @click="handleClick(PurchaseStatus.PENDING)"
             >
               <ion-label>PENDING</ion-label>
@@ -52,7 +53,7 @@
         <order-list :orders="orders" :status="status" />
         <ion-button
           id="addButton"
-          href="/create"
+          @click="clickToCreateOrder()"
           v-if="role === UserRole.REQUESTOR"
           >Create New PO<span> +</span>
         </ion-button>
@@ -67,10 +68,15 @@ import {
   IonContent,
   IonPage,
   IonToolbar,
+  IonTitle,
   IonGrid,
   IonRow,
+  IonCol,
   IonButton,
   IonIcon,
+  IonLabel,
+  IonSegment,
+  IonSegmentButton,
 } from "@ionic/vue";
 import { defineComponent, onUpdated, ref } from "vue";
 import OrderList from "@/shared/components/OrderList.vue";
@@ -79,6 +85,8 @@ import { orderService } from "@/core/services/order.service";
 import IPurchaseOrderResponse from "@/core/interfaces/purchase-order/purchase-order-response.interface";
 import UserRole from "@/core/enums/user-role.enum";
 import getTokenProperties from "@/core/services/jwt.service";
+import router from "@/router";
+import { RouteName } from "@/core/enums/route-name.enum";
 
 export default defineComponent({
   name: "Home",
@@ -86,19 +94,24 @@ export default defineComponent({
     IonContent,
     IonPage,
     IonToolbar,
+    IonTitle,
     IonGrid,
     IonRow,
+    IonCol,
     IonButton,
     OrderList,
     Toolbar,
     IonIcon,
+    IonLabel,
+    IonSegment,
+    IonSegmentButton,
   },
   setup() {
     const orders = ref<IPurchaseOrderResponse["simple"][]>([]);
 
-    const status = ref<PurchaseStatus | undefined>(undefined);
+    const status = ref<PurchaseStatus | null>(null);
 
-    const handleClick = (term: PurchaseStatus | undefined) => {
+    const handleClick = (term: PurchaseStatus | null) => {
       status.value = term;
     };
     const role = ref<UserRole>();
@@ -131,6 +144,13 @@ export default defineComponent({
       role,
       UserRole,
     };
+  },
+  methods: {
+    clickToCreateOrder() {
+      router.push({
+        name: RouteName.CREATE,
+      });
+    },
   },
 });
 </script>
@@ -169,6 +189,8 @@ hr {
 .main {
   width: 80%;
   margin-left: 10%;
+  color: #313738;
+
 }
 ion-segment {
   height: 35px;

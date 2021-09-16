@@ -1,7 +1,7 @@
 <template>
   <div class="order-list">
     <ion-grid>
-      <ion-row @click="handleOrderRowClick(order.id)" v-for="order in purchaseOrders" :key="order.id">
+      <ion-row class="item" @click="handleOrderRowClick(order.id)" v-for="order in purchaseOrders" :key="order.id">
         <ion-col size="2"> {{ order.id }} </ion-col>
         <ion-col size="2"> {{ order.supplier }} </ion-col>
         <ion-col size="2"> {{ order.description }} </ion-col>
@@ -14,23 +14,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from 'vue'
-import PurchaseStatus from '@/core/enums/status.enum';
-import IUser from '@/core/interfaces/user.interface';
+import { defineComponent, PropType, computed, } from 'vue'
+import { IonGrid, IonRow, IonCol, } from '@ionic/vue'
 import moment from 'moment'
 import IPurchaseOrderResponse from '@/core/interfaces/purchase-order/purchase-order-response.interface';
 import router from '@/router';
-
+import { RouteName } from '@/core/enums/route-name.enum';
 export default defineComponent({
   name: 'order-list',
+  components:{
+    IonGrid,
+    IonRow,
+    IonCol,
+    
+  },
   props: {
     orders: {
       required : true,
       type: Array as PropType<Array<IPurchaseOrderResponse['simple']>>
     },
     status: {
-      required: true,
-      type: Object as PropType<PurchaseStatus>
+      required: false,
+      type: String || null
     }
     
   },
@@ -40,7 +45,7 @@ export default defineComponent({
     })
     
     const purchaseOrders = computed(() => {
-        if (props.status === undefined) {
+        if (props.status === null) {
           return props.orders
         }
         else {
@@ -57,7 +62,12 @@ export default defineComponent({
   },
   methods: {
     handleOrderRowClick(id: string) {
-      router.push("/create");
+      router.push({
+        name: RouteName.CREATE,
+        params: {
+          id: id
+        }
+      });
     }
     
   }
