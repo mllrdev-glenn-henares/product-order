@@ -4,14 +4,15 @@
       <div id="title-bar">
         <ion-title>Product Order</ion-title>
         <ion-label id="middle-title">{{ titleText }}</ion-label>
+        <ion-label>{{ name }}</ion-label>
       </div>
     </ion-toolbar>
   </ion-header>
 </template>
 
 <script language="ts">
-import { IonTitle, IonHeader, IonToolbar } from "@ionic/vue"
-import { defineComponent } from "vue"
+import { IonTitle, IonHeader, IonToolbar } from "@ionic/vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "Toolbar",
@@ -36,5 +37,8 @@ export default defineComponent({
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0);
+}
+ion-toolbar {
+  --background: #5aa4b0;
 }
 </style>

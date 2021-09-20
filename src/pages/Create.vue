@@ -7,66 +7,82 @@
           <ion-label>Purchase Order</ion-label>
         </ion-title>
         <form>
-          <div id="general-information-container">
-            <ion-label>General Information</ion-label>
-            <ion-row>
-              <ion-col>
-                <ion-label>Supplier</ion-label>
-                <ion-input
-                  type="text"
-                  name="supplier"
-                  v-model="orderDetail.supplier"
-                ></ion-input>
-              </ion-col>
-              <ion-col>
-                <ion-label>Purchase Date</ion-label>
-                <ion-input
-                  type="date"
-                  name="purchaseDate"
-                  v-model="orderDetail.purchaseDate"
-                ></ion-input>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <ion-col>
-                <ion-label>PO description</ion-label>
-                <ion-input
-                  type="text"
-                  name="description"
-                  v-model="orderDetail.description"
-                ></ion-input>
-              </ion-col>
-              <ion-col>
-                <ion-label>Requestor</ion-label>
-                <ion-input type="text" name="user"></ion-input>
-              </ion-col>
-            </ion-row>
+          <div id="general-information-container" class="margin-top-20px">
+            <ion-grid>
+              <ion-row>
+                <ion-label>General Information</ion-label>
+              </ion-row>
+              <ion-row class="margin-top-20px">
+                <ion-col>
+                  <ion-label>Supplier</ion-label>
+                  <ion-input
+                    type="text"
+                    name="supplier"
+                    v-model="orderDetail.supplier"
+                  ></ion-input>
+                </ion-col>
+                <ion-col>
+                  <ion-label>Purchase Date</ion-label>
+                  <ion-input
+                    type="date"
+                    name="purchaseDate"
+                    v-model="orderDetail.purchaseDate"
+                  ></ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-label>PO description</ion-label>
+                  <ion-input
+                    type="text"
+                    name="description"
+                    v-model="orderDetail.description"
+                  ></ion-input>
+                </ion-col>
+                <ion-col>
+                  <ion-label>Requestor</ion-label>
+                  <ion-input type="text" name="user"></ion-input>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </div>
         </form>
-        <div class="headDetail"></div>
         <hr />
-        <ion-row>
-          <ion-col>Item</ion-col>
-          <ion-col>Quantity</ion-col>
-          <ion-col>Unit Price</ion-col>
-          <ion-col>Sub-Total</ion-col>
-        </ion-row>
-        <ion-row v-for="item in itemDetails" :key="item.name">
-          <ion-col>{{ item.name }}</ion-col>
-          <ion-col>{{ item.quantity }}</ion-col>
-          <ion-col>{{ item.unitPrice }}</ion-col>
-          <ion-col>{{ item.subTotal }}</ion-col>
-        </ion-row>
-        <form @submit.prevent="addItemDetail">
+        <ion-grid>
           <ion-row>
-            <ion-input
-              type="text"
-              autofocus
-              v-model="item.name"
-              name="name"
-              placeholder="item"
-              required
-            ></ion-input>
+            <ion-label>Details</ion-label>
+          </ion-row>
+          <ion-row class="margin-top-20px">
+            <ion-col>
+              <ion-label>Item</ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label>Quantity</ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label>Unit Price</ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label>Sub-Total</ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row v-for="item in itemDetails" :key="item.name">
+            <ion-col>{{ item.name }}</ion-col>
+            <ion-col>{{ item.quantity }}</ion-col>
+            <ion-col>{{ item.unitPrice }}</ion-col>
+            <ion-col>{{ item.subTotal }}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-input
+                type="text"
+                autofocus
+                v-model="item.name"
+                name="name"
+                placeholder="item"
+                required
+              ></ion-input>
+            </ion-col>
             <ion-input
               type="number"
               autofocus
@@ -92,27 +108,42 @@
               disabled
             ></ion-input>
           </ion-row>
-          <ion-button button type="submit">ADD</ion-button>
-        </form>
-        <ion-text color="light" size="large">
-          <h3>
-            <ion-input
-              type="number"
-              name="grandTotal"
-              v-model="orderDetail.grandTotal"
-              placeholder="Grand Total"
-              disabled
-            ></ion-input>
-          </h3>
-        </ion-text>
-        <div v-if="role === UserRole.REQUESTOR">
-          <ion-button class="submitButton" button type="submit"
-            >Create</ion-button
-          >
-          <ion-button class="cancelButton" button href="/home"
-            >Cancel</ion-button
-          >
-        </div>
+          <ion-row>
+            <ion-button button @click="addItemDetail">ADD</ion-button>
+          </ion-row>
+          <ion-row>
+            <ion-col offset="2">
+              <ion-input
+                placeholder="Grand Total"
+                autofocus
+                disabled
+              ></ion-input>
+            </ion-col>
+            <ion-col>
+              <ion-input
+                type="number"
+                name="grandTotal"
+                v-model="orderDetail.grandTotal"
+                placeholder="Grand Total"
+                disabled
+              ></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <div v-if="role === UserRole.REQUESTOR">
+              <ion-col
+                ><ion-button class="submitButton" button type="submit"
+                  >Create</ion-button
+                >
+              </ion-col>
+              <ion-col>
+                <ion-button class="cancelButton" button href="/home"
+                  >Cancel</ion-button
+                >
+              </ion-col>
+            </div>
+          </ion-row>
+        </ion-grid>
       </form>
       <div v-if="role === UserRole.APPROVER">
         <ion-button id="declineButton" @click="declinePurchaseOrder()"
@@ -235,13 +266,25 @@ export default defineComponent({
   border-radius: 10px;
   width: 80%;
 }
-
+.margin-top-20px {
+  margin-top: 20px;
+}
 ion-content {
   border-radius: 20px;
   --background: grey;
+  padding-bottom: 10%;
 }
 
 ion-label {
   color: grey;
+}
+
+ion-button {
+  --border-radius: 25px;
+  --background: black;
+}
+
+ion-grid {
+  --ion-grid-columns: 4;
 }
 </style>

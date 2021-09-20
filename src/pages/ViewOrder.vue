@@ -2,42 +2,77 @@
   <ion-page>
     <Toolbar title-text="View Order" />
     <ion-content :fullscreen="true">
-      <ion-label>View Order</ion-label>
-      <ion-grid>
-        <ion-row>
-          <ion-col>Supplier: {{ orderDetail.supplier }}</ion-col>
-          <ion-col>Purchase Date: {{ orderDetail.purchaseDate }}</ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>Description: {{ orderDetail.description }}</ion-col>
-        </ion-row>
-      </ion-grid>
+      <div id="content-container">
+        <ion-title>View Order</ion-title>
+        <div id="general-information-container">
+          <ion-label>General Information</ion-label>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-label id="detail-label-container">Supplier: </ion-label>
+                <div id="detail-text-container">{{ orderDetail.supplier }}</div>
+              </ion-col>
+              <ion-col>
+                <ion-label id="detail-label-container">Purchase Date: </ion-label>
+                <div id="detail-text-container">
+                  {{ orderDetail.purchaseDate }}
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-label id="detail-label-container">Description: </ion-label>
+                <div id="detail-text-container">
+                  {{ orderDetail.description }}
+                </div>
+              </ion-col>
+              <ion-col>
+                <ion-label id="detail-label-container">Requestor: </ion-label>
+                <div id="detail-text-container">Firstname Lastname</div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+        <div id="details-container">
+          <ion-label>Details</ion-label>
+          <ion-grid id="details-item-container">
+            <ion-row id="details-text-container">
+              <ion-col>Item</ion-col>
+              <ion-col>Quantity</ion-col>
+              <ion-col>Unit Price</ion-col>
+              <ion-col>Sub-Total</ion-col>
+            </ion-row>
+            <ion-row v-for="item in itemDetails" :key="item.name">
+              <ion-col>{{ item.name }}</ion-col>
+              <ion-col>{{ item.quantity }}</ion-col>
+              <ion-col>{{ item.unitPrice }}</ion-col>
+              <ion-col>{{ item.subTotal }}</ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col offset="2">
+                <ion-label id="details-text-container">Grand Total</ion-label>
+              </ion-col>
+              <ion-col>
+                <ion-label>{{ orderDetail.grandTotal }}</ion-label>
+              </ion-col>
+            </ion-row>
+            <ion-col offset="3">
+              <ion-button
+                class="submitButton"
+                size="small"
+                button
+                @click="onEdit()"
+              >
+                Edit
+              </ion-button>
 
-      <ion-grid id="item-container">
-        <ion-row>
-          <ion-col>Item</ion-col>
-          <ion-col>Quantity</ion-col>
-          <ion-col>Unit Price</ion-col>
-          <ion-col>Sub-Total</ion-col>
-        </ion-row>
-        <ion-row v-for="item in itemDetails" :key="item.name">
-          <ion-col>{{ item.name }}</ion-col>
-          <ion-col>{{ item.quantity }}</ion-col>
-          <ion-col>{{ item.unitPrice }}</ion-col>
-          <ion-col>{{ item.subTotal }}</ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col />
-          <ion-col />
-          <ion-col />
-          <ion-col>
-            <h3>{{ orderDetail.grandTotal }}</h3>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <hr />
-      <ion-button class="submitButton" button @click="onEdit()"> Edit </ion-button>
-      <ion-button class="cancelButton" button href="/home">Cancel</ion-button>
+              <ion-button class="cancelButton" size="small" button href="/home">
+                Cancel
+              </ion-button>
+            </ion-col>
+          </ion-grid>
+        </div>
+      </div>
     </ion-content>
   </ion-page>
 </template>
@@ -87,37 +122,63 @@ export default defineComponent({
     };
     return { itemDetails, item, orderDetail, onEdit };
   },
-  created() {
-    console.log(this.$route.params.orderId);
-  },
 });
 </script>
 
 <style scoped>
-ion-item {
-  width: 60%;
+#content-container {
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background: white;
+  color: black;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 5%;
+  border-radius: 30px;
 }
 
-ion-text {
+#page-title-container {
+  font-weight: bold;
+  margin-bottom: 25px;
   color: black;
+}
+
+#details-text-container {
+  size: 10px;
+  color: #5aa4b0;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+#general-information-container,
+#details-container {
+  margin-top: 20px;
+}
+
+#detail-text-container {
+  color: black;
+  width: 80%;
   padding: 10px;
+  margin-top: 2px;
+}
+
+ion-label {
+  color: grey;
+}
+
+ion-button {
+  --border-radius: 25px;
+  --background: black;
 }
 
 ion-grid {
-  --background: white;
-  width: 60%;
-  color: black;
+  --ion-grid-columns: 4;
+  margin-top: 20px;
 }
 
-#container {
-  justify-content: space-between;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 10px;
-}
-
-#item-container {
-  width: 80%;
+ion-content {
+  --background: grey
 }
 </style>

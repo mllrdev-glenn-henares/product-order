@@ -52,9 +52,13 @@ export default defineComponent({
     const onLogin = async () => {
       userService.login(data).then((isSuccess: boolean) => {
         if (isSuccess) {
-          router.push("/home");
+          router.push({
+            name: "Home"
+          });
         } else {
-          router.push("/login");
+          router.push({
+            name: "Login"
+          });
         }
       });
       data.email = "";

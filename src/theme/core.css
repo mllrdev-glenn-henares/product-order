@@ -3,12 +3,14 @@ ion-app {
 }
 
 ion-item {
-    width: 3in;
     --background: rgb(255, 255, 255);
     color: rgb(0, 0, 0);
 }
 
-ion-button {
-    --background: #3880ff;
-    color: white;
+ion-header, ion-content {
+    font-family: "Oxygen"
+}
+
+ion-title {
+    font-weight: bold;
 }

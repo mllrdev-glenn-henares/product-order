@@ -1,4 +1,3 @@
-
 interface ILoginResponse {
     isSuccessful: boolean;
     token: String;
