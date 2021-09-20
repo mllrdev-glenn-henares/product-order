@@ -6,7 +6,7 @@
     <ion-content :fullscreen="true">
       <div class="main">
         <div class="filterButton">
-          <ion-title>Product Order List</ion-title>
+          <ion-title id="title">Product Order List</ion-title>
           <ion-segment value="all">
             <ion-segment-button value="all" @click="handleClick(null)">
               <ion-label>all</ion-label>
@@ -156,9 +156,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* *{
-  outline: yellow 1px solid;
-} */
 img {
   display: inline-block;
   margin-left: 2%;
@@ -166,6 +163,8 @@ img {
 ion-title {
   display: inline-block;
   margin-top: 1%;
+  text-align: left;
+  padding-left: 7px;
 }
 .tableTitle {
   color: #5aa4b0;
@@ -216,5 +215,6 @@ span {
   background: #5aa4b0;
   border-radius: 10px;
   width: 30px;
+  margin-left: 5px;
 }
 </style>
