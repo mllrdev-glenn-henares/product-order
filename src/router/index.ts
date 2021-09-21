@@ -6,8 +6,16 @@ import Home from "@/pages/Home.vue";
 import Login from "@/pages/Login.vue";
 import Register from "@/pages/Register.vue";
 import Create from "@/pages/Create.vue"
+import Edit from "@/pages/Edit.vue"
+import View from "@/pages/ViewOrder.vue"
 
 const routes: Array<RouteRecordRaw> = [
+  {
+    path: "/",
+    redirect: {
+      name: "Login"
+    }
+  },
   {
     path: "/home",
     name: RouteName.HOME,
@@ -28,6 +36,16 @@ const routes: Array<RouteRecordRaw> = [
     name: RouteName.CREATE,
     component: Create,
   },
+  {
+    path: "/edit-order/:orderId",
+    name: RouteName.EDIT,
+    component: Edit,
+  },
+  {
+    path: "/view-order/:orderId",
+    name: RouteName.VIEW,
+    component: View,
+  }
 ];
 
 const router = createRouter({
@@ -35,4 +53,14 @@ const router = createRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  const publicPages = ['/login', '/register']
+  const authRequired = !publicPages.includes(to.path)
+  const loggedIn = sessionStorage.getItem('TOKEN')
+
+  if (authRequired && !loggedIn) {
+    return next('/login')
+  }
+  next()
+})
 export default router;

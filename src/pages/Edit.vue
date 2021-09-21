@@ -1,7 +1,7 @@
 <template>
   <Toolbar title-text="Create" />
   <ion-content>
-    <form class="mainCreate" @submit.prevent="createPurchaseOrder">
+    <form class="mainCreate" @submit.prevent="updateOrder">
       <ion-title>
         <h1>Purchase Order</h1>
       </ion-title>
@@ -40,11 +40,11 @@
       <hr />
       <ion-row>
         <ion-col>Item</ion-col>
-        <ion-col>Quamtity</ion-col>
+        <ion-col>Quantity</ion-col>
         <ion-col>Unit Price</ion-col>
         <ion-col>Sub-Total</ion-col>
       </ion-row>
-      <ion-row v-for="item in itemDetails" :key="item.name">
+      <ion-row v-for="item in itemList" :key="item.name">
         <ion-col>{{ item.name }}</ion-col>
         <ion-col>{{ item.quantity }}</ion-col>
         <ion-col>{{ item.unitPrice }}</ion-col>
@@ -98,18 +98,9 @@
           ></ion-input>
         </h3>
       </ion-text>
-      <div v-if="role === UserRole.REQUESTOR">
-        <ion-button class="submitButton" button type="submit"
-          >Create</ion-button
-        >
-        <ion-button class="cancelButton" button href="/home">Cancel</ion-button>
-      </div>
+      <ion-button class="submitButton" button type="submit">Create</ion-button>
+      <ion-button class="cancelButton" button href="/home">Cancel</ion-button>
     </form>
-    <div v-if="role === UserRole.APPROVER">
-      <ion-button id="declineButton" @click="declinePurchaseOrder()"
-        >DECLINE</ion-button
-      >
-    </div>
   </ion-content>
 </template>
 
@@ -118,13 +109,10 @@ import { IonContent, IonTitle, IonItem, IonInput } from "@ionic/vue";
 import { defineComponent, onMounted, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
-import { orderService } from "@/core/services/api/order.service";
-import router from "@/router";
-import PurchaseStatus from "@/core/enums/status.enum";
-import UserRole from "@/core/enums/user-role.enum";
-import getUserFromPayload from "@/core/services/jwt.service";
 import IOrder from "@/core/interfaces/order/order.interface";
-import IUpdateOrderStatusRequest from "@/core/interfaces/order/requests/update-order-status.interface";
+import { orderService } from "@/core/services/api/order.service";
+import { useRoute } from "vue-router";
+import IGetOrderByIdResponse from "@/core/interfaces/order/responses/get-order-by-id.interface";
 
 export default defineComponent({
   name: "Create",
@@ -136,9 +124,10 @@ export default defineComponent({
     IonInput,
   },
   setup() {
+    const route = useRoute();
     const item = ref<IItem>({} as IItem);
 
-    const itemDetails = ref<IItem[]>([]);
+    const itemList = ref<IItem[]>([]);
 
     const orderDetail = ref<IOrder>({
       orderId: "",
@@ -149,60 +138,47 @@ export default defineComponent({
       description: "",
     });
 
-    const orderStatusUpdate = ref<IUpdateOrderStatusRequest>({
-      id: "",
-      orderDetails: {
-        status: PurchaseStatus.PENDING,
-      },
-    });
-
-    const role = ref<UserRole>();
-
     onMounted(() => {
-      role.value = getUserFromPayload().role;
+      orderService.requestor
+        .getById(route.params.orderId)
+        .then((value: IGetOrderByIdResponse) => {
+          console.log(value);
+          orderDetail.value = value;
+          itemList.value = value.orderItems;
+        });
     });
 
-    return {
-      itemDetails,
-      item,
-      orderDetail,
-      orderStatusUpdate,
-      role,
-      UserRole,
-    };
+    return { itemList, item, orderDetail };
   },
   methods: {
     addItemDetail() {
       this.item.subTotal =
         (this.item.unitPrice || 0) * (this.item.quantity || 1);
-      this.itemDetails.push(this.item);
+      this.itemList.push(this.item);
       this.orderDetail.grandTotal = 0;
-      this.itemDetails.forEach((item: IItem) => {
+      this.itemList.forEach((item: IItem) => {
         this.orderDetail.grandTotal += item.subTotal || 0;
       });
 
-      this.item = {} as IItem;
+      this.item = {} as IItem
     },
-    createPurchaseOrder() {
-      this.orderDetail.orderItems = this.itemDetails;
-      orderService.requestor.create(this.orderDetail);
-      router.push("/home");
-    },
-    declinePurchaseOrder() {
-      this.orderStatusUpdate.orderDetails.status = PurchaseStatus.DENIED;
-      orderService.approver
-        .purchaseStatusUpdate(this.orderStatusUpdate)
+    updateOrder() {
+      orderService.requestor
+        .updateOrder(this.orderDetail)
         .then((success: boolean) => {
           switch (success) {
             case true:
-              alert(`${this.orderStatusUpdate.id} have been denied`);
+              alert(`${this.orderDetail.orderId} is updated`);
               break;
             case false:
-              alert("PO status update failed");
+              alert(`failed to update ${this.orderDetail.orderId}`);
               break;
           }
         });
     },
+  },
+  created() {
+    console.log(this.$route.params.orderId);
   },
 });
 </script>
@@ -252,9 +228,5 @@ ion-input {
 }
 h3 {
   margin-left: 75%;
-}
-#declineButton {
-  margin-left: 75%;
-  display: inline-block;
 }
 </style>

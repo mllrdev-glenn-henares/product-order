@@ -1,9 +1,9 @@
 import ILoginRequest from "@/core/interfaces/login/login-request.interface"
 import ILoginResponse from "@/core/interfaces/login/login-response.interface"
 import ISignUpResponse from "@/core/interfaces/signup/sign-up-response.interface"
-import { client } from "./client.service"
-import ISignUpRequest from "../interfaces/signup/sign-up-request.interface"
-import SessionStorageKey from "../enums/session-storage-key.enum"
+import ISignUpRequest from "@/core/interfaces/signup/sign-up-request.interface"
+import SessionStorageKey from "@/core/enums/session-storage-key.enum"
+import { client } from "../client.service"
 
 const USER = "user";
 
@@ -16,7 +16,6 @@ const login = async (loginDetails: ILoginRequest) => {
     })
         .then(function (response) {
             const loginResponse: ILoginResponse = response.data;
-            console.log(loginResponse.isSuccessful)
             if (response.data.isSuccessful) {
                 sessionStorage.setItem(SessionStorageKey.TOKEN, `Bearer ${response.data.token}`)
                 sessionStorage.setItem(SessionStorageKey.USER, response.data.token)
@@ -33,7 +32,7 @@ const signUp = async (signUpDetails: ISignUpRequest) => {
     return await client({
         data: signUpDetails,
         method: "POST",
-        url: `${USER}/signUp`
+        url: `${USER}/sign-up`
 
     })
         .then(function (response) {
