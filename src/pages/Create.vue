@@ -256,7 +256,7 @@ export default defineComponent({
   color: black;
   margin-left: 10%;
   margin-right: 10%;
-  margin-top: 5%;
+  margin-top: 20px;
   border-radius: 30px;
 }
 

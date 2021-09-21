@@ -1,118 +1,171 @@
 <template>
-  <Toolbar title-text="Create" />
+  <Toolbar title-text="Edit Order" />
   <ion-content>
-    <form class="mainCreate" @submit.prevent="createPurchaseOrder">
-      <ion-title>
-        <h1>Purchase Order</h1>
-      </ion-title>
-      <form class="headDetail">
-        <ion-item>
-          <ion-label>Supplier</ion-label>
-          <ion-input
-            type="text"
-            name="supplier"
-            v-model="orderDetail.supplier"
-          ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>PO description</ion-label>
-          <ion-input
-            type="text"
-            name="description"
-            v-model="orderDetail.description"
-          ></ion-input>
-        </ion-item>
+    <div id="content-container">
+      <form class="mainCreate" @submit.prevent="editPurchaseOrder">
+        <ion-title>
+          <ion-label>Purchase Order</ion-label>
+        </ion-title>
+        <form>
+          <div id="general-information-container" class="margin-top-20px">
+            <ion-grid>
+              <ion-row>
+                <ion-label>General Information</ion-label>
+              </ion-row>
+              <ion-row class="margin-top-20px">
+                <ion-col>
+                  <ion-label>Supplier</ion-label>
+                  <ion-input
+                    type="text"
+                    name="supplier"
+                    v-model="orderDetail.supplier"
+                  ></ion-input>
+                </ion-col>
+                <ion-col>
+                  <ion-label>Purchase Date</ion-label>
+                  <ion-input
+                    type="date"
+                    name="purchaseDate"
+                    v-model="orderDetail.purchaseDate"
+                  ></ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-label>PO description</ion-label>
+                  <ion-input
+                    type="text"
+                    name="description"
+                    v-model="orderDetail.description"
+                  ></ion-input>
+                </ion-col>
+                <ion-col>
+                  <ion-label>Requestor</ion-label>
+                  <ion-input type="text" name="user"></ion-input>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+        </form>
+        <hr />
+        <ion-grid>
+          <ion-row>
+            <ion-label>Details</ion-label>
+          </ion-row>
+          <ion-row class="margin-top-20px">
+            <ion-col>
+              <ion-label>Item</ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label>Quantity</ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label>Unit Price</ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label>Sub-Total</ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row v-for="item in itemDetails" :key="item.name">
+            <ion-col>{{ item.name }}</ion-col>
+            <ion-col>{{ item.quantity }}</ion-col>
+            <ion-col>{{ item.unitPrice }}</ion-col>
+            <ion-col>{{ item.subTotal }}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-input
+                type="text"
+                autofocus
+                v-model="item.name"
+                name="name"
+                placeholder="item"
+                required
+              ></ion-input>
+            </ion-col>
+            <ion-input
+              type="number"
+              autofocus
+              v-model="item.quantity"
+              name="quantity"
+              placeholder="Quantity"
+              required
+            ></ion-input>
+            <ion-input
+              type="number"
+              autofocus
+              v-model="item.unitPrice"
+              name="unitPrice"
+              placeholder="Price"
+              required
+            ></ion-input>
+            <ion-input
+              type="number"
+              autofocus
+              v-model="item.subTotal"
+              name="subTotal"
+              placeholder="Total Price"
+              disabled
+            ></ion-input>
+          </ion-row>
+          <ion-row>
+            <ion-button button @click="addItemDetail">ADD</ion-button>
+          </ion-row>
+          <ion-row>
+            <ion-col offset="2">
+              <ion-input
+                placeholder="Grand Total"
+                autofocus
+                disabled
+              ></ion-input>
+            </ion-col>
+            <ion-col>
+              <ion-input
+                type="number"
+                name="grandTotal"
+                v-model="orderDetail.grandTotal"
+                placeholder="Grand Total"
+                disabled
+              ></ion-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <div v-if="role === UserRole.REQUESTOR">
+              <ion-col
+                ><ion-button class="submitButton" button type="submit"
+                  >Create</ion-button
+                >
+              </ion-col>
+              <ion-col>
+                <ion-button class="cancelButton" button href="/home"
+                  >Cancel</ion-button
+                >
+              </ion-col>
+            </div>
+          </ion-row>
+        </ion-grid>
       </form>
-      <div class="headDetail">
-        <ion-item>
-          <ion-label>Purchase Date</ion-label>
-          <ion-input
-            type="date"
-            name="purchaseDate"
-            v-model="orderDetail.purchaseDate"
-          ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Requestor</ion-label>
-          <ion-input type="text" name="user"></ion-input>
-        </ion-item>
+      <div v-if="role === UserRole.APPROVER">
+        <ion-button id="declineButton" @click="declinePurchaseOrder()"
+          >DECLINE</ion-button
+        >
       </div>
-      <hr />
-      <ion-row>
-        <ion-col>Item</ion-col>
-        <ion-col>Quantity</ion-col>
-        <ion-col>Unit Price</ion-col>
-        <ion-col>Sub-Total</ion-col>
-      </ion-row>
-      <ion-row v-for="item in itemDetails" :key="item.name">
-        <ion-col>{{ item.name }}</ion-col>
-        <ion-col>{{ item.quantity }}</ion-col>
-        <ion-col>{{ item.unitPrice }}</ion-col>
-        <ion-col>{{ item.subTotal }}</ion-col>
-      </ion-row>
-      <form @submit.prevent="addItemDetail">
-        <ion-row>
-          <ion-input
-            type="text"
-            autofocus
-            v-model="item.name"
-            name="name"
-            placeholder="item"
-            required
-          ></ion-input>
-          <ion-input
-            type="number"
-            autofocus
-            v-model="item.quantity"
-            name="quantity"
-            placeholder="Quantity"
-            required
-          ></ion-input>
-          <ion-input
-            type="number"
-            autofocus
-            v-model="item.unitPrice"
-            name="unitPrice"
-            placeholder="Price"
-            required
-          ></ion-input>
-          <ion-input
-            type="number"
-            autofocus
-            v-model="item.subTotal"
-            name="subTotal"
-            placeholder="Total Price"
-            disabled
-          ></ion-input>
-        </ion-row>
-        <ion-button button type="submit">ADD</ion-button>
-      </form>
-      <ion-text color="light" size="large">
-        <h3>
-          <ion-input
-            type="number"
-            name="grandTotal"
-            v-model="orderDetail.grandTotal"
-            placeholder="Grand Total"
-            disabled
-          ></ion-input>
-        </h3>
-      </ion-text>
-      <ion-button class="submitButton" @click="onSubmitEdit()">Edit</ion-button>
-      <ion-button class="cancelButton" button href="/home">Cancel</ion-button>
-    </form>
+    </div>
   </ion-content>
 </template>
 
 <script lang="ts">
-import { IonContent, IonTitle, IonItem, IonInput } from "@ionic/vue";
+import { IonContent, IonTitle, IonInput } from "@ionic/vue";
 import { defineComponent, onMounted, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
-import { useRoute, useRouter } from "vue-router";
 import { orderService } from "@/core/services/order.service";
 import router from "@/router";
+import IPurchaseOrder from "@/core/interfaces/purchase-order/purchase-order.interface";
 import IPurchaseOrderRequest from "@/core/interfaces/purchase-order/purchase-order-request.interface";
+import PurchaseStatus from "@/core/enums/status.enum";
+import UserRole from "@/core/enums/user-role.enum";
+import getUserFromPayload from "@/core/services/jwt.service";
 
 export default defineComponent({
   name: "Create",
@@ -120,38 +173,42 @@ export default defineComponent({
     IonContent,
     Toolbar,
     IonTitle,
-    IonItem,
     IonInput,
   },
-
   setup() {
-    const router = useRouter();
-    const route = useRoute();
-    const orderIdParam = route.params.orderId
-    const item = ref<IPurchaseOrderRequest['IEditItems']>({} as IPurchaseOrderRequest['IEditItems']);
+    const item = ref<IItem>({} as IItem);
 
-    const itemDetails = ref<IPurchaseOrderRequest['IEditItems'][]>([]);
+    const itemDetails = ref<IItem[]>([]);
 
-    const orderDetail = ref<IPurchaseOrderRequest['requestor']>({
-      orderId: '',
-      description: "",
-      purchaseDate: new Date(),
+    const orderDetail = ref<IPurchaseOrder>({
+      items: [],
       supplier: "",
-      orderItems: [],
-      grandTotal: 0
+      purchaseDate: new Date(),
+      grandTotal: 0,
+      description: "",
     });
+
+    const orderStatusUpdate = ref<IPurchaseOrderRequest["approver"]>({
+      id: "",
+      orderDetails: {
+        status: PurchaseStatus.PENDING,
+      },
+    });
+
+    const role = ref<UserRole>();
 
     onMounted(() => {
-      orderService.requestor
-        .getOrder(orderIdParam)
-        .then((value: any) => {
-          console.log(value.orderItems);
-          orderDetail.value = value;
-          itemDetails.value = value.orderItems;
-        });
+      role.value = getUserFromPayload().role;
     });
 
-    return { itemDetails, item, orderDetail, router };
+    return {
+      itemDetails,
+      item,
+      orderDetail,
+      orderStatusUpdate,
+      role,
+      UserRole,
+    };
   },
   methods: {
     addItemDetail() {
@@ -163,69 +220,71 @@ export default defineComponent({
         this.orderDetail.grandTotal += item.subTotal || 0;
       });
 
-      this.item = {} as IPurchaseOrderRequest['IEditItems'];
+      this.item = {} as IItem;
     },
-    createPurchaseOrder() {
-      console.log(this.orderDetail);
+    editPurchaseOrder() {
+      this.orderDetail.items = this.itemDetails;
+      orderService.requestor.edit(this.orderDetail);
+      router.push("/home");
     },
-    onSubmitEdit() {
-      orderService.requestor.edit(this.orderDetail).then((isSuccess: boolean) => {
-        if (isSuccess) {
-          router.push("/home");
-        }
-        else {
-          alert("Failed to edit.")
-        }
-      });
+    declinePurchaseOrder() {
+      this.orderStatusUpdate.orderDetails.status = PurchaseStatus.DENIED;
+      orderService.approver
+        .purchaseStatusUpdate(this.orderStatusUpdate)
+        .then((success: boolean) => {
+          switch (success) {
+            case true:
+              alert(`${this.orderStatusUpdate.id} have been denied`);
+              break;
+            case false:
+              alert("PO status update failed");
+              break;
+          }
+        });
     },
   },
 });
 </script>
 
 <style scoped>
-h1 {
-  display: block;
+#content-container {
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background: white;
+  color: black;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 20px;
+  border-radius: 30px;
 }
-.mainCreate {
-  padding: 1%;
+
+#general-information-container ion-input {
+  color: black;
+  border: 2px #5aa4b0 solid;
+  border-radius: 10px;
   width: 80%;
-  margin: 3% 10% 3%;
+}
+.margin-top-20px {
+  margin-top: 20px;
+}
+ion-content {
+  border-radius: 20px;
+  --background: grey;
+  padding-bottom: 10%;
+}
+
+ion-label {
   color: grey;
-  background-color: white;
 }
-p {
-  color: white;
+
+ion-button {
+  --border-radius: 25px;
+  --background: black;
 }
-.headDetail {
-  display: inline-block;
-  width: 50%;
-}
-hr {
-  margin: 1% -1%;
-  padding: 10px;
-  border-bottom: grey solid;
-  opacity: 50%;
-}
-.tableTitle {
-  background-color: aqua;
-  color: black;
-  font-weight: bold;
-  margin-top: 1%;
-}
-ion-item {
-  width: 60%;
-}
-ion-input {
-  color: black;
-}
-.submitButton {
-  margin-left: 75%;
-  display: inline-block;
-}
-.cancelButton {
-  display: inline-block;
-}
-h3 {
-  margin-left: 75%;
+
+ion-grid {
+  --ion-grid-columns: 4;
 }
 </style>

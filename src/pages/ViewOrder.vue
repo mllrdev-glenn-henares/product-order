@@ -13,7 +13,9 @@
                 <div id="detail-text-container">{{ orderDetail.supplier }}</div>
               </ion-col>
               <ion-col>
-                <ion-label id="detail-label-container">Purchase Date: </ion-label>
+                <ion-label id="detail-label-container"
+                  >Purchase Date:
+                </ion-label>
                 <div id="detail-text-container">
                   {{ orderDetail.purchaseDate }}
                 </div>
@@ -85,6 +87,7 @@ import IItem from "@/core/interfaces/item.interface";
 import { useRoute, useRouter } from "vue-router";
 import { orderService } from "@/core/services/order.service";
 import IPurchaseOrderRequest from "@/core/interfaces/purchase-order/purchase-order-request.interface";
+import router from "@/router";
 
 export default defineComponent({
   name: "Create",
@@ -115,12 +118,14 @@ export default defineComponent({
           itemDetails.value = value.orderItems;
         });
     });
-    const onEdit = () => {
+    return { itemDetails, item, orderDetail };
+  },
+  methods: {
+    onEdit() {
       router.push({
         name: "Edit",
       });
-    };
-    return { itemDetails, item, orderDetail, onEdit };
+    },
   },
 });
 </script>
@@ -179,6 +184,6 @@ ion-grid {
 }
 
 ion-content {
-  --background: grey
+  --background: grey;
 }
 </style>
