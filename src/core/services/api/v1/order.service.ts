@@ -136,7 +136,7 @@ const updateOrderStatus = async (request: IUpdateOrderRequest) => {
   return await client({
     data: request,
     method: 'PATCH',
-    url: 'order/updateOrder'
+    url: 'approver/api/v1/orders/order-status'
   })
     .then(() => {
       return true
@@ -145,6 +145,21 @@ const updateOrderStatus = async (request: IUpdateOrderRequest) => {
       return false
     })
 }
+
+const deletePurchaseOrder = async(id: string) => {
+  return await client({
+    data: '',
+    method: 'DELETE',
+    url: `order/${id}/purchaseOrder`
+  })
+  .then(() => {
+    return true;
+  })
+  .catch(() => {
+    return false
+  })
+}
+
 
 export const orderService: IUserRoles = {
   admin: {
@@ -156,7 +171,8 @@ export const orderService: IUserRoles = {
     requestorCreate,
     getRequestorById,
     getRequestorAllByUser,
-    updateOrder
+    updateOrder,
+    deletePurchaseOrder
   },
   approver: {
     getApproverAll,

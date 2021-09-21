@@ -4,7 +4,8 @@ enum RouteName {
     REGISTER = "Register",
     CREATE = "Create",
     EDIT = "Edit",
-    VIEW = "View"
+    VIEW = "View",
+    LANDING = "LANDING"
 }
 
 export default RouteName

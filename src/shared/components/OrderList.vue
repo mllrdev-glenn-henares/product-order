@@ -14,7 +14,6 @@
 </template>
 
 <script lang="ts">
-<<<<<<< HEAD
 import { defineComponent, PropType, computed } from "vue";
 import {
   IonGrid,
@@ -24,13 +23,6 @@ import {
 import moment from "moment";
 import router from "@/router";
 import IOrderSimple from "@/core/interfaces/order/order-simple.interface";
-=======
-import { defineComponent, PropType, computed } from 'vue'
-import PurchaseStatus from '@/core/enums/status.enum';
-import IUser from '@/core/interfaces/user.interface';
-import moment from 'moment'
-import IPurchaseOrderResponse from '@/core/interfaces/purchase-order/purchase-order-response.interface';
->>>>>>> task74-create-role-base-PO-list-rendering-in-dashboard
 
 export default defineComponent({
   name: "order-list",

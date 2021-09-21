@@ -34,15 +34,21 @@
         </ion-row>
       </ion-grid>
       <hr />
-      <ion-button class="submitButton" button @click="onEdit()"> Edit </ion-button>
-      <ion-button class="cancelButton" button href="/home">Cancel</ion-button>
+      <div v-if="role === UserRole.REQUESTOR">
+        <ion-button class="submitButton" button @click="onEdit()"> Edit </ion-button>
+        <ion-button class="cancelButton" button href="/home">Cancel</ion-button>
+      </div>
+      <div v-if="role === UserRole.APPROVER">
+        <ion-button @click="changePurchaseOrderStatus(PurchaseStatus.DENIED)">Declien</ion-button>
+        <ion-button @click="changePurchaseOrderStatus(PurchaseStatus.APPROVED)">approve</ion-button>
+      </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
 import { IonContent, IonPage, IonLabel, IonCol, IonRow, IonGrid, IonButton } from "@ionic/vue";
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, onUpdated, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
 import { useRoute } from "vue-router";
@@ -52,9 +58,12 @@ import IGetOrderByIdResponse from "@/core/interfaces/order/responses/get-order-b
 import getUserFromPayload from "@/core/services/jwt.service";
 import UserRole from "@/core/enums/user-role.enum";
 import router from "@/router";
+import IUpdateOrderStatusRequest from "@/core/interfaces/order/requests/update-order-status.interface";
+import PurchaseStatus from "@/core/enums/status.enum";
+import RouteName from "@/core/enums/route-name.enum";
 
 export default defineComponent({
-  name: "Create",
+  name: "View",
   components: {
     IonContent,
     IonPage,
@@ -67,8 +76,17 @@ export default defineComponent({
   },
   setup() {
     const item = ref<IItem>({} as IItem);
+
     const itemDetails = ref<IItem[]>([]);
+
     const role = ref<UserRole>()
+
+    const orderStatusUpdate = ref<IUpdateOrderStatusRequest>({
+      id: "",
+      orderDetails: {
+        status: PurchaseStatus.PENDING,
+      },
+    });
 
     const orderDetail = ref<IOrder>({
       orderId: "",
@@ -84,7 +102,6 @@ export default defineComponent({
       role.value = getUserFromPayload().role;
       switch(role.value){
         case UserRole.REQUESTOR:
-          console.log(useRoute().params.orderId)
           orderService.requestor
           .getRequestorById(useRoute().params.orderId)
           .then((value: IGetOrderByIdResponse) => {
@@ -107,19 +124,38 @@ export default defineComponent({
             orderDetail.value = value;
             itemDetails.value = value.orderItems
           });
-
       }
     });
+
+    onUpdated(() => {
+      orderStatusUpdate.value.id = useRoute().params.orderId as string;
+    })
     const onEdit = () => {
       router.push({
         name: "Edit",
       });
     };
-    return { itemDetails, item, orderDetail, onEdit };
+    return { itemDetails, item, orderDetail, onEdit, orderStatusUpdate, PurchaseStatus, role, UserRole };
   },
-  created() {
-    console.log(this.$route.params.orderId);
+  methods: {
+    changePurchaseOrderStatus(status: PurchaseStatus) {
+      this.orderStatusUpdate.orderDetails.status = status;
+      console.log(this.orderStatusUpdate)
+            orderService.approver
+        .updateOrderStatus(this.orderStatusUpdate)
+        .then((success: boolean) => {
+          switch (success) {
+            case true:
+              alert(`${this.orderStatusUpdate.id} have been ${this.orderStatusUpdate.orderDetails.status}`);
+              router.push({name: RouteName.HOME});
+              break;
+            case false:
+              alert("PO status update failed");
+              break;
+          }
+        });
   },
+},
 });
 </script>
 

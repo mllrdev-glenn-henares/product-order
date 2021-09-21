@@ -99,7 +99,6 @@
             ></ion-input>
           </h3>
         </ion-text>
-        <div v-if="role === UserRole.REQUESTOR">
           <ion-button class="submitButton" button type="submit"
             >Create</ion-button
           >
@@ -109,13 +108,7 @@
             @click="$router.push({ name: RouteName.HOME })"
             >Cancel</ion-button
           >
-        </div>
       </form>
-      <div v-if="role === UserRole.APPROVER">
-        <ion-button id="declineButton" @click="declinePurchaseOrder()"
-          >DECLINE</ion-button
-        >
-      </div>
     </ion-content>
   </ion-page>
 </template>
@@ -138,11 +131,6 @@ import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
 import { orderService } from "@/core/services/api/v1/order.service";
 import router from "@/router";
-import PurchaseStatus from "@/core/enums/status.enum";
-import UserRole from "@/core/enums/user-role.enum";
-import getUserFromPayload from "@/core/services/jwt.service";
-import IOrder from "@/core/interfaces/order/order.interface";
-import IUpdateOrderStatusRequest from "@/core/interfaces/order/requests/update-order-status.interface";
 import ICreateOrderRequest from "@/core/interfaces/order/requests/create-order.interface";
 import RouteName from "@/core/enums/route-name.enum"
 
@@ -166,42 +154,19 @@ export default defineComponent({
 
     const itemDetails = ref<IItem[]>([]);
 
-<<<<<<< HEAD
     const orderDetail = ref<ICreateOrderRequest>({
  
       items: itemDetails.value,
       supplier: '',
       purchaseDate: new Date,
-=======
-    const orderDetail = ref<IPurchaseOrder>({
-      items: [],
-      supplier: "",
-      purchaseDate: new Date(),
->>>>>>> task74-create-role-base-PO-list-rendering-in-dashboard
       grandTotal: 0,
       description: '',
-    });
-
-    const orderStatusUpdate = ref<IUpdateOrderStatusRequest>({
-      id: "",
-      orderDetails: {
-        status: PurchaseStatus.PENDING,
-      },
-    });
-
-    const role = ref<UserRole>();
-
-    onMounted(() => {
-      role.value = getUserFromPayload().role;
     });
 
     return {
       itemDetails,
       item,
       orderDetail,
-      orderStatusUpdate,
-      role,
-      UserRole,
       RouteName,
     };
   },
@@ -218,31 +183,12 @@ export default defineComponent({
     },
     createPurchaseOrder() {
       this.orderDetail.items = this.itemDetails;
-<<<<<<< HEAD
       orderService.requestor.requestorCreate(this.orderDetail);
       router.push({
         name: RouteName.HOME,
       });
     },
-    declinePurchaseOrder() {
-      this.orderStatusUpdate.orderDetails.status = PurchaseStatus.DENIED;
-      orderService.approver
-        .purchaseStatusUpdate(this.orderStatusUpdate)
-        .then((success: boolean) => {
-          switch (success) {
-            case true:
-              alert(`${this.orderStatusUpdate.id} have been denied`);
-              break;
-            case false:
-              alert("PO status update failed");
-              break;
-          }
-        });
-=======
-      orderService.requestor.create(this.orderDetail);
-      router.push("/home");
->>>>>>> task74-create-role-base-PO-list-rendering-in-dashboard
-    },
+
   },
 });
 </script>
