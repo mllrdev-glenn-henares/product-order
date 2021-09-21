@@ -50,9 +50,9 @@ import {
 } from "vue";
 import OrderList from "@/shared/components/OrderList.vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
-import { orderService } from "@/core/services/api/order.service";
+import { orderService } from "@/core/services/api/v1/order.service";
 import UserRole from "@/core/enums/user-role.enum";
-import getTokenProperties from "@/core/services/jwt.service";
+import getUserFromPayload from "@/core/services/jwt.service";
 import IGetAllOrdersByUserIdResponse from "@/core/interfaces/order/responses/get-all-orders-by-user-id.interface";
 import IGetAllOrdersResponse from "@/core/interfaces/order/responses/get-all-orders.interface";
 import IOrderSimple from "@/core/interfaces/order/order-simple.interface";
@@ -81,16 +81,17 @@ export default defineComponent({
     const role = ref<UserRole>()
 
     onUpdated(() => {
-      role.value = getTokenProperties().role;
+      role.value = getUserFromPayload().role;
       switch(role.value) {
         case UserRole.REQUESTOR:
-          orderService.requestor.getAllByUser().then((value: IGetAllOrdersByUserIdResponse[]) => {
+          orderService.requestor.getRequestorAllByUser().then((value: IGetAllOrdersByUserIdResponse[]) => {
             orders.value = value;
+            console.log(orders.value)
           });
           break;
           
         case UserRole.APPROVER:
-          orderService.approver.getAll().then((value: IGetAllOrdersResponse[]) => {
+          orderService.approver.getApproverAll().then((value: IGetAllOrdersResponse[]) => {
             orders.value = value;          
           });
           break;

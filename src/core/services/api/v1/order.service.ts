@@ -6,11 +6,12 @@ import IGetAllOrdersByUserIdResponse from "@/core/interfaces/order/responses/get
 import ICreateOrderRequest from "@/core/interfaces/order/requests/create-order.interface";
 import IUpdateOrderRequest from "@/core/interfaces/order/requests/update-order.interface";
 
-const getAll = async () => {
+
+const getAdminAll = async () => {
   return await client({
     data: '',
     method: 'GET',
-    url: 'order/all'
+    url: '/admin/api/v1/orders/all'
   })
     .then(response => {
       const orders: Array<IGetAllOrdersResponse> = response.data;
@@ -22,26 +23,27 @@ const getAll = async () => {
     })
 }
 
-const getById = async (id: string) => {
+const getApproverAll = async () => {
   return await client({
     data: '',
     method: 'GET',
-    url: `order/${id}/orderDetails`
+    url: 'approver/api/v1/orders/all'
   })
     .then(response => {
-      const orders: IGetOrderByIdResponse = response.data;
+      const orders: Array<IGetAllOrdersResponse> = response.data;
       return orders
     })
     .catch(error => {
       console.log(error)
-      return null
+      return Array<IGetAllOrdersResponse>()
     })
 }
-const getAllByUser = async () => {
+
+const getRequestorAllByUser = async () => {
   return client({
     data: '',
     method: 'GET',
-    url: 'order/user'
+    url: 'requestor/api/v1/orders/user'
   })
     .then(response => {
       const orders: Array<IGetAllOrdersByUserIdResponse> = response.data;
@@ -53,11 +55,60 @@ const getAllByUser = async () => {
     })
 }
 
-const create = async (order: ICreateOrderRequest) => {
+const getAdminById = async (id: string) => {
+  return await client({
+    data: '',
+    method: 'GET',
+    url: `admin/api/v1/orders/${id}/order-details`
+  })
+    .then(response => {
+      const orders: IGetOrderByIdResponse = response.data;
+      return orders
+    })
+    .catch(error => {
+      console.log(error)
+      return null
+    })
+}
+
+const getApproverById = async (id: string) => {
+  return await client({
+    data: '',
+    method: 'GET',
+    url: `approver/api/v1/orders/${id}/order-details`
+  })
+    .then(response => {
+      const orders: IGetOrderByIdResponse = response.data;
+      return orders
+    })
+    .catch(error => {
+      console.log(error)
+      return null
+    })
+}
+
+const getRequestorById = async (id: string) => {
+  return await client({
+    data: '',
+    method: 'GET',
+    url: `requestor/api/v1/orders/${id}/order-details`
+  })
+    .then(response => {
+      const orders: IGetOrderByIdResponse = response.data;
+      return orders
+    })
+    .catch(error => {
+      console.log(error)
+      return null
+    })
+}
+
+
+const requestorCreate = async (order: ICreateOrderRequest) => {
   return await client({
     data: order,
     method: 'POST',
-    url: 'order/createPO'
+    url: 'requestor/api/v1/orders/create-purchase-order'
   })
     .then(() => {
       return true
@@ -71,7 +122,7 @@ const updateOrder = async (order: IUpdateOrderRequest) => {
   return await client({
     data: order,
     method: 'PUT',
-    url: 'order/updatePurchaseOrder'
+    url: 'requestor/api/v1/orders/update-purchase-order'
   })
     .then(() => {
       return true
@@ -97,18 +148,20 @@ const updateOrderStatus = async (request: IUpdateOrderRequest) => {
 
 export const orderService: IUserRoles = {
   admin: {
-    getAll
+    getAdminAll,
+    getAdminById,
   },
 
   requestor: {
-    create,
-    getAllByUser,
-    getById,
+    requestorCreate,
+    getRequestorById,
+    getRequestorAllByUser,
     updateOrder
   },
   approver: {
-    getAll,
-    updateOrderStatus
-  }
+    getApproverAll,
+    getApproverById,
+    updateOrderStatus,
+  },
 }
 

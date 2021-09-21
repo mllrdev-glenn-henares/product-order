@@ -34,7 +34,7 @@ import Toolbar from "@/shared/components/Toolbar.vue";
 import ILoginRequest from "@/core/interfaces/login/login-request.interface";
 import router from "@/router";
 import { RouteName } from "@/core/enums/route-name.enum";
-import { userService } from "@/core/services/api/user.service";
+import { userService } from "@/core/services/api/v1/user.service";
 
 export default defineComponent({
   name: "Home",
@@ -83,7 +83,3 @@ ion-button {
   margin-top: 10px;
 }
 </style>
-
-function getOrder(arg0: number): any {
-  throw new Error("Function not implemented.");
-}

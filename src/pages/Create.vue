@@ -118,13 +118,14 @@ import { IonContent, IonTitle, IonItem, IonInput } from "@ionic/vue";
 import { defineComponent, onMounted, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
-import { orderService } from "@/core/services/api/order.service";
+import { orderService } from "@/core/services/api/v1/order.service";
 import router from "@/router";
 import PurchaseStatus from "@/core/enums/status.enum";
 import UserRole from "@/core/enums/user-role.enum";
 import getUserFromPayload from "@/core/services/jwt.service";
 import IOrder from "@/core/interfaces/order/order.interface";
 import IUpdateOrderStatusRequest from "@/core/interfaces/order/requests/update-order-status.interface";
+import ICreateOrderRequest from "@/core/interfaces/order/requests/create-order.interface";
 
 export default defineComponent({
   name: "Create",
@@ -140,13 +141,13 @@ export default defineComponent({
 
     const itemDetails = ref<IItem[]>([]);
 
-    const orderDetail = ref<IOrder>({
-      orderId: "",
-      orderItems: [],
-      supplier: "",
-      purchaseDate: new Date(),
+    const orderDetail = ref<ICreateOrderRequest>({
+ 
+      items: itemDetails.value,
+      supplier: '',
+      purchaseDate: new Date,
       grandTotal: 0,
-      description: "",
+      description: '',
     });
 
     const orderStatusUpdate = ref<IUpdateOrderStatusRequest>({
@@ -184,8 +185,8 @@ export default defineComponent({
       this.item = {} as IItem;
     },
     createPurchaseOrder() {
-      this.orderDetail.orderItems = this.itemDetails;
-      orderService.requestor.create(this.orderDetail);
+      this.orderDetail.items = this.itemDetails;
+      orderService.requestor.requestorCreate(this.orderDetail);
       router.push("/home");
     },
     declinePurchaseOrder() {

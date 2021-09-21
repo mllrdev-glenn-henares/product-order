@@ -56,7 +56,7 @@ import { IonContent, IonInput, IonPage } from "@ionic/vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import { defineComponent } from "vue";
 import { reactive } from "vue";
-import { userService } from "@/core/services/api/user.service";
+import { userService } from "@/core/services/api/v1/user.service";
 import { useRouter } from "vue-router";
 import ISignUpRequest from "@/core/interfaces/signup/sign-up-request.interface";
 

@@ -9,6 +9,7 @@
         <ion-col> {{ order.id }} </ion-col>
         <ion-col> {{ order.supplier }} </ion-col>
         <ion-col> {{ order.description }} </ion-col>
+        <ion-col> {{ order.grandTotal }} </ion-col>
         <ion-col> {{ $filters.timeFormater(order.createdAt) }} </ion-col>
         <ion-col> {{ order.status }} </ion-col>
       </ion-row>
@@ -41,20 +42,16 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const $filters: any = {}
+    const $filters: any = {};
 
     const timeFormater = (date: Date | string) => {
       return (date = moment.utc(date).format("MM/DD/YYYY"));
     };
 
     const purchaseOrders = computed(() => {
+      console.log(props.orders)
       return [...props.orders].sort((a: IOrderSimple) => {
-        if (
-          a.status ===
-          Object.keys(PurchaseStatus)[
-            Object.values(PurchaseStatus).indexOf(props.status)
-          ]
-        ) {
+        if (a.status === Object.keys(PurchaseStatus)[Object.values(PurchaseStatus).indexOf(props.status)]) {
           return -1;
         }
 

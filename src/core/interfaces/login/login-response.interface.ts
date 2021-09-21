@@ -1,7 +1,7 @@
 
 interface ILoginResponse {
     isSuccessful: boolean;
-    token: String;
+    token: string;
     message: string;
 }
 

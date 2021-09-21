@@ -3,15 +3,15 @@ import ILoginResponse from "@/core/interfaces/login/login-response.interface"
 import ISignUpResponse from "@/core/interfaces/signup/sign-up-response.interface"
 import ISignUpRequest from "@/core/interfaces/signup/sign-up-request.interface"
 import SessionStorageKey from "@/core/enums/session-storage-key.enum"
-import { client } from "../client.service"
+import { client } from "@/core/services/client.service"
 
-const USER = "user";
+const USER = "users";
 
 const login = async (loginDetails: ILoginRequest) => {
     return await client({
         data: loginDetails,
         method: "POST",
-        url: `${USER}/login`
+        url: `api/v1/${USER}/login`
 
     })
         .then(function (response) {

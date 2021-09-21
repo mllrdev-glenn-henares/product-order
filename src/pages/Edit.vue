@@ -5,6 +5,7 @@
       <ion-title>
         <h1>Purchase Order</h1>
       </ion-title>
+      <form @submit.prevent="addItemDetail">
       <form class="headDetail">
         <ion-item>
           <ion-label>Supplier</ion-label>
@@ -44,13 +45,40 @@
         <ion-col>Unit Price</ion-col>
         <ion-col>Sub-Total</ion-col>
       </ion-row>
-      <ion-row v-for="item in itemList" :key="item.name">
-        <ion-col>{{ item.name }}</ion-col>
-        <ion-col>{{ item.quantity }}</ion-col>
-        <ion-col>{{ item.unitPrice }}</ion-col>
-        <ion-col>{{ item.subTotal }}</ion-col>
+      <ion-row v-for="(item, index) in itemList" :key="index">
+        <ion-input
+            type="text"
+            autofocus
+            v-model="item.name"
+            name="name"
+            placeholder="item"
+            required
+          ></ion-input>
+        <ion-input
+            type="number"
+            autofocus
+            v-model="item.quantity"
+            name="quantity"
+            placeholder="Quantity"
+            required
+          ></ion-input>
+        <ion-input
+            type="number"
+            autofocus
+            v-model="item.unitPrice"
+            name="unitPrice"
+            placeholder="Price"
+            required
+          ></ion-input>
+        <ion-input
+            type="number"
+            autofocus
+            v-model="item.subTotal"
+            name="subTotal"
+            placeholder="Total Price"
+            disabled
+          ></ion-input>
       </ion-row>
-      <form @submit.prevent="addItemDetail">
         <ion-row>
           <ion-input
             type="text"
@@ -98,7 +126,7 @@
           ></ion-input>
         </h3>
       </ion-text>
-      <ion-button class="submitButton" button type="submit">Create</ion-button>
+      <ion-button class="submitButton" button type="submit">update</ion-button>
       <ion-button class="cancelButton" button href="/home">Cancel</ion-button>
     </form>
   </ion-content>
@@ -106,13 +134,15 @@
 
 <script lang="ts">
 import { IonContent, IonTitle, IonItem, IonInput } from "@ionic/vue";
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, onUpdated, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
-import IOrder from "@/core/interfaces/order/order.interface";
-import { orderService } from "@/core/services/api/order.service";
+import { orderService } from "@/core/services/api/v1/order.service";
 import { useRoute } from "vue-router";
 import IGetOrderByIdResponse from "@/core/interfaces/order/responses/get-order-by-id.interface";
+import getUserFromPayload from "@/core/services/jwt.service";
+import UserRole from "@/core/enums/user-role.enum";
+import IUpdateOrderRequest, { IItemRequest } from "@/core/interfaces/order/requests/update-order.interface";
 
 export default defineComponent({
   name: "Create",
@@ -124,45 +154,73 @@ export default defineComponent({
     IonInput,
   },
   setup() {
-    const route = useRoute();
-    const item = ref<IItem>({} as IItem);
+    const item = ref<IItemRequest>({
+      orderItemId: 0,
+      itemId: 0,
+      quantity: 0,
+      name: '',
+      unitPrice: 0,
+      subTotal: 0
+    });
 
-    const itemList = ref<IItem[]>([]);
+    const itemList = ref<IItemRequest[]>([]);
 
-    const orderDetail = ref<IOrder>({
+    const orderDetail = ref<IUpdateOrderRequest>({
       orderId: "",
-      orderItems: [],
+      requestor: "",
+      orderItems: itemList.value,
       supplier: "",
       purchaseDate: new Date(),
       grandTotal: 0,
       description: "",
     });
 
+    const role = ref<UserRole>();
+
     onMounted(() => {
-      orderService.requestor
-        .getById(route.params.orderId)
-        .then((value: IGetOrderByIdResponse) => {
-          console.log(value);
-          orderDetail.value = value;
-          itemList.value = value.orderItems;
-        });
+      role.value = getUserFromPayload().role;
+      switch(role.value){
+        case UserRole.REQUESTOR:
+          console.log(useRoute().params.orderId)
+          orderService.requestor
+          .getRequestorById(useRoute().params.orderId)
+          .then((value: IGetOrderByIdResponse) => {
+            orderDetail.value = value;
+            itemList.value = value.orderItems
+          });
+          break
+        case UserRole.APPROVER:
+          orderService.approver
+            .getApproverById(useRoute().params.orderId).
+            then((value: IGetOrderByIdResponse) => {
+            orderDetail.value = value;
+            itemList.value = value.orderItems
+          });
+          break
+      }
+
+      
     });
 
-    return { itemList, item, orderDetail };
+
+    return { itemList, item, orderDetail, };
   },
   methods: {
     addItemDetail() {
       this.item.subTotal =
         (this.item.unitPrice || 0) * (this.item.quantity || 1);
       this.itemList.push(this.item);
+      this.orderDetail.orderItems = this.itemList
       this.orderDetail.grandTotal = 0;
       this.itemList.forEach((item: IItem) => {
         this.orderDetail.grandTotal += item.subTotal || 0;
       });
 
-      this.item = {} as IItem
+      this.item = {} as IItemRequest
     },
     updateOrder() {
+
+      console.log(this.orderDetail.orderItems)
       orderService.requestor
         .updateOrder(this.orderDetail)
         .then((success: boolean) => {

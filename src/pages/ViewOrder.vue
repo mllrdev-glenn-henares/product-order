@@ -10,6 +10,7 @@
         </ion-row>
         <ion-row>
           <ion-col>Description: {{ orderDetail.description }}</ion-col>
+          <ion-col>Requestor: {{ orderDetail.requestor }}</ion-col>
         </ion-row>
       </ion-grid>
 
@@ -27,11 +28,8 @@
           <ion-col>{{ item.subTotal }}</ion-col>
         </ion-row>
         <ion-row>
-          <ion-col />
-          <ion-col />
-          <ion-col />
           <ion-col>
-            <h3>{{ orderDetail.grandTotal }}</h3>
+            <h3>Grand Total {{ orderDetail.grandTotal }}</h3>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -48,9 +46,13 @@ import { defineComponent, onMounted, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
 import { useRoute, useRouter } from "vue-router";
-import { orderService } from "@/core/services/api/order.service";
+import { orderService } from "@/core/services/api/v1/order.service";
 import IOrder from "@/core/interfaces/order/order.interface";
 import IGetOrderByIdResponse from "@/core/interfaces/order/responses/get-order-by-id.interface";
+import getUserFromPayload from "@/core/services/jwt.service";
+import UserRole from "@/core/enums/user-role.enum";
+import IGetAllOrdersResponse from "@/core/interfaces/order/responses/get-all-orders.interface";
+import router from "@/router";
 
 export default defineComponent({
   name: "Create",
@@ -59,13 +61,13 @@ export default defineComponent({
     Toolbar,
   },
   setup() {
-    const router = useRouter();
-    const route = useRoute();
     const item = ref<IItem>({} as IItem);
     const itemDetails = ref<IItem[]>([]);
+    const role = ref<UserRole>()
 
     const orderDetail = ref<IOrder>({
       orderId: "",
+      requestor: "",
       description: "",
       purchaseDate: new Date(),
       supplier: "",
@@ -73,13 +75,35 @@ export default defineComponent({
       grandTotal: 0,
     });
     onMounted(() => {
-      orderService.requestor
-        .getById(route.params.orderId)
-        .then((value: IGetOrderByIdResponse) => {
-          console.log(value);
-          orderDetail.value = value;
-          itemDetails.value = value.orderItems;
-        });
+      
+      role.value = getUserFromPayload().role;
+      switch(role.value){
+        case UserRole.REQUESTOR:
+          console.log(useRoute().params.orderId)
+          orderService.requestor
+          .getRequestorById(useRoute().params.orderId)
+          .then((value: IGetOrderByIdResponse) => {
+            orderDetail.value = value;
+            itemDetails.value = value.orderItems
+          });
+          break
+        case UserRole.APPROVER:
+          orderService.approver
+            .getApproverById(useRoute().params.orderId).
+            then((value: IGetOrderByIdResponse) => {
+            orderDetail.value = value;
+            itemDetails.value = value.orderItems
+          });
+          break
+        case UserRole.ADMIN:
+          orderService.admin
+            .getAdminById(useRoute().params.orderId).
+            then((value: IGetOrderByIdResponse) => {
+            orderDetail.value = value;
+            itemDetails.value = value.orderItems
+          });
+
+      }
     });
     const onEdit = () => {
       router.push({
