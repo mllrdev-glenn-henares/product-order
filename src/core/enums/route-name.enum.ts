@@ -2,5 +2,6 @@ export enum RouteName {
     HOME = "Home",
     LOGIN = "Login",
     REGISTER = "Register",
-    CREATE = "Create"
+    CREATE = "Create",
+    LANDING = "LANDING"
 }

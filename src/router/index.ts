@@ -6,6 +6,7 @@ import Home from "@/pages/Home.vue";
 import Login from "@/pages/Login.vue";
 import Register from "@/pages/Register.vue";
 import Create from "@/pages/Create.vue"
+import Landing from "@/pages/Landing.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -28,6 +29,11 @@ const routes: Array<RouteRecordRaw> = [
     name: RouteName.CREATE,
     component: Create,
   },
+  {
+    path: "/landing",
+    name: RouteName.LANDING,
+    component: Landing
+  }
 ];
 
 const router = createRouter({
