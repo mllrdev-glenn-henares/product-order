@@ -4,31 +4,60 @@
       <Toolbar title-text="Home" />
     </ion-toolbar>
     <ion-content :fullscreen="true">
-      <div class="filterButton">
-        <ion-button button @click="handleClick(PurchaseStatus.PENDING)"
-          >Pending</ion-button
-        >
-        <ion-button button @click="handleClick(PurchaseStatus.APPROVED)"
-          >Approve</ion-button
-        >
-        <ion-button button @click="handleClick(PurchaseStatus.DENIED)"
-          >Declined</ion-button
-        >
-        <ion-button button @click="handleClick(PurchaseStatus.CLOSED)"
-          >Closed</ion-button
-        >
+      <div class="main">
+        <div class="filterButton">
+          <ion-title id="title">Product Order List</ion-title>
+          <ion-segment value="all">
+            <ion-segment-button value="all" @click="handleClick(null)">
+              <ion-label>all</ion-label>
+            </ion-segment-button>
+            <ion-segment-button
+              value="null"
+              @click="handleClick(PurchaseStatus.PENDING)"
+            >
+              <ion-label>PENDING</ion-label>
+            </ion-segment-button>
+            <ion-segment-button
+              value="APPROVED"
+              @click="handleClick(PurchaseStatus.APPROVED)"
+            >
+              <ion-label>APPROVED</ion-label>
+            </ion-segment-button>
+            <ion-segment-button
+              value="DENIED"
+              @click="handleClick(PurchaseStatus.DENIED)"
+            >
+              <ion-label>DENIED</ion-label>
+            </ion-segment-button>
+            <ion-segment-button
+              value="CLOSED"
+              @click="handleClick(PurchaseStatus.CLOSED)"
+            >
+              <ion-label>CLOSED</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+          <ion-icon name="search-sharp" color="danger"></ion-icon>
+          <ion-icon name="funnel-sharp" color="primary"></ion-icon>
+        </div>
+        <ion-grid class="tableTitle">
+          <ion-row>
+            <ion-col> PO Number </ion-col>
+            <ion-col> Supplier </ion-col>
+            <ion-col> PO Description </ion-col>
+            <ion-col> Request Date </ion-col>
+            <ion-col> Amount </ion-col>
+            <ion-col> Status </ion-col>
+          </ion-row>
+          <hr />
+        </ion-grid>
+        <order-list :orders="orders" :status="status" />
+        <ion-button
+          id="addButton"
+          @click="clickToCreateOrder()"
+          v-if="role === UserRole.REQUESTOR"
+          >Create New PO<span> +</span>
+        </ion-button>
       </div>
-      <ion-grid class="tableTitle">
-        <ion-row>
-          <ion-col> PO Number </ion-col>
-          <ion-col> Supplier </ion-col>
-          <ion-col> PO Description </ion-col>
-          <ion-col> Request Date </ion-col>
-          <ion-col> Status </ion-col>
-        </ion-row>
-      </ion-grid>
-      <order-list :orders="orders" :status="status" />
-      <ion-button id="addButton" href="/create" v-if="role === UserRole.REQUESTOR">add Icon</ion-button>
     </ion-content>
   </ion-page>
 </template>
@@ -39,15 +68,17 @@ import {
   IonContent,
   IonPage,
   IonToolbar,
+  IonTitle,
   IonGrid,
   IonRow,
+  IonCol,
   IonButton,
+  IonIcon,
+  IonLabel,
+  IonSegment,
+  IonSegmentButton,
 } from "@ionic/vue";
-import {
-  defineComponent,
-  onUpdated,
-  ref,
-} from "vue";
+import { defineComponent, onUpdated, ref } from "vue";
 import OrderList from "@/shared/components/OrderList.vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import { orderService } from "@/core/services/api/v1/order.service";
@@ -56,6 +87,8 @@ import getUserFromPayload from "@/core/services/jwt.service";
 import IGetAllOrdersByUserIdResponse from "@/core/interfaces/order/responses/get-all-orders-by-user-id.interface";
 import IGetAllOrdersResponse from "@/core/interfaces/order/responses/get-all-orders.interface";
 import IOrderSimple from "@/core/interfaces/order/order-simple.interface";
+import RouteName from "@/core/enums/route-name.enum";
+import router from "@/router";
 
 export default defineComponent({
   name: "Home",
@@ -63,22 +96,27 @@ export default defineComponent({
     IonContent,
     IonPage,
     IonToolbar,
+    IonTitle,
     IonGrid,
     IonRow,
+    IonCol,
     IonButton,
     OrderList,
     Toolbar,
+    IonIcon,
+    IonLabel,
+    IonSegment,
+    IonSegmentButton,
   },
   setup() {
     const orders = ref<IOrderSimple[]>([]);
 
-    const status = ref<PurchaseStatus>(PurchaseStatus.PENDING);
+    const status = ref<PurchaseStatus | null>(null);
 
-    const handleClick = (term: PurchaseStatus) => {
+    const handleClick = (term: PurchaseStatus | null) => {
       status.value = term;
     };
-
-    const role = ref<UserRole>()
+    const role = ref<UserRole>();
 
     onUpdated(() => {
       role.value = getUserFromPayload().role;
@@ -86,16 +124,13 @@ export default defineComponent({
         case UserRole.REQUESTOR:
           orderService.requestor.getRequestorAllByUser().then((value: IGetAllOrdersByUserIdResponse[]) => {
             orders.value = value;
-            console.log(orders.value)
           });
           break;
-          
         case UserRole.APPROVER:
           orderService.approver.getApproverAll().then((value: IGetAllOrdersResponse[]) => {
             orders.value = value;          
           });
           break;
-
       }
     });
     return {
@@ -105,10 +140,14 @@ export default defineComponent({
       status,
       role,
       UserRole,
-      nested: {
-        orders
-      }
     };
+  },
+  methods: {
+    clickToCreateOrder() {
+      router.push({
+        name: RouteName.CREATE,
+      });
+    },
   },
 });
 </script>
@@ -121,30 +160,58 @@ img {
 ion-title {
   display: inline-block;
   margin-top: 1%;
+  text-align: left;
+  padding-left: 7px;
 }
 .tableTitle {
-  background-color: aqua;
-  color: black;
-  font-weight: bold;
-  margin: 1% 0% 1%;
+  color: #5aa4b0;
+  text-align: left;
+  /* margin: 1% 0% 1%; */
 }
 ion-grid {
   text-align: center;
 }
-#signInButton {
+ion-button {
+  min-height: 20px;
   float: right;
-  margin-top: 13px;
-  margin-right: 2%;
+  margin-top: 30px;
+  --background: #2a3132;
+  --border-radius: 20px;
 }
-#addButton {
-  float: right;
-  vertical-align: top;
-  margin-right: 2%;
+hr {
+  height: 2px;
+  background-color: #bfdaf9;
 }
-.filterButton {
-  margin-left: 5%;
+.main {
+  width: 80%;
+  margin-left: 10%;
+  color: #313738;
+
 }
-h1 {
-  color:black
+ion-segment {
+  height: 35px;
+  width: 40%;
+  padding: 5px;
+  border-radius: 20px;
+  margin: 30px 5px 20px 5px;
+  --border-radius: 30px;
+  --background: #ebebeb;
+}
+
+ion-segment-button {
+  min-height: 20px;
+  --background: #ebebeb;
+  --background-checked: #2a3132;
+  --indicator-color: transparent !important;
+  --indicator-color-checked: transparent !important;
+  color: #a1a6ad;
+}
+span {
+  color: whitesmoke;
+  padding: 3px;
+  background: #5aa4b0;
+  border-radius: 10px;
+  width: 30px;
+  margin-left: 5px;
 }
 </style>

@@ -1,4 +1,4 @@
-export enum RouteName {
+enum RouteName {
     HOME = "Home",
     LOGIN = "Login",
     REGISTER = "Register",
@@ -6,3 +6,5 @@ export enum RouteName {
     EDIT = "Edit",
     VIEW = "View"
 }
+
+export default RouteName

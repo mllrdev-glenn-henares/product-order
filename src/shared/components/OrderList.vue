@@ -1,17 +1,13 @@
 <template>
   <div class="order-list">
     <ion-grid>
-      <ion-row
-        @click="handleOrderRowClick(order.id)"
-        v-for="order in purchaseOrders"
-        :key="order.id"
-      >
-        <ion-col> {{ order.id }} </ion-col>
-        <ion-col> {{ order.supplier }} </ion-col>
-        <ion-col> {{ order.description }} </ion-col>
-        <ion-col> {{ order.grandTotal }} </ion-col>
-        <ion-col> {{ $filters.timeFormater(order.createdAt) }} </ion-col>
-        <ion-col> {{ order.status }} </ion-col>
+      <ion-row class="item" @click="handleOrderRowClick(order.id)" v-for="order in purchaseOrders" :key="order.id">
+        <ion-col size="2"> {{ order.id }} </ion-col>
+        <ion-col size="2"> {{ order.supplier }} </ion-col>
+        <ion-col size="2"> {{ order.description }} </ion-col>
+        <ion-col size="2"> {{ timeFormater(order.createdAt) }} </ion-col>
+        <ion-col size="2">{{ order.grandTotal }}</ion-col>
+        <ion-col :class="order.status" size="1.2"> {{ order.status }} </ion-col>
       </ion-row>
     </ion-grid>
   </div>
@@ -19,8 +15,6 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from "vue";
-import PurchaseStatus from "@/core/enums/status.enum";
-import IUser from "@/core/interfaces/user.interface";
 import moment from "moment";
 import router from "@/router";
 import IOrderSimple from "@/core/interfaces/order/order-simple.interface";
@@ -32,14 +26,11 @@ export default defineComponent({
       required: true,
       type: Array as PropType<Array<IOrderSimple>>,
     },
-    user: {
-      required: true,
-      type: Object as PropType<IUser>,
-    },
     status: {
-      required: true,
-      type: Object as PropType<PurchaseStatus>,
-    },
+      required: false,
+      type: String || null
+    }
+    
   },
   setup(props) {
     const $filters: any = {};
@@ -49,20 +40,20 @@ export default defineComponent({
     };
 
     const purchaseOrders = computed(() => {
-      console.log(props.orders)
-      return [...props.orders].sort((a: IOrderSimple) => {
-        if (a.status === Object.keys(PurchaseStatus)[Object.values(PurchaseStatus).indexOf(props.status)]) {
-          return -1;
+        if (props.status === null) {
+          return props.orders
         }
-
-        if (a.status < props.status) {
-          return 1;
+        else {
+          return [...props.orders].filter((a: IOrderSimple ) => {
+              if (a.status === props.status) {
+                return -1
+              }
+              return 0
+          });
         }
-
-        return 0;
-      });
-    });
-    return { $filters, purchaseOrders, timeFormater };
+      
+    })
+    return { purchaseOrders, timeFormater }
   },
   methods: {
     handleOrderRowClick(id: string) {
