@@ -37,7 +37,8 @@ import { reactive } from "vue";
 import { userService } from "@/core/services/api/v1/user.service";
 import { useRouter } from "vue-router";
 import ILoginDetails from "@/core/interfaces/login/login-request.interface";
-import { RouteName } from "@/core/enums/route-name.enum";
+import RouteName from "@/core/enums/route-name.enum";
+
 
 export default defineComponent({
   name: "Login",
