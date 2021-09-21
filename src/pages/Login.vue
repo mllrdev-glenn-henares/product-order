@@ -20,7 +20,7 @@
             ></ion-input>
           </ion-item>
           <ion-button type="submit">Login</ion-button>
-          <ion-button @click="$router.push('/register')">Register</ion-button>
+          <ion-button @click="$router.push({ name: RouteName.REGISTER })">Register</ion-button>
         </div>
       </form>
     </ion-content>
@@ -35,8 +35,6 @@ import { defineComponent } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import { reactive } from "vue";
 import { userService } from "@/core/services/api/v1/user.service";
-import { useRouter } from "vue-router";
-import ILoginDetails from "@/core/interfaces/login/login-request.interface";
 import RouteName from "@/core/enums/route-name.enum";
 
 
@@ -70,7 +68,7 @@ export default defineComponent({
       data.email = "";
       data.password = "";
     };
-    return { data, onLogin };
+    return { data, onLogin, RouteName };
   },
 });
 </script>
