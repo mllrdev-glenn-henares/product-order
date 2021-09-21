@@ -214,4 +214,7 @@ span {
   width: 30px;
   margin-left: 5px;
 }
+h1 {
+  color:black
+}
 </style>

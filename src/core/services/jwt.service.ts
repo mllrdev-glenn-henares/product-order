@@ -8,4 +8,8 @@ function getUserFromPayload() {
   return user
 }
 
+<<<<<<< HEAD
 export default getUserFromPayload
+=======
+export default getUserFromPayload
+>>>>>>> task74-create-role-base-PO-list-rendering-in-dashboard

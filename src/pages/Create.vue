@@ -166,11 +166,18 @@ export default defineComponent({
 
     const itemDetails = ref<IItem[]>([]);
 
+<<<<<<< HEAD
     const orderDetail = ref<ICreateOrderRequest>({
  
       items: itemDetails.value,
       supplier: '',
       purchaseDate: new Date,
+=======
+    const orderDetail = ref<IPurchaseOrder>({
+      items: [],
+      supplier: "",
+      purchaseDate: new Date(),
+>>>>>>> task74-create-role-base-PO-list-rendering-in-dashboard
       grandTotal: 0,
       description: '',
     });
@@ -211,6 +218,7 @@ export default defineComponent({
     },
     createPurchaseOrder() {
       this.orderDetail.items = this.itemDetails;
+<<<<<<< HEAD
       orderService.requestor.requestorCreate(this.orderDetail);
       router.push({
         name: RouteName.HOME,
@@ -230,6 +238,10 @@ export default defineComponent({
               break;
           }
         });
+=======
+      orderService.requestor.create(this.orderDetail);
+      router.push("/home");
+>>>>>>> task74-create-role-base-PO-list-rendering-in-dashboard
     },
   },
 });

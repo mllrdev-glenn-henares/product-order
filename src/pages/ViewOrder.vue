@@ -41,23 +41,28 @@
 </template>
 
 <script lang="ts">
-import { IonContent } from "@ionic/vue";
+import { IonContent, IonPage, IonLabel, IonCol, IonRow, IonGrid, IonButton } from "@ionic/vue";
 import { defineComponent, onMounted, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { orderService } from "@/core/services/api/v1/order.service";
 import IOrder from "@/core/interfaces/order/order.interface";
 import IGetOrderByIdResponse from "@/core/interfaces/order/responses/get-order-by-id.interface";
 import getUserFromPayload from "@/core/services/jwt.service";
 import UserRole from "@/core/enums/user-role.enum";
-import IGetAllOrdersResponse from "@/core/interfaces/order/responses/get-all-orders.interface";
 import router from "@/router";
 
 export default defineComponent({
   name: "Create",
   components: {
     IonContent,
+    IonPage,
+    IonLabel,
+    IonCol,
+    IonRow,
+    IonGrid,
+    IonButton,
     Toolbar,
   },
   setup() {
@@ -145,4 +150,5 @@ ion-grid {
 #item-container {
   width: 80%;
 }
+
 </style>
