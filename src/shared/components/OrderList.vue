@@ -23,6 +23,7 @@ import {
 import moment from "moment";
 import router from "@/router";
 import IOrderSimple from "@/core/interfaces/order/order-simple.interface";
+import RouteName from "@/core/enums/route-name.enum";
 
 export default defineComponent({
   name: "order-list",
@@ -68,12 +69,13 @@ export default defineComponent({
   methods: {
     handleOrderRowClick(id: string) {
       router.push({
-        name: "View",
+        name: RouteName.VIEW,
         params: {
           orderId: id,
         },
       });
     },
+    
   },
 });
 </script>
@@ -95,8 +97,7 @@ export default defineComponent({
     margin-right: 5%;
   }
   ion-grid{
-    padding: 20px;
-    text-align: center;
+    text-align: left;
     color: #878a8f;
     background-color: #ffffff;
     font-size: 14px;

@@ -5,14 +5,16 @@ import RouteName from "@/core/enums/route-name.enum";
 import Home from "@/pages/Home.vue";
 import Login from "@/pages/Login.vue";
 import Register from "@/pages/Register.vue";
-import Create from "@/pages/Create.vue"
+import Create from "@/pages/Create.vue";
+import View from "@/pages/ViewOrder.vue";
 import Landing from "@/pages/Landing.vue";
+import Edit from "@/pages/Edit.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     redirect: {
-      name: "Login"
+      name: RouteName.LANDING
     }
   },
   {
@@ -39,6 +41,16 @@ const routes: Array<RouteRecordRaw> = [
     path: "/landing",
     name: RouteName.LANDING,
     component: Landing
+  },
+  {
+    path: "/view",
+    name: RouteName.VIEW,
+    component: View
+  },
+  {
+    path: "/Edit",
+    name: RouteName.EDIT,
+    component: Edit
   }
 ];
 
@@ -48,12 +60,12 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ['/login', '/register']
+  const publicPages = ['/login', '/register','/landing']
   const authRequired = !publicPages.includes(to.path)
   const loggedIn = sessionStorage.getItem('TOKEN')
 
   if (authRequired && !loggedIn) {
-    return next('/login')
+    return next('/landing')
   }
   next()
 })

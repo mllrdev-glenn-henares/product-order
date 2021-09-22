@@ -11,7 +11,7 @@ const getAdminAll = async () => {
   return await client({
     data: '',
     method: 'GET',
-    url: '/admin/api/v1/orders/all'
+    url: 'admin/api/v1/orders/all'
   })
     .then(response => {
       const orders: Array<IGetAllOrdersResponse> = response.data;

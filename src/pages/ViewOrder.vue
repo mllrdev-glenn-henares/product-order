@@ -83,9 +83,8 @@ export default defineComponent({
 
     const orderStatusUpdate = ref<IUpdateOrderStatusRequest>({
       id: "",
-      orderDetails: {
-        status: PurchaseStatus.PENDING,
-      },
+      status: PurchaseStatus.PENDING,
+
     });
 
     const orderDetail = ref<IOrder>({
@@ -97,8 +96,7 @@ export default defineComponent({
       orderItems: itemDetails.value,
       grandTotal: 0,
     });
-    onMounted(() => {
-      
+    onUpdated(() => {
       role.value = getUserFromPayload().role;
       switch(role.value){
         case UserRole.REQUESTOR:
@@ -130,23 +128,20 @@ export default defineComponent({
     onUpdated(() => {
       orderStatusUpdate.value.id = useRoute().params.orderId as string;
     })
-    const onEdit = () => {
-      router.push({
-        name: "Edit",
-      });
-    };
-    return { itemDetails, item, orderDetail, onEdit, orderStatusUpdate, PurchaseStatus, role, UserRole };
+ 
+    
+    return { itemDetails, item, orderDetail, orderStatusUpdate, PurchaseStatus, role, UserRole };
   },
   methods: {
     changePurchaseOrderStatus(status: PurchaseStatus) {
-      this.orderStatusUpdate.orderDetails.status = status;
+      this.orderStatusUpdate.status = status;
       console.log(this.orderStatusUpdate)
             orderService.approver
         .updateOrderStatus(this.orderStatusUpdate)
         .then((success: boolean) => {
           switch (success) {
             case true:
-              alert(`${this.orderStatusUpdate.id} have been ${this.orderStatusUpdate.orderDetails.status}`);
+              alert(`${this.orderStatusUpdate.id} have been ${this.orderStatusUpdate.status}`);
               router.push({name: RouteName.HOME});
               break;
             case false:
@@ -155,6 +150,15 @@ export default defineComponent({
           }
         });
   },
+
+  onEdit() {
+      router.push({
+        name: RouteName.EDIT,
+        params: {
+          orderId: this.orderStatusUpdate.id,
+        },
+      });
+    }
 },
 });
 </script>

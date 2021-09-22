@@ -41,12 +41,12 @@
         </div>
         <ion-grid class="tableTitle">
           <ion-row>
-            <ion-col> PO Number </ion-col>
-            <ion-col> Supplier </ion-col>
-            <ion-col> PO Description </ion-col>
-            <ion-col> Request Date </ion-col>
-            <ion-col> Amount </ion-col>
-            <ion-col> Status </ion-col>
+            <ion-col size="2"> PO Number </ion-col>
+            <ion-col size="2"> Supplier </ion-col>
+            <ion-col size="2"> PO Description </ion-col>
+            <ion-col size="2"> Request Date </ion-col>
+            <ion-col size="2"> Amount </ion-col>
+            <ion-col size="1.2"> Status </ion-col>
           </ion-row>
           <hr />
         </ion-grid>
@@ -166,7 +166,6 @@ ion-title {
 .tableTitle {
   color: #5aa4b0;
   text-align: left;
-  /* margin: 1% 0% 1%; */
 }
 ion-grid {
   text-align: center;

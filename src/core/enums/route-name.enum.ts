@@ -5,7 +5,7 @@ enum RouteName {
     CREATE = "Create",
     EDIT = "Edit",
     VIEW = "View",
-    LANDING = "LANDING"
+    LANDING = "Landing"
 }
 
 export default RouteName

@@ -1,139 +1,155 @@
 <template>
-  <Toolbar title-text="Create" />
-  <ion-content>
-    <form class="mainCreate" @submit.prevent="updateOrder">
-      <ion-title>
-        <h1>Purchase Order</h1>
-      </ion-title>
-      <form @submit.prevent="addItemDetail">
-      <form class="headDetail">
-        <ion-item>
-          <ion-label>Supplier</ion-label>
-          <ion-input
-            type="text"
-            name="supplier"
-            v-model="orderDetail.supplier"
-          ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>PO description</ion-label>
-          <ion-input
-            type="text"
-            name="description"
-            v-model="orderDetail.description"
-          ></ion-input>
-        </ion-item>
+  <ion-page>
+    <Toolbar title-text="Create" />
+    <ion-content>
+      <form class="mainCreate" @submit.prevent="updateOrder">
+        <ion-title>
+          <h1>Purchase Order</h1>
+        </ion-title>
+        <form @submit.prevent="addItemDetail">
+          <form class="headDetail">
+            <ion-item>
+              <ion-label>Supplier</ion-label>
+              <ion-input
+                type="text"
+                name="supplier"
+                v-model="orderDetail.supplier"
+              ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>PO description</ion-label>
+              <ion-input
+                type="text"
+                name="description"
+                v-model="orderDetail.description"
+              ></ion-input>
+            </ion-item>
+          </form>
+          <div class="headDetail">
+            <ion-item>
+              <ion-label>Purchase Date</ion-label>
+              <ion-input
+                type="date"
+                name="purchaseDate"
+                v-model="orderDetail.purchaseDate"
+              ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Requestor {{orderDetail.requestor}}</ion-label>
+              <ion-input type="text" name="user"></ion-input>
+            </ion-item>
+          </div>
+          <hr />
+          <ion-row>
+            <ion-col>Item</ion-col>
+            <ion-col>Quantity</ion-col>
+            <ion-col>Unit Price</ion-col>
+            <ion-col>Sub-Total</ion-col>
+            <ion-col> </ion-col>
+          </ion-row>
+          <ion-row v-for="(item, index) in itemList" :key="index">
+            <ion-input
+              type="text"
+              autofocus
+              v-model="item.name"
+              name="name"
+              placeholder="item"
+              required
+            ></ion-input>
+            <ion-input
+              type="number"
+              autofocus
+              v-model="item.quantity"
+              name="quantity"
+              placeholder="Quantity"
+              required
+            ></ion-input>
+            <ion-input
+              type="number"
+              autofocus
+              v-model="item.unitPrice"
+              name="unitPrice"
+              placeholder="Price"
+              required
+            ></ion-input>
+            <ion-input
+              type="number"
+              autofocus
+              v-model="item.subTotal"
+              name="subTotal"
+              placeholder="Total Price"
+            ></ion-input>
+            <ion-button @click="calculateSubTotal(index)">calculate</ion-button>
+          </ion-row>
+          <ion-row>
+            <ion-input
+              type="text"
+              autofocus
+              v-model="item.name"
+              name="name"
+              placeholder="item"
+              required
+            ></ion-input>
+            <ion-input
+              type="number"
+              autofocus
+              v-model="item.quantity"
+              name="quantity"
+              placeholder="Quantity"
+              required
+            ></ion-input>
+            <ion-input
+              type="number"
+              autofocus
+              v-model="item.unitPrice"
+              name="unitPrice"
+              placeholder="Price"
+              required
+            ></ion-input>
+            <ion-input
+              type="number"
+              autofocus
+              v-model="item.subTotal"
+              name="subTotal"
+              placeholder="Total Price"
+              disabled
+            ></ion-input>
+          </ion-row>
+          <ion-button button type="submit">ADD</ion-button>
+        </form>
+        <ion-text color="light" size="large">
+          <h3>
+            <ion-input
+              type="number"
+              name="grandTotal"
+              v-model="orderDetail.grandTotal"
+              placeholder="Grand Total"
+              disabled
+            ></ion-input>
+          </h3>
+        </ion-text>
+        <ion-button class="submitButton" button type="submit"
+          >update</ion-button
+        >
+        <ion-button class="cancelButton" button href="/home">Cancel</ion-button>
       </form>
-      <div class="headDetail">
-        <ion-item>
-          <ion-label>Purchase Date</ion-label>
-          <ion-input
-            type="date"
-            name="purchaseDate"
-            v-model="orderDetail.purchaseDate"
-          ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Requestor</ion-label>
-          <ion-input type="text" name="user"></ion-input>
-        </ion-item>
-      </div>
-      <hr />
-      <ion-row>
-        <ion-col>Item</ion-col>
-        <ion-col>Quantity</ion-col>
-        <ion-col>Unit Price</ion-col>
-        <ion-col>Sub-Total</ion-col>
-      </ion-row>
-      <ion-row v-for="(item, index) in itemList" :key="index">
-        <ion-input
-            type="text"
-            autofocus
-            v-model="item.name"
-            name="name"
-            placeholder="item"
-            required
-          ></ion-input>
-        <ion-input
-            type="number"
-            autofocus
-            v-model="item.quantity"
-            name="quantity"
-            placeholder="Quantity"
-            required
-          ></ion-input>
-        <ion-input
-            type="number"
-            autofocus
-            v-model="item.unitPrice"
-            name="unitPrice"
-            placeholder="Price"
-            required
-          ></ion-input>
-        <ion-input
-            type="number"
-            autofocus
-            v-model="item.subTotal"
-            name="subTotal"
-            placeholder="Total Price"
-            disabled
-          ></ion-input>
-      </ion-row>
-        <ion-row>
-          <ion-input
-            type="text"
-            autofocus
-            v-model="item.name"
-            name="name"
-            placeholder="item"
-            required
-          ></ion-input>
-          <ion-input
-            type="number"
-            autofocus
-            v-model="item.quantity"
-            name="quantity"
-            placeholder="Quantity"
-            required
-          ></ion-input>
-          <ion-input
-            type="number"
-            autofocus
-            v-model="item.unitPrice"
-            name="unitPrice"
-            placeholder="Price"
-            required
-          ></ion-input>
-          <ion-input
-            type="number"
-            autofocus
-            v-model="item.subTotal"
-            name="subTotal"
-            placeholder="Total Price"
-            disabled
-          ></ion-input>
-        </ion-row>
-        <ion-button button type="submit">ADD</ion-button>
-      </form>
-      <ion-text color="light" size="large">
-        <h3>
-          <ion-input
-            type="number"
-            name="grandTotal"
-            v-model="orderDetail.grandTotal"
-            placeholder="Grand Total"
-            disabled
-          ></ion-input>
-        </h3>
-      </ion-text>
-      <ion-button class="submitButton" button type="submit">update</ion-button>
-      <ion-button class="cancelButton" button href="/home">Cancel</ion-button>
-    </form>
-  </ion-content>
+    </ion-content>
+  </ion-page>
 </template>
 
 <script lang="ts">
-import { IonContent, IonTitle, IonItem, IonInput } from "@ionic/vue";
+import {
+  IonContent,
+  IonPage,
+  IonTitle,
+  IonItem,
+  IonInput,
+  IonLabel,
+  IonCol,
+  IonRow,
+  IonButton,
+  IonText,
+} from "@ionic/vue";
 import { defineComponent, onMounted, onUpdated, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
@@ -142,25 +158,33 @@ import { useRoute } from "vue-router";
 import IGetOrderByIdResponse from "@/core/interfaces/order/responses/get-order-by-id.interface";
 import getUserFromPayload from "@/core/services/jwt.service";
 import UserRole from "@/core/enums/user-role.enum";
-import IUpdateOrderRequest, { IItemRequest } from "@/core/interfaces/order/requests/update-order.interface";
+import IUpdateOrderRequest, {
+  IItemRequest,
+} from "@/core/interfaces/order/requests/update-order.interface";
 
 export default defineComponent({
-  name: "Create",
+  name: "Edit",
   components: {
     IonContent,
     Toolbar,
+    IonPage,
     IonTitle,
     IonItem,
     IonInput,
+    IonLabel,
+    IonCol,
+    IonRow,
+    IonButton,
+    IonText,
   },
   setup() {
     const item = ref<IItemRequest>({
       orderItemId: 0,
       itemId: 0,
       quantity: 0,
-      name: '',
+      name: "",
       unitPrice: 0,
-      subTotal: 0
+      subTotal: 0,
     });
 
     const itemList = ref<IItemRequest[]>([]);
@@ -177,50 +201,48 @@ export default defineComponent({
 
     const role = ref<UserRole>();
 
-    onMounted(() => {
+    onUpdated(() => {
+      const id = useRoute().params.orderId as string;
+      console.log(id);
       role.value = getUserFromPayload().role;
-      switch(role.value){
+      switch (role.value) {
         case UserRole.REQUESTOR:
-          console.log(useRoute().params.orderId)
           orderService.requestor
-          .getRequestorById(useRoute().params.orderId)
-          .then((value: IGetOrderByIdResponse) => {
-            orderDetail.value = value;
-            itemList.value = value.orderItems
-          });
-          break
+            .getRequestorById(id)
+            .then((value: IGetOrderByIdResponse) => {
+              orderDetail.value = value;
+              itemList.value = value.orderItems;
+            });
+          break;
         case UserRole.APPROVER:
           orderService.approver
-            .getApproverById(useRoute().params.orderId).
-            then((value: IGetOrderByIdResponse) => {
-            orderDetail.value = value;
-            itemList.value = value.orderItems
-          });
-          break
+            .getApproverById(id)
+            .then((value: IGetOrderByIdResponse) => {
+              orderDetail.value = value;
+              itemList.value = value.orderItems;
+            });
+          break;
       }
 
-      
     });
 
-
-    return { itemList, item, orderDetail, };
+    return { itemList, item, orderDetail };
   },
   methods: {
     addItemDetail() {
-      this.item.subTotal =
-        (this.item.unitPrice || 0) * (this.item.quantity || 1);
+      // this.item.subTotal =
+      //   (this.item.unitPrice || 0) * (this.item.quantity || 1);
       this.itemList.push(this.item);
-      this.orderDetail.orderItems = this.itemList
+      this.orderDetail.orderItems = this.itemList;
       this.orderDetail.grandTotal = 0;
-      this.itemList.forEach((item: IItem) => {
-        this.orderDetail.grandTotal += item.subTotal || 0;
-      });
+      // this.itemList.forEach((item: IItem) => {
+      //   this.orderDetail.grandTotal += item.subTotal || 0;
+      // });
 
-      this.item = {} as IItemRequest
+      this.item = {} as IItemRequest;
     },
     updateOrder() {
-
-      console.log(this.orderDetail.orderItems)
+      console.log(this.orderDetail.orderItems);
       orderService.requestor
         .updateOrder(this.orderDetail)
         .then((success: boolean) => {
@@ -234,6 +256,16 @@ export default defineComponent({
           }
         });
     },
+    calculateSubTotal(index: number) {
+      this.itemList[index].subTotal = 0;
+      this.orderDetail.grandTotal = 0;
+      this.itemList[index].subTotal = (this.itemList[index].unitPrice || 0) * (this.itemList[index].quantity || 1);
+      this.itemList.forEach((item: IItem) => {
+        this.orderDetail.grandTotal += item.subTotal || 0;
+      });
+
+      console.log(this.itemList);
+    }
   },
   created() {
     console.log(this.$route.params.orderId);
