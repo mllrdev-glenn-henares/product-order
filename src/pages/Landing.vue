@@ -16,7 +16,7 @@
 <script lang="ts">
 import RouteName from "@/core/enums/route-name.enum";
 import router from "@/router";
-import { IonPage, IonContent, IonButton } from "@ionic/vue";
+import { IonPage, IonContent, IonButton, IonText } from "@ionic/vue";
 import { defineComponent } from "@vue/runtime-core";
 
 
@@ -26,6 +26,7 @@ export default defineComponent({
     IonPage,
     IonContent,
     IonButton,
+    IonText,
   },
   methods: {
     goToRegister() {

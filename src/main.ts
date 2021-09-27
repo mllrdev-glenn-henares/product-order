@@ -35,5 +35,6 @@ router.isReady().then(() => {
       return date = moment.utc(date).format('MM/DD/YYYY');
     }
   }
+
   app.mount('#app');
 });

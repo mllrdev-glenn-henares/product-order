@@ -1,7 +1,7 @@
 <template>
   <div class="order-list">
     <ion-grid>
-      <ion-row class="item" @click="handleOrderRowClick(order.id)" v-for="order in purchaseOrders" :key="order.id">
+      <ion-row class="item" @click="handleOrderRowClick(order.id)" v-for="(order, index) in purchaseOrders" :key="index">
         <ion-col size="2"> {{ order.id }} </ion-col>
         <ion-col size="2"> {{ order.supplier }} </ion-col>
         <ion-col size="2"> {{ order.description }} </ion-col>
@@ -20,10 +20,10 @@ import {
   IonRow,
   IonCol,
 } from "@ionic/vue";
-import moment from "moment";
 import router from "@/router";
 import IOrderSimple from "@/core/interfaces/order/order-simple.interface";
 import RouteName from "@/core/enums/route-name.enum";
+import moment from "moment";
 
 export default defineComponent({
   name: "order-list",
@@ -35,17 +35,15 @@ export default defineComponent({
   props: {
     orders: {
       required: true,
-      type: Array as PropType<Array<IOrderSimple>>,
+      type: Array as PropType<IOrderSimple[]>,
     },
     status: {
       required: false,
-      type: String || null
-    }
+      type: String
+    },
     
   },
   setup(props) {
-    const $filters: any = {};
-
     const timeFormater = (date: Date | string) => {
       return (date = moment.utc(date).format("MM/DD/YYYY"));
     };
@@ -64,6 +62,8 @@ export default defineComponent({
         }
       
     })
+
+
     return { purchaseOrders, timeFormater }
   },
   methods: {

@@ -7,12 +7,15 @@
       <div class="main">
         <div class="filterButton">
           <ion-title id="title">Product Order List</ion-title>
-          <ion-segment value="all">
-            <ion-segment-button value="all" @click="handleClick(null)">
+          <ion-segment value="null">
+            <ion-segment-button
+              value="null"
+              @click="handleClick(null)"
+            >
               <ion-label>all</ion-label>
             </ion-segment-button>
             <ion-segment-button
-              value="null"
+              value="PENDING"
               @click="handleClick(PurchaseStatus.PENDING)"
             >
               <ion-label>PENDING</ion-label>
@@ -36,8 +39,6 @@
               <ion-label>CLOSED</ion-label>
             </ion-segment-button>
           </ion-segment>
-          <ion-icon name="search-sharp" color="danger"></ion-icon>
-          <ion-icon name="funnel-sharp" color="primary"></ion-icon>
         </div>
         <ion-grid class="tableTitle">
           <ion-row>
@@ -73,7 +74,6 @@ import {
   IonRow,
   IonCol,
   IonButton,
-  IonIcon,
   IonLabel,
   IonSegment,
   IonSegmentButton,
@@ -103,7 +103,6 @@ export default defineComponent({
     IonButton,
     OrderList,
     Toolbar,
-    IonIcon,
     IonLabel,
     IonSegment,
     IonSegmentButton,
@@ -116,20 +115,25 @@ export default defineComponent({
     const handleClick = (term: PurchaseStatus | null) => {
       status.value = term;
     };
+
     const role = ref<UserRole>();
 
     onUpdated(() => {
       role.value = getUserFromPayload().role;
-      switch(role.value) {
+      switch (role.value) {
         case UserRole.REQUESTOR:
-          orderService.requestor.getRequestorAllByUser().then((value: IGetAllOrdersByUserIdResponse[]) => {
-            orders.value = value;
-          });
+          orderService.requestor
+            .getRequestorAllByUser()
+            .then((value: IGetAllOrdersByUserIdResponse[]) => {
+              orders.value = value;
+            });
           break;
         case UserRole.APPROVER:
-          orderService.approver.getApproverAll().then((value: IGetAllOrdersResponse[]) => {
-            orders.value = value;          
-          });
+          orderService.approver
+            .getApproverAll()
+            .then((value: IGetAllOrdersResponse[]) => {
+              orders.value = value;
+            });
           break;
       }
     });
@@ -185,7 +189,6 @@ hr {
   width: 80%;
   margin-left: 10%;
   color: #313738;
-
 }
 ion-segment {
   height: 35px;
@@ -196,7 +199,6 @@ ion-segment {
   --border-radius: 30px;
   --background: #ebebeb;
 }
-
 ion-segment-button {
   min-height: 20px;
   --background: #ebebeb;
@@ -214,6 +216,6 @@ span {
   margin-left: 5px;
 }
 h1 {
-  color:black
+  color: black;
 }
 </style>

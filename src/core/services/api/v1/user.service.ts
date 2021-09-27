@@ -32,7 +32,7 @@ const signUp = async (signUpDetails: ISignUpRequest) => {
     return await client({
         data: signUpDetails,
         method: "POST",
-        url: `${USER}/sign-up`
+        url: `api/v1/${USER}/sign-up`
 
     })
         .then(function (response) {

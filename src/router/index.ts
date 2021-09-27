@@ -43,12 +43,12 @@ const routes: Array<RouteRecordRaw> = [
     component: Landing
   },
   {
-    path: "/view",
+    path: "/view/:orderId",
     name: RouteName.VIEW,
     component: View
   },
   {
-    path: "/Edit",
+    path: "/Edit/:orderId",
     name: RouteName.EDIT,
     component: Edit
   }

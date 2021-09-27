@@ -4,20 +4,23 @@
     <ion-content>
       <form class="mainCreate" @submit.prevent="createPurchaseOrder">
         <ion-title>
-          <h1>Purchase Order</h1>
+          <h2>New Purchase Order</h2>
+          <ion-text>General Information</ion-text>
         </ion-title>
         <form class="headDetail">
-          <ion-item>
-            <ion-label>Supplier</ion-label>
+          <ion-item lines="none">
+            <ion-label position="stacked"><h6>Supplier</h6></ion-label>
             <ion-input
+              autofocus
               type="text"
               name="supplier"
               v-model="orderDetail.supplier"
             ></ion-input>
           </ion-item>
-          <ion-item>
-            <ion-label>PO description</ion-label>
+          <ion-item lines="none">
+            <ion-label position="stacked"><h6>PO description</h6></ion-label>
             <ion-input
+              autofocus
               type="text"
               name="description"
               v-model="orderDetail.description"
@@ -25,44 +28,54 @@
           </ion-item>
         </form>
         <div class="headDetail">
-          <ion-item>
-            <ion-label>Purchase Date</ion-label>
+          <ion-item lines="none">
+            <ion-label position="stacked"><h6>Purchase Date</h6></ion-label>
             <ion-input
+              autofocus
               type="date"
               name="purchaseDate"
               v-model="orderDetail.purchaseDate"
             ></ion-input>
           </ion-item>
-          <ion-item>
-            <ion-label>Requestor</ion-label>
-            <ion-input type="text" name="user"></ion-input>
+          <ion-item lines="none">
+            <ion-label position="stacked"><h6>Requestor</h6></ion-label>
+            <ion-input type="text" name="user" v-model="name"></ion-input>
           </ion-item>
         </div>
-        <hr />
-        <ion-row>
+        <ion-row class="itemHeader">
+          <ion-col> </ion-col>
           <ion-col>Item</ion-col>
-          <ion-col>Quamtity</ion-col>
+          <ion-col>Quantity</ion-col>
           <ion-col>Unit Price</ion-col>
           <ion-col>Sub-Total</ion-col>
         </ion-row>
-        <ion-row v-for="item in itemDetails" :key="item.name">
+        <ion-row v-for="(item, index) in itemDetails" :key="index" class="addedItem">
+          <ion-col class="itemCount">{{ index + 1 }}</ion-col>
           <ion-col>{{ item.name }}</ion-col>
           <ion-col>{{ item.quantity }}</ion-col>
           <ion-col>{{ item.unitPrice }}</ion-col>
-          <ion-col>{{ item.subTotal }}</ion-col>
+          <ion-col>{{ item.subTotal.toFixed(2) }}</ion-col>
         </ion-row>
         <form @submit.prevent="addItemDetail">
           <ion-row>
+            <ion-input
+              type="number"
+              autofocus
+              name="#"
+              placeholder="#"
+              disabled
+              class="disabled"
+            ></ion-input>
             <ion-input
               type="text"
               autofocus
               v-model="item.name"
               name="name"
-              placeholder="item"
+              placeholder="Item"
               required
             ></ion-input>
             <ion-input
-              type="number"
+              type="text"
               autofocus
               v-model="item.quantity"
               name="quantity"
@@ -70,7 +83,7 @@
               required
             ></ion-input>
             <ion-input
-              type="number"
+              type="text"
               autofocus
               v-model="item.unitPrice"
               name="unitPrice"
@@ -78,26 +91,26 @@
               required
             ></ion-input>
             <ion-input
-              type="number"
+              type="text"
               autofocus
               v-model="item.subTotal"
               name="subTotal"
               placeholder="Total Price"
               disabled
+              class="disabled"
             ></ion-input>
           </ion-row>
-          <ion-button button type="submit">ADD</ion-button>
+          <ion-button button type="submit">ADD Item</ion-button>
         </form>
-        <ion-text color="light" size="large">
-          <h3>
+        <ion-text>
+          <h5>
             <ion-input
-              type="number"
+              type="hidden"
               name="grandTotal"
-              v-model="orderDetail.grandTotal"
               placeholder="Grand Total"
               disabled
-            ></ion-input>
-          </h3>
+            ><span>Grand Total</span> {{ orderDetail.grandTotal.toFixed(2) }}</ion-input>
+          </h5>
         </ion-text>
           <ion-button class="submitButton" button type="submit"
             >Create</ion-button
@@ -126,13 +139,14 @@ import {
   IonText,
   IonButton,
 } from "@ionic/vue";
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
 import { orderService } from "@/core/services/api/v1/order.service";
 import router from "@/router";
 import ICreateOrderRequest from "@/core/interfaces/order/requests/create-order.interface";
 import RouteName from "@/core/enums/route-name.enum"
+import getUserFromPayload from "@/core/services/jwt.service";
 
 export default defineComponent({
   name: "Create",
@@ -163,11 +177,14 @@ export default defineComponent({
       description: '',
     });
 
+    const name: string = getUserFromPayload().firstName
+
     return {
       itemDetails,
       item,
       orderDetail,
       RouteName,
+      name,
     };
   },
   methods: {
@@ -194,22 +211,38 @@ export default defineComponent({
 </script>
 
 <style scoped>
-h1 {
-  display: block;
+ion-content {
+  --background: #95b7bf;
+  text-align: left;
+}
+h2 {
+  margin-bottom: 20px;
 }
 .mainCreate {
-  padding: 1%;
-  width: 80%;
-  margin: 3% 10% 3%;
-  color: grey;
+  padding: 2%;
+  width: 75%;
+  margin: 3% 12.5% 3%;
+  color: #2a3132;
   background-color: white;
-}
-p {
-  color: white;
+  border-radius: 25px;
 }
 .headDetail {
   display: inline-block;
-  width: 50%;
+  vertical-align: top;
+  width: 45%;
+  min-height: 200px;
+  margin-bottom: 1%;
+}
+.headDetail ion-input {
+  --padding-start: 10px;
+  min-height: 30px;
+  border-radius: 10px;
+  margin-top: 15px;
+  border: solid #5aa4b0 1px;
+  opacity: 0.75;
+}
+.disabled {
+   --placeholder-opacity: 1;
 }
 hr {
   margin: 1% -1%;
@@ -218,29 +251,50 @@ hr {
   opacity: 50%;
 }
 .tableTitle {
-  background-color: aqua;
+  background-color: #5aa4b0;
   color: black;
   font-weight: bold;
   margin-top: 1%;
 }
-ion-item {
-  width: 60%;
+ion-col {
+  border-bottom: solid 1px;
+  padding: 10px 0px 10px 0px;
 }
-ion-input {
-  color: black;
+ion-item {
+  margin: 2%;
+}
+ion-button {
+  --background: #2a3132;
+  --border-radius: 20px;
 }
 .submitButton {
   margin-left: 75%;
   display: inline-block;
 }
 .cancelButton {
-  display: inline-block;
+  display: inline-block;  
 }
-h3 {
+h5 {
   margin-left: 75%;
 }
 #declineButton {
   margin-left: 75%;
   display: inline-block;
+}
+h6 {
+  font-size: 20px;
+  font-weight: bold;
+}
+span {
+  color: #5aa4b0;
+  margin-right: 10px;
+}
+.itemHeader{
+  color: #5aa4b0;
+  border: none;
+  font-weight: bold;
+}
+.itemCount {
+  opacity: 0.75;
 }
 </style>

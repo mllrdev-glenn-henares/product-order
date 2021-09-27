@@ -36,7 +36,6 @@
             </ion-item>
             <ion-item>
               <ion-label>Requestor {{orderDetail.requestor}}</ion-label>
-              <ion-input type="text" name="user"></ion-input>
             </ion-item>
           </div>
           <hr />
@@ -80,6 +79,7 @@
               placeholder="Total Price"
             ></ion-input>
             <ion-button @click="calculateSubTotal(index)">calculate</ion-button>
+            <ion-button @click="deleteItemow(index)">Delete Item</ion-button>
           </ion-row>
           <ion-row>
             <ion-input
@@ -131,7 +131,7 @@
         <ion-button class="submitButton" button type="submit"
           >update</ion-button
         >
-        <ion-button class="cancelButton" button href="/home">Cancel</ion-button>
+        <ion-button class="cancelButton" button @click="returnToHome()">Cancel</ion-button>
       </form>
     </ion-content>
   </ion-page>
@@ -150,7 +150,7 @@ import {
   IonButton,
   IonText,
 } from "@ionic/vue";
-import { defineComponent, onMounted, onUpdated, ref } from "vue";
+import { defineComponent, onUpdated, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import IItem from "@/core/interfaces/item.interface";
 import { orderService } from "@/core/services/api/v1/order.service";
@@ -161,6 +161,8 @@ import UserRole from "@/core/enums/user-role.enum";
 import IUpdateOrderRequest, {
   IItemRequest,
 } from "@/core/interfaces/order/requests/update-order.interface";
+import RouteName from "@/core/enums/route-name.enum"
+import router from "@/router";
 
 export default defineComponent({
   name: "Edit",
@@ -202,8 +204,11 @@ export default defineComponent({
     const role = ref<UserRole>();
 
     onUpdated(() => {
+      orderDetail.value.orderId = useRoute().params.orderId as string;
+    });
+
+    onUpdated(() => {
       const id = useRoute().params.orderId as string;
-      console.log(id);
       role.value = getUserFromPayload().role;
       switch (role.value) {
         case UserRole.REQUESTOR:
@@ -226,29 +231,29 @@ export default defineComponent({
 
     });
 
-    return { itemList, item, orderDetail };
+    return { itemList, item, orderDetail, RouteName };
   },
   methods: {
     addItemDetail() {
-      // this.item.subTotal =
-      //   (this.item.unitPrice || 0) * (this.item.quantity || 1);
+      this.item.subTotal =
+        (this.item.unitPrice || 0) * (this.item.quantity || 1);
       this.itemList.push(this.item);
       this.orderDetail.orderItems = this.itemList;
       this.orderDetail.grandTotal = 0;
-      // this.itemList.forEach((item: IItem) => {
-      //   this.orderDetail.grandTotal += item.subTotal || 0;
-      // });
+      this.itemList.forEach((item: IItem) => {
+        this.orderDetail.grandTotal += item.subTotal;
+      });
 
       this.item = {} as IItemRequest;
     },
     updateOrder() {
-      console.log(this.orderDetail.orderItems);
       orderService.requestor
         .updateOrder(this.orderDetail)
         .then((success: boolean) => {
           switch (success) {
             case true:
               alert(`${this.orderDetail.orderId} is updated`);
+              this.returnToHome();
               break;
             case false:
               alert(`failed to update ${this.orderDetail.orderId}`);
@@ -263,13 +268,20 @@ export default defineComponent({
       this.itemList.forEach((item: IItem) => {
         this.orderDetail.grandTotal += item.subTotal || 0;
       });
-
-      console.log(this.itemList);
-    }
-  },
-  created() {
-    console.log(this.$route.params.orderId);
-  },
+    },
+    deleteItemow(index: number) {
+      this.itemList.splice(index, 1);
+    },
+    returnToHome() {
+      router.push({
+        name: RouteName.HOME,
+        params: {
+          orderId: this.orderDetail.orderId,
+        }
+      });
+    
+    },
+  }
 });
 </script>
 

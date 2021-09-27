@@ -150,7 +150,7 @@ const deletePurchaseOrder = async(id: string) => {
   return await client({
     data: '',
     method: 'DELETE',
-    url: `order/${id}/purchaseOrder`
+    url: `requestor/api/v1/orders/${id}/purchase-order`
   })
   .then(() => {
     return true;
@@ -172,7 +172,7 @@ export const orderService: IUserRoles = {
     getRequestorById,
     getRequestorAllByUser,
     updateOrder,
-    deletePurchaseOrder
+    deletePurchaseOrder,
   },
   approver: {
     getApproverAll,
