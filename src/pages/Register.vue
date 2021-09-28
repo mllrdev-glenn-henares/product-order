@@ -33,7 +33,7 @@
                 </select>
           </ion-item>
           <ion-button type="submit">Create Account</ion-button>
-          <ion-button class="loginButton">Login</ion-button>
+          <ion-button class="loginButton" @click="$router.push({name: RouteName.LOGIN})">Login</ion-button>
           </div>
         </div>
       </form>
@@ -92,7 +92,7 @@ export default defineComponent({
       data.password = "";
       data.role = "";
     }
-    return { data, onRegister, UserRole };
+    return { data, onRegister, UserRole, RouteName };
   },
 });
 </script>
