@@ -29,13 +29,10 @@
   </ion-page>
 </template>
 
-
-
-
 <script lang="ts">
 import ILoginRequest from "@/core/interfaces/login/login-request.interface";
 import router from "@/router";
-import { IonContent, IonInput, IonPage, IonItem, IonButton } from "@ionic/vue";
+import { IonContent, IonInput, IonPage, IonItem, IonButton, IonLabel } from "@ionic/vue";
 import { defineComponent } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
 import { reactive } from "vue";
@@ -51,6 +48,7 @@ export default defineComponent({
     Toolbar,
     IonItem,
     IonButton,
+    IonLabel,
   },
   setup() {
     const data: ILoginRequest = reactive({
