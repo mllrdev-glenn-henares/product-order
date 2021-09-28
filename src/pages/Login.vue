@@ -19,7 +19,7 @@
             <ion-button type="submit">Login</ion-button>
             <ion-button
               class="registerButton"
-              @click="$router.push('/register')"
+              @click="$router.push({name: RouteName.REGISTER})"
               >Create Account</ion-button
             >
           </div>
