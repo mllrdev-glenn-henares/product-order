@@ -1,5 +1,3 @@
-import IItem from "../../item.interface";
-
 export interface IItemRequest {
   orderItemId: number;
   itemId: number;

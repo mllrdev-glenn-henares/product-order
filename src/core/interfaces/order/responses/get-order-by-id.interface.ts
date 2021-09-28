@@ -1,6 +1,3 @@
-import IOrder from "../order.interface"
-
-
 export interface IItemResponse {
   orderItemId: number;
   itemId: number;

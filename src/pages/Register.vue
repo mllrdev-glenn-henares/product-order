@@ -1,7 +1,6 @@
 <template>
   <ion-page>
     <Toolbar title-text="Register" />
-
     <ion-content :fullscreen="true">
       <form v-on:submit.prevent="onRegister">
         <div id="container">
