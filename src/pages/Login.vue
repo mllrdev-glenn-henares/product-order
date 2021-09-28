@@ -20,7 +20,7 @@
             ></ion-input>
           </ion-item>
           <ion-button type="submit">Login</ion-button>
-          <ion-button @click="$router.push('/register')">Register</ion-button>
+          <ion-button @click="$router.push({ name: RouteName.REGISTER })">Register</ion-button>
         </div>
       </form>
     </ion-content>
@@ -28,21 +28,25 @@
 </template>
 
 <script lang="ts">
-import { IonContent, IonInput, IonPage } from "@ionic/vue";
-import { defineComponent, reactive } from "vue";
-import Toolbar from "@/shared/components/Toolbar.vue";
 import ILoginRequest from "@/core/interfaces/login/login-request.interface";
 import router from "@/router";
-import { RouteName } from "@/core/enums/route-name.enum";
-import { userService } from "@/core/services/api/user.service";
+import { IonContent, IonInput, IonPage, IonItem, IonButton } from "@ionic/vue";
+import { defineComponent } from "vue";
+import Toolbar from "@/shared/components/Toolbar.vue";
+import { reactive } from "vue";
+import { userService } from "@/core/services/api/v1/user.service";
+import RouteName from "@/core/enums/route-name.enum";
+
 
 export default defineComponent({
-  name: "Home",
+  name: "Login",
   components: {
     IonContent,
     IonPage,
     IonInput,
     Toolbar,
+    IonItem,
+    IonButton,
   },
   setup() {
     const data: ILoginRequest = reactive({
@@ -64,7 +68,7 @@ export default defineComponent({
       data.email = "";
       data.password = "";
     };
-    return { data, onLogin };
+    return { data, onLogin, RouteName };
   },
 });
 </script>
@@ -83,7 +87,3 @@ ion-button {
   margin-top: 10px;
 }
 </style>
-
-function getOrder(arg0: number): any {
-  throw new Error("Function not implemented.");
-}

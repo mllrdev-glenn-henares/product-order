@@ -8,7 +8,7 @@ const token = sessionStorage.getItem(SessionStorageKey.TOKEN)
 export function client(request: IClientRequest) {
   return axios({
     method: request.method,
-    url: `${environment.baseUrl}/api/${request.url}`,
+    url: `${environment.baseUrl}/${request.url}`,
     data: request.data,
     headers: {
       'Authorization': token
