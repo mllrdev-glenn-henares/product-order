@@ -9,7 +9,6 @@ import IUpdateOrderRequest from "@/core/interfaces/order/requests/update-order.i
 
 const getAdminAll = async () => {
   return await client({
-    data: '',
     method: 'GET',
     url: 'admin/api/v1/orders/all'
   })
@@ -25,7 +24,6 @@ const getAdminAll = async () => {
 
 const getApproverAll = async () => {
   return await client({
-    data: '',
     method: 'GET',
     url: 'approver/api/v1/orders/all'
   })
@@ -41,7 +39,6 @@ const getApproverAll = async () => {
 
 const getRequestorAllByUser = async () => {
   return client({
-    data: '',
     method: 'GET',
     url: 'requestor/api/v1/orders/user'
   })
@@ -57,7 +54,6 @@ const getRequestorAllByUser = async () => {
 
 const getAdminById = async (id: string) => {
   return await client({
-    data: '',
     method: 'GET',
     url: `admin/api/v1/orders/${id}/order-details`
   })
@@ -73,7 +69,6 @@ const getAdminById = async (id: string) => {
 
 const getApproverById = async (id: string) => {
   return await client({
-    data: '',
     method: 'GET',
     url: `approver/api/v1/orders/${id}/order-details`
   })
@@ -89,7 +84,6 @@ const getApproverById = async (id: string) => {
 
 const getRequestorById = async (id: string) => {
   return await client({
-    data: '',
     method: 'GET',
     url: `requestor/api/v1/orders/${id}/order-details`
   })
@@ -148,7 +142,6 @@ const updateOrderStatus = async (request: IUpdateOrderRequest) => {
 
 const deletePurchaseOrder = async(id: string) => {
   return await client({
-    data: '',
     method: 'DELETE',
     url: `requestor/api/v1/orders/${id}/purchase-order`
   })
