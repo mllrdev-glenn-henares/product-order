@@ -3,6 +3,9 @@
     <Toolbar title-text="View Order" />
     <ion-content :fullscreen="true">
       <div class="mainView">
+      <div class="cancelButton">
+        <ion-icon name="close-sharp" @click="returnToHome()" ></ion-icon>
+      </div>
       <h5>{{ orderDetail.orderId }}</h5>  
       <ion-grid class="headDetail">
         <h6>General Information</h6>
@@ -49,9 +52,6 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-      <div v-if="role === UserRole.REQUESTOR || UserRole.APPROVER" class="cancelButton">
-          <ion-button button @click="returnToHome()">Return</ion-button>
-      </div>
       <div v-if="role === UserRole.REQUESTOR" class="requestorButtons">
         <ion-button class="submitButton" button @click="onEdit()">
           Edit
@@ -79,6 +79,7 @@ import {
   IonRow,
   IonGrid,
   IonButton,
+  IonIcon,
 } from "@ionic/vue";
 import { defineComponent, onUpdated, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
@@ -104,6 +105,7 @@ export default defineComponent({
     IonGrid,
     IonButton,
     Toolbar,
+    IonIcon
   },
   setup() {
     const item = ref<IItemRequest>({} as IItemRequest);
@@ -236,7 +238,7 @@ ion-content {
 ion-button {
   --background: #2a3132;
   --border-radius: 20px;
-  margin: 20% 5px 20% 5px;
+  margin: 13% 5px 20% 5px;
 }
 ion-col {
   display: block;
@@ -274,7 +276,7 @@ ion-text {
 h5 {
   color: #2a3132;
   font-weight: bold;
-
+  display: inline-block;
 }
 p {
   margin: 3% 0px 0px 70%;
@@ -293,11 +295,12 @@ h6 {
   font-weight: bold;
 }
 .cancelButton {
-  display: inline-block;
+  display: block;  
+  margin-left: 96.5%;
 }
 .requestorButtons{
   display: inline-block;
-  margin-left: 67%;
+  margin-left: 71.5%;
 }
 .approverButtons {
   display: inline-block;
@@ -305,18 +308,23 @@ h6 {
 }
 .label {
   color: #5aa4b0;
+  font-weight: bold;
 }
 .itemDetails {
   border-bottom: solid 1px #36424480;
+  color: #2a3132;
 }
 .itemQuantity {
   padding-left: 15px;
 }
 .subTotal {
-  color: #2a3132;
   font-weight: bold;
 }
 .itemRow {
   margin: 15px 0px;
+}
+ion-icon {
+  font-size: 25px;
+  color: #5aa4b0;
 }
 </style>
