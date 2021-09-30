@@ -3,7 +3,7 @@
     <Toolbar title-text="View Order" />
     <ion-content :fullscreen="true">
       <div class="mainView">
-      <div class="cancelButton">
+      <div class="closeButton">
         <ion-icon name="close-sharp" @click="returnToHome()" ></ion-icon>
       </div>
       <h5>{{ orderDetail.orderId }}</h5>  
@@ -108,7 +108,14 @@ export default defineComponent({
     IonIcon
   },
   setup() {
-    const item = ref<IItemRequest>({} as IItemRequest);
+    const item = ref<IItemRequest>({
+      orderItemId: 0,
+      itemId: 0,
+      quantity!: 0,
+      name: "",
+      unitPrice: 0,
+      subTotal: 0
+    });
 
     const itemDetails = ref<IItemRequest[]>([] as Array<IItemRequest>) ;
 
@@ -273,11 +280,6 @@ ion-text {
 .viewDetail {
   margin-top: 2%;
 }
-h5 {
-  color: #2a3132;
-  font-weight: bold;
-  display: inline-block;
-}
 p {
   margin: 3% 0px 0px 70%;
   color: #5aa4b0;
@@ -290,11 +292,16 @@ span {
   font-weight: bold;
   margin-left: 20%;
 }
+h5 {
+  color: #2a3132;
+  font-weight: bold;
+  display: inline-block;
+}
 h6 {
   color: #36424485;
   font-weight: bold;
 }
-.cancelButton {
+.closeButton {
   display: block;  
   margin-left: 96.5%;
 }
