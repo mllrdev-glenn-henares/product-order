@@ -4,7 +4,7 @@
     <ion-content :fullscreen="true">
       <div class="mainView">
       <div class="closeButton">
-        <ion-icon name="close-sharp" @click="returnToHome()" ></ion-icon>
+        <ion-icon name="close-sharp" @click="returnToHome()"></ion-icon>
       </div>
       <h5>{{ orderDetail.orderId }}</h5>  
       <ion-grid class="headDetail">

@@ -99,7 +99,7 @@
             ></ion-input>
             </ion-col>
             <ion-col size="2" class="itemDetails">
-              <ion-button button @click="deleteItemow(index)" id="deleteItemCol">
+              <ion-button button @click="deleteItemow(index)" class="deleteItemCol">
                 <ion-icon name="close-sharp"></ion-icon>
               </ion-button>
             </ion-col>
@@ -388,7 +388,7 @@ h5 {
   color: #2a3132;
   font-weight: bold;
 }
-#deleteItemCol {
+.deleteItemCol {
   color: #b75b69;
   font-weight: bold;
   font-size: 17px;
@@ -438,5 +438,9 @@ span {
 .closeButton {
   display: block;  
   margin-left: 96.5%;
+}
+ion-icon {
+  font-size: 25px;
+  color: #5aa4b0;
 }
 </style>
