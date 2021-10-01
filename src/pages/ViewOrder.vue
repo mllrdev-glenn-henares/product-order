@@ -46,11 +46,10 @@
         </ion-button>
       </div>
       <div v-if="role === UserRole.APPROVER" class="approverButtons">
-        <ion-button @click="changePurchaseOrderStatus(PurchaseStatus.DENIED)"
-          >decline</ion-button
-        >
         <ion-button @click="changePurchaseOrderStatus(PurchaseStatus.APPROVED)"
-          >approve</ion-button
+          >approve</ion-button>
+        <ion-button id="denyButton" @click="changePurchaseOrderStatus(PurchaseStatus.DENIED)"
+          >deny</ion-button
         >
       </div>
       </div>
@@ -280,6 +279,12 @@ h3 {
 }
 .approverButtons {
   display: inline-block;
-  margin-left: 61%;
+  margin-left: 62%;
+}
+#denyButton {
+  --background: none;
+  --box-shadow: none;
+  color: red;
+  margin-left: 20px;
 }
 </style>
