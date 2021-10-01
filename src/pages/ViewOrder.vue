@@ -3,47 +3,60 @@
     <Toolbar title-text="View Order" />
     <ion-content :fullscreen="true">
       <div class="mainView">
-      <h1>{{ orderDetail.orderId }}</h1>
-      <ion-grid class="mainCreate">
+      <div class="closeButton">
+        <ion-icon name="close-sharp" @click="returnToHome()"></ion-icon>
+      </div>
+      <h5>{{ orderDetail.orderId }}</h5>  
+      <ion-grid class="headDetail">
+        <h6>General Information</h6>
         <ion-row>
-          <ion-col>Supplier: {{ orderDetail.supplier }}</ion-col>
-          <ion-col>Purchase Date: {{ $filters.timeFormater(orderDetail.purchaseDate) }}</ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>Description: {{ orderDetail.description }}</ion-col>
-          <ion-col>Requestor: {{ orderDetail.requestor }}</ion-col>
-        </ion-row>
-      </ion-grid>
-
-      <ion-grid>
-        <ion-row class="itemHeader">
-          <ion-col> </ion-col>
-          <ion-col>Item</ion-col>
-          <ion-col>Quantity</ion-col>
-          <ion-col>Unit Price</ion-col>
-          <ion-col>Sub-Total</ion-col>
-        </ion-row>
-        <ion-row v-for="(item, index) in itemDetails" :key="index">
-          <ion-col>{{ index + 1 }}</ion-col>
-          <ion-col>{{ item.name }}</ion-col>
-          <ion-col>{{ item.quantity }}</ion-col>
-          <ion-col>{{ item.unitPrice }}</ion-col>
-          <ion-col>{{ item.subTotal.toFixed(2) }}</ion-col>
+          <ion-col>
+            <ion-col class="label">Supplier</ion-col>
+            <ion-col>{{ orderDetail.supplier }}</ion-col>
+          </ion-col>
+          <ion-col>
+            <ion-col class="label">Purchase Date</ion-col>
+            <ion-col>{{ $filters.timeFormater(orderDetail.purchaseDate) }}</ion-col>
+          </ion-col> 
         </ion-row>
         <ion-row>
           <ion-col>
-            <h3>Grand Total {{ orderDetail.grandTotal }}</h3>
+            <ion-col class="label">PO Description</ion-col>
+            <ion-col>{{ orderDetail.description }}</ion-col>
+          </ion-col>
+          <ion-col>
+            <ion-col class="label">Requestor</ion-col>
+            <ion-col>{{ orderDetail.requestor }}</ion-col>
+          </ion-col> 
+        </ion-row>
+      </ion-grid>
+      <ion-grid class="viewDetail">
+        <h6>Details</h6>
+        <ion-row class="itemHeader">
+          <ion-col size="0.5"> </ion-col>
+          <ion-col size="1.5">Quantity</ion-col>
+          <ion-col size="4">Description</ion-col>
+          <ion-col size="4">Unit Price</ion-col>
+          <ion-col size="2">Sub-Total</ion-col>
+        </ion-row>
+        <ion-row v-for="(item, index) in itemDetails" :key="index" class="itemRow">
+          <ion-col size="0.5">{{ index + 1 }}</ion-col>
+          <ion-col size="1.5" class="itemDetails itemQuantity">{{ item.quantity }}</ion-col>
+          <ion-col size="4  " class="itemDetails">{{ item.name }}</ion-col>
+          <ion-col size="4" class="itemDetails">{{ item.unitPrice.toFixed(2) }}</ion-col>
+          <ion-col size="2" class="itemDetails subTotal">{{ item.subTotal.toFixed(2) }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <p>Grand Total <span>{{ orderDetail.grandTotal.toFixed(2) }}</span></p>
           </ion-col>
         </ion-row>
       </ion-grid>
-      <div v-if="role === UserRole.REQUESTOR || UserRole.APPROVER" class="cancelButton">
-          <ion-button button @click="returnToHome()">Return</ion-button>
-      </div>
       <div v-if="role === UserRole.REQUESTOR" class="requestorButtons">
-        <ion-button class="deleteButton" button @click="deleteOrder()">Delete</ion-button>
         <ion-button class="submitButton" button @click="onEdit()">
           Edit
         </ion-button>
+        <ion-button class="deleteButton" button @click="deleteOrder()">Delete</ion-button>
       </div>
       <div v-if="role === UserRole.APPROVER" class="approverButtons">
         <ion-button @click="changePurchaseOrderStatus(PurchaseStatus.DENIED)"
@@ -66,6 +79,7 @@ import {
   IonRow,
   IonGrid,
   IonButton,
+  IonIcon,
 } from "@ionic/vue";
 import { defineComponent, onUpdated, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
@@ -91,9 +105,17 @@ export default defineComponent({
     IonGrid,
     IonButton,
     Toolbar,
+    IonIcon
   },
   setup() {
-    const item = ref<IItemRequest>({} as IItemRequest);
+    const item = ref<IItemRequest>({
+      orderItemId: 0,
+      itemId: 0,
+      quantity!: 0,
+      name: "",
+      unitPrice: 0,
+      subTotal: 0
+    });
 
     const itemDetails = ref<IItemRequest[]>([] as Array<IItemRequest>) ;
 
@@ -213,9 +235,20 @@ export default defineComponent({
 </script>
 
 <style scoped>
+/* *{
+  outline: solid red 1px;
+} */
+ion-content {
+  --background: #95b7bf;
+  color: #2a3132;
+}
 ion-button {
   --background: #2a3132;
   --border-radius: 20px;
+  margin: 13% 5px 20% 5px;
+}
+ion-col {
+  display: block;
 }
 ion-text {
   color: black;
@@ -223,63 +256,82 @@ ion-text {
 }
 .itemHeader {
   color: #5aa4b0;
-  border: none;
   font-weight: bold;
+  font-size: 13px;
+  margin: 15px 0px;
 }
-
 #item-container {
   width: 80%;
 }
-h1 {
-  display: block;
-}
 .mainView {
   padding: 1%;
-  width: 80%;
-  margin: 3% 10% 3%;
-  color: grey;
+  width: 65%;
+  margin: 5% 17.5% 5%;
+  color: #2a313290;
   background-color: white;
   border-radius: 20px;
 }
-p {
-  color: white;
-}
 .headDetail {
-  display: inline-block;
-  width: 50%;
-}
-.tableTitle {
-  background-color: aqua;
-  color: black;
-  font-weight: bold;
-  margin-top: 1%;
-}
-ion-item {
-  width: 60%;
-}
-ion-input {
-  color: black;
-}
-h3 {
-  margin-left: 75%;
-}
-.mainCreate {
-  padding: 2%;
-  width: 75%;
-  margin: 3% 12.5% 3%;
+  width: 100%;
   color: #2a3132;
-  background-color: white;
-  border-radius: 25px;
+  margin-left: 0px;
+  font-size: 14px;
 }
-.cancelButton {
+.viewDetail {
+  margin-top: 2%;
+}
+p {
+  margin: 3% 0px 0px 70%;
+  color: #5aa4b0;
+  font-weight: bold;
+  font-size: 13px;
+}
+span {
+  font-size: 16px;
+  color: #2a3132;
+  font-weight: bold;
+  margin-left: 20%;
+}
+h5 {
+  color: #2a3132;
+  font-weight: bold;
   display: inline-block;
+}
+h6 {
+  color: #36424485;
+  font-weight: bold;
+}
+.closeButton {
+  display: block;  
+  margin-left: 96.5%;
 }
 .requestorButtons{
   display: inline-block;
-  margin-left: 67%;
+  margin-left: 71.5%;
 }
 .approverButtons {
   display: inline-block;
   margin-left: 61%;
+}
+.label {
+  color: #5aa4b0;
+  font-weight: bold;
+}
+.itemDetails {
+  border-bottom: solid 1px #36424480;
+  color: #2a3132;
+}
+.itemQuantity {
+  padding-left: 15px;
+}
+.subTotal {
+  font-weight: bold;
+}
+.itemRow {
+  margin: 15px 0px;
+}
+ion-icon {
+  font-size: 25px;
+  color: #5aa4b0;
 }
 </style>
