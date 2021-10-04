@@ -6,8 +6,9 @@
       <div class="closeButton">
         <ion-icon name="close-sharp" @click="returnToHome()"></ion-icon>
       </div>
-        <h5>{{ orderDetail.orderId }}</h5>
         <form @submit.prevent="addItemDetail">
+          <ion-grid class="headEdit">
+          <h5>{{ orderDetail.orderId }}</h5>
           <form class="headDetail">
             <h6>General Information</h6>
             <ion-item lines="none">
@@ -42,8 +43,9 @@
               }}</ion-input>
             </ion-item>
           </div>
+          <h6>Details</h6>
+          </ion-grid>
           <ion-grid>
-            <h6>Details</h6>
           <ion-row class="itemHeader">
             <ion-col size="0.5"> </ion-col>
             <ion-col size="1.5">Quantity</ion-col>
@@ -137,9 +139,9 @@
               required
             ></ion-input>
             </ion-col>
-            <ion-col size="2" class="itemRender"> {{item.subTotal.toFixed(2)}}</ion-col>
+            <ion-col size="2" class="test">{{ item.subTotal.toFixed(2) }}</ion-col>
             <ion-col>
-              <ion-button button type="submit" id="addButton">+</ion-button>
+              <ion-button type="submit" id="addButton">+</ion-button>
             </ion-col>
           </ion-row>
           </ion-grid>
@@ -169,6 +171,8 @@ import {
   IonRow,
   IonButton,
   IonText,
+  IonIcon,
+  IonGrid
 } from "@ionic/vue";
 import { defineComponent, onUpdated, ref } from "vue";
 import Toolbar from "@/shared/components/Toolbar.vue";
@@ -196,6 +200,8 @@ export default defineComponent({
     IonRow,
     IonButton,
     IonText,
+    IonIcon,
+    IonGrid,
   },
   setup() {
     const item = ref<IItemRequest>({
@@ -314,9 +320,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* * {
-  outline: solid red 1px;
-} */
 ion-content {
   --background: #95b7bf;
   color: #2a3132;
@@ -332,6 +335,10 @@ h1 {
   background-color: white;
   border-radius: 20px;
 }
+.headEdit {
+  width: 98%;
+  margin-left: 2%;
+}
 .headDetail ion-input {
   --padding-start: 10px;
   min-height: 30px;
@@ -339,6 +346,8 @@ h1 {
 }
 ion-input {
   --padding-start: 0px;
+  font-size: 14px;
+  color: #2a3132;
 }
 p {
   color: white;
@@ -353,6 +362,10 @@ p {
   font-weight: bold;
   margin-top: 1%;
 }
+.itemRender {
+  padding-top: 9px;
+  font-size: 14px;
+}
 ion-item {
   width: 60%;
 }
@@ -360,8 +373,8 @@ ion-button {
   --background: #2a3132;
   --border-radius: 20px;
 }
-ion-input {
-  color: #2a3132;
+ion-col {
+  padding: 0px;
 }
 .submitButton {
   margin-left: 75%;
@@ -375,7 +388,7 @@ ion-input {
 h3 {
   margin-left: 75%;
 }
- h6{
+h6{
   color: #36424485;
   font-weight: bold;
 }
@@ -396,7 +409,7 @@ h5 {
   --box-shadow: none;
   display: block;
   height: 25px;
-  margin-top: 7px;
+  margin-top: 0px;
 }
 #addButton {
   color: #527ace;
@@ -405,20 +418,18 @@ h5 {
   --box-shadow: none;
   display: block;
   height: 25px;
-  margin-top: 7px;
-}
-.itemRender {
-  margin-top: 10px;
-}
-.itemDetails {
-  border-bottom: solid 1px #36424480;
-  color: #2a3132;
+  margin-top: 0px;
 }
 .itemHeader {
   color: #5aa4b0;
   font-weight: bold;
   font-size: 13px;
   margin: 8px 0px;
+}
+.itemDetails {
+  border-bottom: solid 1px #36424480;
+  color: #2a3132;
+  font-size: 14px;
 }
 .itemQuantity {
   --padding-start: 12px;
@@ -430,7 +441,7 @@ p {
   font-size: 13px;
 }
 span {
-  font-size: 16px;
+  font-size: 14px;
   color: #2a3132;
   font-weight: bold;
   margin-left: 20%;
@@ -439,8 +450,24 @@ span {
   display: block;  
   margin-left: 96.5%;
 }
+ion-col ion-input {
+  height: 25px;
+  --padding-top: 40px;
+  --padding-bottom: 35px;
+  
+}
+ion-row .itemDetails {
+  height: 30px;
+  margin-bottom: 0xp;
+  /* outline: solid red 1px; */
+}
 ion-icon {
   font-size: 25px;
   color: #5aa4b0;
+}
+.test {
+  font-size: 14px;
+  height: 25px;
+  margin: 4px 0px;
 }
 </style>

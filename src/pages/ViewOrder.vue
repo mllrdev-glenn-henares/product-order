@@ -6,8 +6,8 @@
       <div class="closeButton">
         <ion-icon name="close-sharp" @click="returnToHome()"></ion-icon>
       </div>
-      <h5>{{ orderDetail.orderId }}</h5>  
       <ion-grid class="headDetail">
+        <h5>{{ orderDetail.orderId }}</h5>  
         <h6>General Information</h6>
         <ion-row>
           <ion-col>
@@ -29,9 +29,9 @@
             <ion-col>{{ orderDetail.requestor }}</ion-col>
           </ion-col> 
         </ion-row>
+        <h6>Details</h6>
       </ion-grid>
       <ion-grid class="viewDetail">
-        <h6>Details</h6>
         <ion-row class="itemHeader">
           <ion-col size="0.5"> </ion-col>
           <ion-col size="1.5">Quantity</ion-col>
@@ -59,11 +59,10 @@
         <ion-button class="deleteButton" button @click="deleteOrder()">Delete</ion-button>
       </div>
       <div v-if="role === UserRole.APPROVER" class="approverButtons">
-        <ion-button @click="changePurchaseOrderStatus(PurchaseStatus.DENIED)"
-          >decline</ion-button
-        >
         <ion-button @click="changePurchaseOrderStatus(PurchaseStatus.APPROVED)"
-          >approve</ion-button
+          >approve</ion-button>
+        <ion-button id="denyButton" @click="changePurchaseOrderStatus(PurchaseStatus.DENIED)"
+          >deny</ion-button
         >
       </div>
       </div>
@@ -235,9 +234,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* *{
-  outline: solid red 1px;
-} */
 ion-content {
   --background: #95b7bf;
   color: #2a3132;
@@ -264,7 +260,7 @@ ion-text {
   width: 80%;
 }
 .mainView {
-  padding: 1%;
+  padding: 2%;
   width: 65%;
   margin: 5% 17.5% 5%;
   color: #2a313290;
@@ -272,13 +268,10 @@ ion-text {
   border-radius: 20px;
 }
 .headDetail {
-  width: 100%;
+  width: 98%;
   color: #2a3132;
-  margin-left: 0px;
+  margin-left: 2%;
   font-size: 14px;
-}
-.viewDetail {
-  margin-top: 2%;
 }
 p {
   margin: 3% 0px 0px 70%;
@@ -287,7 +280,7 @@ p {
   font-size: 13px;
 }
 span {
-  font-size: 16px;
+  font-size: 14px;
   color: #2a3132;
   font-weight: bold;
   margin-left: 20%;
@@ -311,7 +304,13 @@ h6 {
 }
 .approverButtons {
   display: inline-block;
-  margin-left: 61%;
+  margin-left: 68%;
+}
+#denyButton {
+  --background: none;
+  --box-shadow: none;
+  margin-left: 15px;
+  color: red;
 }
 .label {
   color: #5aa4b0;
@@ -329,6 +328,7 @@ h6 {
 }
 .itemRow {
   margin: 15px 0px;
+  font-size: 14px;
 }
 ion-icon {
   font-size: 25px;
