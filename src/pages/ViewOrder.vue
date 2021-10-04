@@ -234,9 +234,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* *{
-  outline: solid red 1px;
-} */
 ion-content {
   --background: #95b7bf;
   color: #2a3132;
