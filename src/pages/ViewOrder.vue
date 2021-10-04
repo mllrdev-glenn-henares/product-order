@@ -304,11 +304,12 @@ h6 {
 }
 .approverButtons {
   display: inline-block;
-  margin-left: 71.5%;
+  margin-left: 68%;
 }
 #denyButton {
   --background: none;
   --box-shadow: none;
+  margin-left: 15px;
   color: red;
 }
 .label {
