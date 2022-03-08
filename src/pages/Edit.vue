@@ -139,7 +139,7 @@
               required
             ></ion-input>
             </ion-col>
-            <ion-col size="2" class="test">{{ item.subTotal.toFixed(2) }}</ion-col>
+            <ion-col size="2" class="test">{{item.subTotal}}</ion-col>
             <ion-col>
               <ion-button type="submit" id="addButton">+</ion-button>
             </ion-col>
@@ -147,7 +147,7 @@
           </ion-grid>
         </form>
         <ion-text size="large">
-            <p>Grand Total <span>{{ orderDetail.grandTotal.toFixed(2) }}</span></p> 
+            <p>Grand Total <span>{{ orderDetail.grandTotal}}</span></p> 
         </ion-text>
         <ion-button class="submitButton" button type="submit"
           >update</ion-button
@@ -256,65 +256,69 @@ export default defineComponent({
       }
     });
 
-    return { itemList, item, orderDetail, RouteName, $filters };
-  },
-  methods: {
-    addItemDetail() {
-      this.item.subTotal =
-        (this.item.unitPrice || 0) * (this.item.quantity || 1);
-      this.itemList.push(this.item);
-      this.orderDetail.orderItems = this.itemList;
-      this.orderDetail.grandTotal = 0;
-      this.itemList.forEach((item: IItemRequest) => {
-        this.orderDetail.grandTotal += (item.subTotal || 0);
-      });
+    const addItemDetail = () =>{
+      item.value.subTotal = (item.value.unitPrice || 0)*(item.value.quantity || 1);
+      itemList.value.push(item.value)
+      orderDetail.value.orderItems = itemList.value;
 
-      this.item = {} as IItemRequest;
-    },
-    updateOrder() {
-      orderService.requestor
-        .updateOrder(this.orderDetail)
-        .then((success: boolean) => {
-          switch (success) {
-            case true:
-              alert(`${this.orderDetail.orderId} is updated`);
-              this.returnToHome();
-              break;
-            case false:
-              alert(`failed to update ${this.orderDetail.orderId}`);
-              break;
-          }
-        });
-    },
-    calculateSubTotal(index: number) {
-      this.itemList[index].subTotal = 0;
-      this.orderDetail.grandTotal = 0;
-      this.itemList[index].subTotal =
-        (this.itemList[index].unitPrice || 0) *
-        (this.itemList[index].quantity || 1);
-      this.itemList.forEach((item: IItemRequest) => {
-        this.orderDetail.grandTotal += (item.subTotal || 0);
-      });
-    },
-    deleteItemow(index: number) {
-      this.itemList.splice(index, 1);
-    },
-    returnToHome() {
+      orderDetail.value.grandTotal = 0;
+      itemList.value.forEach((item: IItemRequest) => {
+        orderDetail.value.grandTotal += (item.subTotal || 0);
+      })
+      console.log('grandtotal: ' + orderDetail.value.grandTotal);
+      item.value = {} as IItemRequest;
+    }
+
+    const returnToHome = () => {
       router.push({
         name: RouteName.HOME,
         params: {
-          orderId: this.orderDetail.orderId,
-        },
-      });
-    },
-    returnToView() {
-        router.push({
-        name: RouteName.VIEW,
-        params: {
-          orderId: this.orderDetail.orderId,
+          orderId: orderDetail.value.orderId,
         },
       });
     }
+
+    const updateOrder = () => {
+      orderService.requestor
+      .updateOrder(orderDetail.value)
+      .then((success: boolean) => {
+        switch(success){
+          case true:
+            alert(`${orderDetail.value.orderId} is updated`);
+            returnToHome();
+            break;
+          case false:
+            alert(`failed to update ${orderDetail.value.orderId}`);
+            break;
+
+        }
+      })
+    }
+
+    const calculateSubTotal = (index: number) => {
+      itemList.value[index].subTotal = 0;
+      orderDetail.value.grandTotal = 0;
+      itemList.value[index].subTotal = (itemList.value[index].unitPrice || 0) * (itemList.value[index].quantity || 1);
+      itemList.value.forEach((item: IItemRequest) => {
+        orderDetail.value.grandTotal += (item.subTotal || 0);
+      })
+    }
+
+    const deleteItemow = (index: number) => {
+      orderDetail.value.grandTotal = orderDetail.value.grandTotal - itemList.value[index].subTotal
+      itemList.value.splice(index, 1);
+    }
+
+    const returnToView = () => {
+      router.push({
+        name: RouteName.VIEW,
+        params: {
+          orderId: orderDetail.value.orderId,
+        }
+      })
+    }
+
+    return { itemList, item, orderDetail, RouteName, $filters, addItemDetail, updateOrder, returnToHome, calculateSubTotal, deleteItemow, returnToView};
   },
 });
 </script>
