@@ -28,16 +28,22 @@ export default defineComponent({
     IonButton,
     IonText,
   },
-  methods: {
-    goToRegister() {
-      router.push({
-        name: RouteName.REGISTER
-      })
-    },
-    goToLogin() {
-      router.push({
-        name: RouteName.LOGIN
-      })
+  setup() {
+    const goToRegister = () => {
+        router.push({
+          name: RouteName.REGISTER
+        })
+      }
+      
+    const goToLogin = () => {
+        router.push({
+          name: RouteName.LOGIN
+        })
+      }
+
+    return {
+      goToRegister,
+      goToLogin,
     }
   }
 })

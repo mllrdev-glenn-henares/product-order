@@ -147,8 +147,6 @@ import router from "@/router";
 import ICreateOrderRequest from "@/core/interfaces/order/requests/create-order.interface";
 import RouteName from "@/core/enums/route-name.enum"
 import getUserFromPayload from "@/core/services/jwt.service";
-import IOrder from "@/core/interfaces/order/order.interface";
-import IUpdateOrderStatusRequest from "@/core/interfaces/order/requests/update-order-status.interface";
 
 export default defineComponent({
   name: "Create",
@@ -181,33 +179,36 @@ export default defineComponent({
 
     const name: string = getUserFromPayload().firstName
 
+    const addItemDetail = () => {
+      item.value.subTotal =
+      (item.value.unitPrice || 0) * (item.value.quantity || 1);
+      itemDetails.value.push(item.value);
+      orderDetail.value.grandTotal = 0;
+      itemDetails.value.forEach((item: IItem) => {
+        orderDetail.value.grandTotal += item.subTotal || 0;
+      });
+      item.value = {} as IItem;
+
+    }
+
+    const createPurchaseOrder = () => {
+      orderDetail.value.items = itemDetails.value;
+      orderService.requestor.requestorCreate(orderDetail.value);
+      router.push({
+        name: RouteName.HOME,
+      });
+    }
+
+
     return {
       itemDetails,
       item,
       orderDetail,
       RouteName,
       name,
+      addItemDetail,
+      createPurchaseOrder
     };
-  },
-  methods: {
-    addItemDetail() {
-      this.item.subTotal =
-        (this.item.unitPrice || 0) * (this.item.quantity || 1);
-      this.itemDetails.push(this.item);
-      this.orderDetail.grandTotal = 0;
-      this.itemDetails.forEach((item: IItem) => {
-        this.orderDetail.grandTotal += item.subTotal || 0;
-      });
-      this.item = {} as IItem;
-    },
-    createPurchaseOrder() {
-      this.orderDetail.items = this.itemDetails;
-      orderService.requestor.requestorCreate(this.orderDetail);
-      router.push({
-        name: RouteName.HOME,
-      });
-    },
-
   },
 });
 </script>
