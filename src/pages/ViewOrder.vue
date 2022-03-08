@@ -125,7 +125,7 @@ export default defineComponent({
       status: PurchaseStatus.PENDING,
     });
 
-     const $filters: any = {};
+    const $filters: any = {};
 
     const orderDetail = ref<IOrder>({
       orderId: "",
@@ -166,6 +166,60 @@ export default defineComponent({
       }
     });
 
+    const returnToHome = (): void => {
+      router.push({
+        name: RouteName.HOME,
+        params: {
+          orderId: orderStatusUpdate.value.id,
+        }
+      });
+    }
+
+    const changePurchaseOrderStatus = (status: PurchaseStatus): void => {
+      orderStatusUpdate.value.status = status;
+      orderService.approver
+        .updateOrderStatus(orderStatusUpdate.value)
+        .then((success: boolean) => {
+          switch (success) {
+            case true:
+              alert(
+                `${orderStatusUpdate.value.id} have been ${orderStatusUpdate.value.status}`
+              );
+              returnToHome();
+              break;
+            case false:
+              alert("PO status update failed");
+              break;
+          }
+        });
+    }
+
+    const onEdit = (): void => {
+      router.push({
+        name: RouteName.EDIT,
+        params: {
+          orderId: orderStatusUpdate.value.id,
+        },
+      });
+    }
+
+    const deleteOrder = (): void => {
+      orderService.requestor.deletePurchaseOrder(orderStatusUpdate.value.id)
+      .then((success: boolean) => {
+          switch (success) {
+            case true:
+              alert(
+                `${orderStatusUpdate.value.id} have been Deleted`
+              );
+              returnToHome()
+              break;
+            case false:
+              alert("PO deletion failed");
+              break;
+          }
+        });
+    }
+
     return {
       itemDetails,
       item,
@@ -176,59 +230,11 @@ export default defineComponent({
       UserRole,
       RouteName,
       $filters,
+      changePurchaseOrderStatus,
+      returnToHome,
+      onEdit,
+      deleteOrder
     };
-  },
-  methods: {
-    changePurchaseOrderStatus(status: PurchaseStatus) {
-      this.orderStatusUpdate.status = status;
-      orderService.approver
-        .updateOrderStatus(this.orderStatusUpdate)
-        .then((success: boolean) => {
-          switch (success) {
-            case true:
-              alert(
-                `${this.orderStatusUpdate.id} have been ${this.orderStatusUpdate.status}`
-              );
-              this.returnToHome();
-              break;
-            case false:
-              alert("PO status update failed");
-              break;
-          }
-        });
-    },
-    onEdit() {
-      router.push({
-        name: RouteName.EDIT,
-        params: {
-          orderId: this.orderStatusUpdate.id,
-        },
-      });
-    },
-      returnToHome() {
-      router.push({
-        name: RouteName.HOME,
-        params: {
-          orderId: this.orderStatusUpdate.id,
-        }
-      });
-    },
-    deleteOrder() {
-      orderService.requestor.deletePurchaseOrder(this.orderStatusUpdate.id)
-      .then((success: boolean) => {
-          switch (success) {
-            case true:
-              alert(
-                `${this.orderStatusUpdate.id} have been Deleted`
-              );
-              this.returnToHome()
-              break;
-            case false:
-              alert("PO deletion failed");
-              break;
-          }
-        });
-    },
   },
 });
 </script>

@@ -137,6 +137,11 @@ export default defineComponent({
           break;
       }
     });
+    const clickToCreateOrder = () => {
+      router.push({
+        name: RouteName.CREATE,
+      });
+    }
     return {
       orders,
       handleClick,
@@ -144,14 +149,11 @@ export default defineComponent({
       status,
       role,
       UserRole,
+      clickToCreateOrder
     };
   },
   methods: {
-    clickToCreateOrder() {
-      router.push({
-        name: RouteName.CREATE,
-      });
-    },
+    
   },
 });
 </script>
